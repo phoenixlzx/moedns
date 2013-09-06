@@ -1,0 +1,197 @@
+<%-include header%>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><%= siteName %></a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/"><%= __('HOME') %></a></li>
+                <% if(user) { %>
+                <li class="active"><a href="/domains"><%= __('MY_DOMAINS') %></a></li>
+                <li><a href="/status"><%= __('SERVER_STATUS') %></a></li>
+                <% } %>
+                <li><a href="/about"><%= __('ABOUT') %></a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <% if(!user) { %>
+                <li><a href="/login"><%= __('LOGIN') %></a></li>
+                <% if(allowReg) { %>
+                <li><a href="/reg"><%= __('REGISTER') %></a></li>
+                <% }} else { %>
+                <li><p class="navbar-text"><%= __('WELCOME') %>,
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= user.name %><b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/domains"><%= __('MY_DOMAINS') %></a></li>
+                        <li><a href="/account"><%= __('MY_ACCOUNT') %></a></li>
+                        <li><a href="/contact"><%= __('FEEDBACK') %></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <form class="navbar-form" action="/logout" method="post">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-danger"><%= __('LOGOUT') %></button>
+                        </div>
+
+                    </form>
+                </li>
+                <% } %>
+            </ul>
+
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
+
+<div class="container">
+
+    <div id="notification">
+        <% if (locals.success) { %>
+        <div class="alert alert-success alert-dismissable fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <%= success %>
+        </div>
+        <% } %>
+        <% if (locals.error) { %>
+        <div class="alert alert-danger alert-dismissable fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <%= error %>
+        </div>
+        <% } %>
+    </div>
+
+
+    <div class="container">
+        <div id="domain">
+            <div class="row">
+                <h2 style="display: inline-block; padding-left: 20px;"><%= __('MY_DOMAINS') %></h2>
+                &nbsp;&nbsp;
+                <a type="button" data-toggle="modal" href="#addDomain" class="btn btn-success" style="vertical-align: 15%;">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    &nbsp;
+                    <%= __('ADD_DOMAIN') %>
+                </a>
+            </div>
+            <div class="domain-inner">
+                <% if (domains == "") { %>
+                <div style="text-align: center">
+                    <h2>
+                        <%= __('HAVE_NO_DOMAIN') %>
+                    </h2>
+                    <a data-toggle="modal" href="#addDomain" class="btn btn-primary btn-lg"><%= __('ADD_DOMAIN_HERE') %></a>
+                </div>
+                <% } else { %>
+                <table class="table table-hover" id="domain-list">
+                    <tr>
+                        <th>
+                            <%= __('DOMAIN_ID') %>
+                            &nbsp;&nbsp;
+                            <%= __('DOMAIN_LIST') %>
+                        </th>
+                    </tr>
+                    <% domains.forEach(function(domain) { %>
+                    <tr id="domain-row-<%= domain.id %>">
+                        <td>
+                            <span class="glyphicon glyphicon-globe"></span>
+                            &nbsp;
+                            <%= domain.id %>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="/domain/<%= domain.name %>"><%= domain.name %></a>
+                            <a data-toggle="modal" class="btn btn-danger btn-xs pull-right domain-delete" href="#deleteDomain" id="delete-domain-<%= domain.id %>">
+                                <%= __('DELETE') %>
+                            </a>
+                             <!-- <form action="/domain/<%= domain.name %>/delete" method="post" class="pull-right domain-delete">
+                                <button type="submit" class="btn btn-danger btn-xs" id=""
+                                        onclick="return confirm(<%= __('DOMAIN_DELETION_WARNING') %> + '\n\n\t<%= domain.name %>');">
+                                 </button>
+                            </form>  -->
+                        </td>
+                    </tr>
+                    <% }) %>
+                </table>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add domain modal -->
+    <div class="modal fade" id="addDomain" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><%= __('ADD_DOMAIN') %></h4>
+                </div>
+                <form action="/add-domain" method="post">
+                <div class="modal-body">
+                    <label for="domain-name"><%= __('TYPE_DOMAIN_HERE') %></label>
+                    <input type="text" class="form-control" id="domain-name" name="domain" placeholder="example.tld" autofocus />
+                    <br />
+                    <p>
+                        <%= __('ADD_DOMAIN_HELP') %>
+                    </p>
+                    <ul class="list-unstyled">
+                        <% powerservers.forEach(function(server) { %>
+                        <li><pre><code><%= server %></code></pre></li>
+                        <% }) %>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('CANCEL') %></button>
+                        <button type="submit" class="btn btn-primary"><%= __('ADD_DOMAIN') %></button>
+                </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Delete domain modal -->
+    <div class="modal fade" id="deleteDomain" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><%= __('DELETE_DOMAIN') %></h4>
+                </div>
+                <form class="form form-horizontal" id="domain-delete-form" role="form" method="post">
+                    <div class="modal-body">
+                            <div class="callout callout-danger">
+                                <p>
+                                    <%= __('DOMAIN_DELETION_WARNING') %>
+                                </p>
+                            </div>
+                        <div class="form-group">
+                            <label for="domainId-static" class="col-lg-2 control-label"><%= __('DOMAIN_ID') %></label>
+                            <div class="col-lg-6">
+                                <input class="form-control" type="text" id="domainId" name="domainId" style="display: none;" />
+                                <p class="form-control-static" id="domainId-static">
+                                    <!-- domain.id -->
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="domainName-static" class="col-lg-2 control-label"><%= __('DOMAIN') %></label>
+                            <div class="col-lg-8">
+                                <p class="form-control-static" id="domainName-static">
+                                    <!-- domain.name -->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('CANCEL') %></button>
+                        <button type="submit" class="btn btn-danger"><%= __('DELETE_DOMAIN') %></button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+</div><!-- /.container -->
+<%-include footer%>

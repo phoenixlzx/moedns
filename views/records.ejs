@@ -1,0 +1,333 @@
+<%-include header%>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><%= siteName %></a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/"><%= __('HOME') %></a></li>
+                <% if(user) { %>
+                <li class="active"><a href="/domains"><%= __('MY_DOMAINS') %></a></li>
+                <li><a href="/status"><%= __('SERVER_STATUS') %></a></li>
+                <% } %>
+                <li><a href="/about"><%= __('ABOUT') %></a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <% if(!user) { %>
+                <li><a href="/login"><%= __('LOGIN') %></a></li>
+                <% if(allowReg) { %>
+                <li><a href="/reg"><%= __('REGISTER') %></a></li>
+                <% }} else { %>
+                <li><p class="navbar-text"><%= __('WELCOME') %>,
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= user.name %><b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/domains"><%= __('MY_DOMAINS') %></a></li>
+                        <li><a href="/account"><%= __('MY_ACCOUNT') %></a></li>
+                        <li><a href="/contact"><%= __('FEEDBACK') %></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <form class="navbar-form" action="/logout" method="post">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-danger"><%= __('LOGOUT') %></button>
+                        </div>
+
+                    </form>
+                </li>
+                <% } %>
+            </ul>
+
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
+
+<div class="container">
+
+    <div id="notification">
+        <% if (locals.success) { %>
+        <div class="alert alert-success alert-dismissable fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <%= success %>
+        </div>
+        <% } %>
+        <% if (locals.error) { %>
+        <div class="alert alert-danger alert-dismissable fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <%= error %>
+        </div>
+        <% } %>
+    </div>
+
+
+    <div class="container">
+        <div id="domain">
+            <div class="row">
+                <h2 style="display: inline-block; padding-left: 20px;">
+                    <%= __('DOMAIN') %>
+                    <a href="/domain/<%= domain.name %>">
+                        <%= domain.name.toUpperCase() %>
+                    </a>
+                </h2>
+                &nbsp;&nbsp;
+                <a type="button" data-toggle="modal" href="#addRecord" class="btn btn-success" style="vertical-align: 15%;">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    &nbsp;<%= __('ADD_RECORD') %>
+                </a>
+            </div>
+            <div class="domain-inner">
+                <table class="table table-hover">
+                    <tr>
+                        <th><%= __('RECORD_ID') %></th>
+                        <th><%= __('DOMAIN_RECORD') %></th>
+                        <th><%= __('RECORD_TYPE') %></th>
+                        <th><%= __('RECORD_CONTENT') %></th>
+                        <th><%= __('RECORD_PRIORITY') %></th>
+                        <th><%= __('TTL') %></th>
+                        <th><%= __('ACTION') %></th>
+                    </tr>
+                    <!-- records goes here -->
+                    <% records.forEach(function(record) { %>
+                    <tr id="record-row-<%= record.id %>">
+                        <td><%= record.id %></td>
+                        <td><%= record.name.substring(0, record.name.search(domain.name) - 1) %></td>
+                        <td><%= record.type %></td>
+                        <td><%= record.content %>.</td>
+                        <td>
+                            <% if (record.prio === null) { %>
+                            -
+                            <% } else { %>
+                            <%= record.prio %>
+                            <% } %>
+                        </td>
+                        <td><%= record.ttl %></td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                    <%= __('OPTIONS') %> <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a data-toggle="modal" href="#editRecord" id="record-edit-<%= record.id %>">
+                                            <%= __('EDIT') %>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a data-toggle="modal" href="#deleteRecord" id="record-delete-<%= record.id %>">
+                                            <%= __('DELETE') %>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add record modal -->
+    <div class="modal fade" id="addRecord" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><%= __('ADD_RECORD') %></h4>
+                </div>
+                <form action="/domain/<%= domain.name %>/add-record" class="form form-horizontal" role="form" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><%= __('DOMAIN') %></label>
+                            <div class="col-lg-4">
+                                <p class="form-control-static"><%= domain.name %></p>
+                            </div>
+                            <label for="domainId" class="col-lg-2 control-label"><%= __('DOMAIN_ID') %></label>
+                            <div class="col-lg-4">
+                                <input class="form-control" type="text" id="domain_id" name="domain_id" value="<%= domain.id %>" style="display: none;" />
+                                <p class="form-control-static" id="domainId">
+                                    <%= domain.id %>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="record-type" class="control-label col-lg-2"><%= __('RECORD_TYPE') %></label>
+                            <div class="col-lg-4">
+                                <select class="form-control col-lg-2" id="record-type" name="type">
+                                    <option value="A">A</option>
+                                    <option value="AAAA">AAAA</option>
+                                    <option value="CNAME">CNAME</option>
+                                    <option value="MX">MX</option>
+                                    <option value="NS">NS</option>
+                                    <option value="SRV">SRV</option>
+                                    <option value="TXT">TXT</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="record-name" class="control-label col-lg-2"><%= __('RECORD') %></label>
+                            <div class="col-lg-8">
+                                <input type="text" class="form-control" id="record-name" name="name" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="record-prio" class="col-lg-2 control-label"><%= __('RECORD_PRIORITY') %></label>
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control" id="record-prio" name="prio" placeholder="" disabled>
+                            </div>
+                            <label for="record-ttl" class="col-lg-2 control-label"><%= __('TTL') %></label>
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control" id="record-ttl" name="ttl" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="record-content" class="control-label col-lg-2"><%= __('RECORD_CONTENT') %></label>
+                            <div class="col-lg-8">
+                                <input type="text" class="form-control" id="record-content" name="content" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('CANCEL') %></button>
+                        <button type="submit" class="btn btn-primary"><%= __('ADD_RECORD') %></button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Edit record modal -->
+    <div class="modal fade" id="editRecord" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><%= __('EDIT_RECORD') %></h4>
+                </div>
+                <form id="record-edit-form" action="/domain/<%= domain.name %>/edit-record" class="form form-horizontal" role="form" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><%= __('DOMAIN') %></label>
+                            <div class="col-lg-4">
+                                <p class="form-control-static"><%= domain.name %></p>
+                            </div>
+                            <label for="record-id-static" class="col-lg-2 control-label"><%= __('RECORD_ID') %></label>
+                            <div class="col-lg-4">
+                                <input class="form-control" type="text" id="record-id-edit" name="recordId" style="display: none;" />
+                                <p class="form-control-static" id="record-id-static">
+                                    <!-- record.id -->
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="record-type-edit" class="control-label col-lg-2"><%= __('RECORD_TYPE') %></label>
+                            <div class="col-lg-4">
+                                <select class="form-control col-lg-2" id="record-type-edit" name="type">
+                                    <option value="A">A</option>
+                                    <option value="AAAA">AAAA</option>
+                                    <option value="CNAME">CNAME</option>
+                                    <option value="MX">MX</option>
+                                    <option value="NS">NS</option>
+                                    <option value="SRV">SRV</option>
+                                    <option value="TXT">TXT</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="record-name-edit" class="control-label col-lg-2"><%= __('RECORD') %></label>
+                            <div class="col-lg-8">
+                                <input type="text" class="form-control" id="record-name-edit" name="name" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="record-prio-edit" class="col-lg-2 control-label"><%= __('RECORD_PRIORITY') %></label>
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control" id="record-prio-edit" name="prio" placeholder="" disabled>
+                            </div>
+                            <label for="record-ttl-edit" class="col-lg-2 control-label"><%= __('TTL') %></label>
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control" id="record-ttl-edit" name="ttl" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="record-content-edit" class="control-label col-lg-2"><%= __('RECORD_CONTENT') %></label>
+                            <div class="col-lg-8">
+                                <input type="text" class="form-control" id="record-content-edit" name="content" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('CANCEL') %></button>
+                        <button type="submit" class="btn btn-primary"><%= __('EDIT_RECORD') %></button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Delete record modal -->
+    <div class="modal fade" id="deleteRecord" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><%= __('DELETE_RECORD') %></h4>
+                </div>
+                <form action="/domain/<%= domain.name %>/delete-record" class="form form-horizontal" id="domain-delete-form" role="form" method="post">
+                    <div class="modal-body">
+                        <div class="callout callout-danger">
+                            <p>
+                                <%= __('RECORD_DELETION_WARNING') %>
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="recordId-static" class="col-lg-2 control-label"><%= __('RECORD_ID') %></label>
+                            <div class="col-lg-4">
+                                <input class="form-control" type="text" id="recordId" name="recordId" style="display: none;" />
+                                <p class="form-control-static" id="recordId-static">
+                                    <!-- record.id -->
+                                </p>
+                            </div>
+                            <label for="recordType-static" class="col-lg-2 control-label"><%= __('RECORD_TYPE') %></label>
+                            <div class="col-lg-4">
+                                <p class="form-control-static" id="recordType-static">
+                                    <!-- record.type -->
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="recordName-static" class="col-lg-2 control-label"><%= __('DOMAIN_RECORD') %></label>
+                            <div class="col-lg-8">
+                                <p class="form-control-static" id="recordName-static">
+                                    <!-- record.name -->
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="recordContent-static" class="col-lg-2 control-label"><%= __('RECORD_CONTENT') %></label>
+                            <div class="col-lg-8">
+                                <p class="form-control-static" id="recordContent-static">
+                                    <!-- record.content -->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('CANCEL') %></button>
+                        <button type="submit" class="btn btn-danger"><%= __('DELETE_RECORD') %></button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+</div><!-- /.container -->
+<%-include footer%>

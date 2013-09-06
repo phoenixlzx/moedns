@@ -1,0 +1,29 @@
+module.exports={
+    // MongoDB configuration.
+    cookieSecret: 'CookieSecret',
+    mongodb: 'powerdns',
+    mongohost: 'localhost',
+
+    // MySQL configuration
+    mysqldb: 'powerdns',
+    mysqlhost: 'localhost',
+    mysqluser: 'powerdns',
+    mysqlpass: 'powerdnspass',
+
+    // PowerDNS settings
+    // `powertype` can be `NATIVE`, `MASTER` and `SLAVE`
+    powertype: 'NATIVE',
+    // `powerservers` is an array of your NS servers. Must be present.
+    powerservers: ['ns1.example.com', 'ns2.example.com', 'ns3.example.com', 'ns4.example.com'],
+    powerttl: 3600,
+
+    // Site configuration.
+    url: 'example.com',
+    adminMail: 'dnsadmin@example.com',
+    siteName: 'PhoenixDNS',
+    siteTagline: 'Yet another PowerDNS Web UI.',
+    allowReg: true,
+
+    // i18n settings.
+    language: 'zh-cn'
+};

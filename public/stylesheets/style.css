@@ -1,0 +1,123 @@
+/* Miscellaneous */
+
+body {
+    padding-top: 70px;
+    padding-bottom: 40px;
+    background-size:cover;
+    height: 100%;
+}
+
+div#signin {
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 5px;
+    margin: auto;
+    max-width: 350px;
+}
+
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+/*
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+    margin-bottom: 10px;
+}
+.form-signin .checkbox {
+    font-weight: normal;
+}
+.form-signin .form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    padding: 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.form-signin .form-control:focus {
+    z-index: 2;
+}
+.form-signin input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+*/
+
+/*
+ * Notification flash area
+ */
+
+div#notification {
+    position: fixed;
+    margin: auto;
+    width: 90%;
+}
+
+/*
+ * Domain frame
+ */
+
+div#domain {
+    margin: auto;
+    padding: 10px 30px 10px 30px;
+    width: 95%;
+    min-height: 500px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 5px;
+}
+
+div#domain-inner {
+    margin: auto;
+    padding: 5px 20px 10px 20px;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+
+/* Set the fixed height of the footer here */
+#footer {
+    margin: 10px auto;
+    text-align: center;
+    bottom: 0px;
+}
+
+/*
+ * Callouts
+ */
+
+.callout {
+    margin: 20px 0;
+    padding: 15px 30px 15px 15px;
+    border-left: 5px solid #eee;
+}
+.callout h4 {
+    margin-top: 0;
+}
+.callout code,
+.callout .highlight {
+    background-color: #fff;
+}
+
+/* Variations */
+.callout-danger {
+    background-color: #fcf2f2;
+    border-color: #dFb5b4;
+}
+.callout-warning {
+    background-color: #fefbed;
+    border-color: #f1e7bc;
+}
+.callout-info {
+    background-color: #f0f7fd;
+    border-color: #d0e3f0;
+}
+

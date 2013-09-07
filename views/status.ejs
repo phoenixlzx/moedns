@@ -3,7 +3,7 @@
 <script type="text/javascript">
     // Load server status
     function loadStatus(server) {
-        $.ajaxSetup({timeout:10000});
+        $.ajaxSetup({timeout:100000});
         $.get("statusapi/" + server, function(data, status) {
             // alert(data);
             switch (data) {

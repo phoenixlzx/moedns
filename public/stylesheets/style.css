@@ -14,11 +14,19 @@ div#signin {
     max-width: 350px;
 }
 
+div#user {
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 5px;
+    margin: auto;
+    max-width: 500px;
+}
+
 .form-signin {
     max-width: 330px;
     padding: 15px;
     margin: 0 auto;
 }
+
 
 /*
 .form-signin .form-signin-heading,

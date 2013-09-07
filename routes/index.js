@@ -7,6 +7,7 @@
 // Module dependencies
 var config = require('../config.js'),
     crypto = require('crypto'),
+    net = require('net'),
     User = require('../models/user.js'),
     Admin = require('../models/admin.js'),
     Domain = require('../models/domain.js'),
@@ -599,6 +600,55 @@ module.exports = function(app) {
     })
 
 
+
+
+    // Server status
+    app.get('/status', checkLogin, function(req, res) {
+        res.render('status', {
+            title: res.__('SERVER_STATUS') + ' - ' + config.siteName,
+            siteName: config.siteName,
+            siteTagline: config.siteTagline,
+            allowReg: config.allowReg,
+            user: req.session.user,
+            powerservers: config.powerservers,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+        });
+    });
+
+    app.get('/statusapi/:server', function(req, res) {
+        var server = req.params.server,
+            status = null,
+            sock = new net.Socket();
+        sock.setTimeout(3000);
+        sock.on('connect', function() {
+            console.log(server + ' is up.');
+            res.send("0");
+            sock.destroy();
+        }).on('error', function(e) {
+            console.log(server + ' is down: ' + e.message);
+            res.send("1");
+        }).on('timeout', function(e) {
+            console.log(server + ' is down: timeout');
+            res.send("2");
+        }).connect(53, server);
+    });
+
+        /*
+        var hosts = [['google.com', 80], ['stackoverflow.com', 80], ['google.com', 444]];
+        hosts.forEach(function(item) {
+            var sock = new net.Socket();
+            sock.setTimeout(2500);
+            sock.on('connect', function() {
+                console.log(item[0]+':'+item[1]+' is up.');
+                sock.destroy();
+            }).on('error', function(e) {
+                    console.log(item[0]+':'+item[1]+' is down: ' + e.message);
+                }).on('timeout', function(e) {
+                    console.log(item[0]+':'+item[1]+' is down: timeout');
+                }).connect(item[1], item[0]);
+        });
+        */
 
     /* Default 404 page
     app.all('/', function(req, res) {

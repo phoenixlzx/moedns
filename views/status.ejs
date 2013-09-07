@@ -1,4 +1,25 @@
 <%-include header%>
+<script type="text/javascript" src="/javascripts/jquery.js"></script>
+<script type="text/javascript">
+    // Load server status
+    function loadStatus(server) {
+        $.ajaxSetup({timeout:10000});
+        $.get("statusapi/" + server, function(data, status) {
+            // alert(data);
+            switch (data) {
+                case "0":
+                    $("div[id$='" + server + "']").html('<span class="glyphicon glyphicon-ok-sign"></span>&nbsp;&nbsp;<span class="text-success">UP</span>');
+                    break;
+                case "1":
+                    $("div[id$='" + server + "']").html('<span class="glyphicon glyphicon-remove-sign"></span>&nbsp;&nbsp;<span class="text-danger">DOWN</span>');
+                    break;
+                case "2":
+                    $("div[id$='" + server + "']").html('<span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;<span class="text-warning">TIMEDOUT</span>');
+                    break;
+            }
+        });
+    }
+</script>
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -11,10 +32,10 @@
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/"><%= __('HOME') %></a></li>
+                <li><a href="/"><%= __('HOME') %></a></li>
                 <% if(user) { %>
                 <li><a href="/domains"><%= __('MY_DOMAINS') %></a></li>
-                <li><a href="/status"><%= __('SERVER_STATUS') %></a></li>
+                <li class="active"><a href="/status"><%= __('SERVER_STATUS') %></a></li>
                 <% } %>
                 <li><a href="/about"><%= __('ABOUT') %></a></li>
             </ul>
@@ -65,14 +86,43 @@
         <% } %>
     </div>
 
+    <div class="container" style="min-height: 500px;">
+        <div id="domain">
+            <h2>
+                <%= __('SERVER_STATUS') %>
+            </h2>
+            <table class="table">
+                <tr>
+                    <th>
+                        <%= __('DNS_SERVERS') %>
+                    </th>
+                    <th>
+                        <%= __('STATUS') %>
+                    </th>
+                </tr>
+                <% powerservers.forEach(function(server) { %>
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-tasks"></span>
+                        &nbsp;&nbsp;
+                        <%= server %>
+                    </td>
+                    <td >
+                        <div id="status-<%= server %>">
 
-        <div class="container" style="min-height: 500px;">
-            <h1><%= siteName %></h1>
-            <p><%= siteTagline %></p>
+                        </div>
+                        <script type="text/javascript">
+                            loadStatus("<%= server %>");
+                        </script>
+                        <!-- server status goes here -->
+                    </td>
+                </tr>
+                <% }) %>
+            </table>
         </div>
-
-
+    </div>
 
 </div><!-- /.container -->
-<%-include footer%>
 
+
+<%-include footer%>

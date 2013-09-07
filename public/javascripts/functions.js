@@ -26,6 +26,24 @@ Array.prototype.cleanArray = function(valueToDelete){
     return this;
 }
 
+ /*function loadStatus(server) {
+     // alert(server);
+     $.ajax({
+         url: '/statusapi/' + server // $(this).substring($(this).attr('id').indexOf('-'))
+     }).done(function(data) {
+             $("#status-" + server).html(function() {
+                 switch (data) {
+                     case "0":
+                         return '<span class="glyphicon glyphicon-ok-sign"></span>&nbsp;&nbsp;<span class="text-success">UP</span>';
+                     case "1":
+                         return '<span class="glyphicon glyphicon-remove-sign"></span>&nbsp;&nbsp;<span class="text-danger">DOWN</span>';
+                     case "2":
+                         return '<span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;<span class="text-warning">TIMEDOUT</span>'
+                 }
+             });
+         });
+ }*/
+
 // jQuery methods.
 $(document).ready(function() {
     // Show delete button on hover at domain list
@@ -109,6 +127,29 @@ $(document).ready(function() {
         $("#recordName-static").text(recordArray[1]);
         $("#recordContent-static").text(recordArray[3].slice(0, recordArray[3].lastIndexOf('.')));
     });
+
+
+    /*$("td[id^='status-']").on("load", function() {
+        var server = $(this).attr('id').substring(7);
+        $.ajax({
+            url: 'statusapi/' + server, // $(this).substring($(this).attr('id').indexOf('-'))
+            success: function (data) {
+                switch (data) {
+                    case "0":
+                        $(this).html('<span class="glyphicon glyphicon-ok-sign"></span>&nbsp;&nbsp;<span class="text-success">UP</span>');
+                        break;
+                    case "1":
+                        $(this).html('<span class="glyphicon glyphicon-remove-sign"></span>&nbsp;&nbsp;<span class="text-danger">DOWN</span>');
+                        break;
+                    case "2":
+                        $(this).html('<span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;<span class="text-warning">TIMEDOUT</span>');
+                        break;
+                }
+
+            }
+        })
+    });*/
+
 });
 
 

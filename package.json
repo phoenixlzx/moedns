@@ -15,6 +15,7 @@
     "connect-flash": "*",
     "validator": "*",
     "i18n": "*",
-    "tldjs": "~1.2.0"
+    "tldjs": "~1.2.0",
+    "nodemailer": "*"
   }
 }

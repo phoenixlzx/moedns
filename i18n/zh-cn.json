@@ -103,5 +103,7 @@
     "DUPLICATE_RECORD": "记录已存在",
     "DELETE_RECORD": "删除记录",
     "RECORD_DELETED": "记录删除成功",
-    "RECORD_UPDATED": "记录修改成功"
+    "RECORD_UPDATED": "记录修改成功",
+    "DNS_SERVERS": "DNS 服务器",
+    "STATUS": "状态"
 }

@@ -1,0 +1,105 @@
+<%-include header%>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><%= siteName %></a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/"><%= __('HOME') %></a></li>
+                <% if(user) { %>
+                <li><a href="/domains"><%= __('MY_DOMAINS') %></a></li>
+                <li><a href="/status"><%= __('SERVER_STATUS') %></a></li>
+                <% } %>
+                <li class="active"><a href="/about"><%= __('ABOUT') %></a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <% if(!user) { %>
+                <li><a href="/login"><%= __('LOGIN') %></a></li>
+                <% if(allowReg) { %>
+                <li><a href="/reg"><%= __('REGISTER') %></a></li>
+                <% }} else { %>
+                <li><p class="navbar-text"><%= __('WELCOME') %>,
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= user.name %><b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/domains"><%= __('MY_DOMAINS') %></a></li>
+                        <li><a href="/account"><%= __('MY_ACCOUNT') %></a></li>
+                        <li><a href="/contact"><%= __('FEEDBACK') %></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <form class="navbar-form" action="/logout" method="post">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-danger"><%= __('LOGOUT') %></button>
+                        </div>
+
+                    </form>
+                </li>
+                <% } %>
+            </ul>
+
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
+
+<div class="container">
+
+    <div id="notification">
+        <% if (locals.success) { %>
+        <div class="alert alert-success alert-dismissable fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <%= success %>
+        </div>
+        <% } %>
+        <% if (locals.error) { %>
+        <div class="alert alert-danger alert-dismissable fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <%= error %>
+        </div>
+        <% } %>
+    </div>
+
+
+    <div class="container" style="min-height: 500px;">
+        <div id="about">
+            <h1 style="text-align: center"><%= siteName %><br /><small><%= siteTagline %></small></h1>
+            <hr />
+            <div class="about-inner">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.</p>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.</p>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.</p>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</div><!-- /.container -->
+<%-include footer%>

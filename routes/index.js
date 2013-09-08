@@ -634,6 +634,19 @@ module.exports = function(app) {
         }).connect(53, server);
     });
 
+    /* About page */
+    app.get('/about', function(req, res) {
+        res.render('about', {
+            title: res.__('ABOUT') + ' - ' + config.siteName,
+            siteName: config.siteName,
+            siteTagline: config.siteTagline,
+            allowReg: config.allowReg,
+            user: req.session.user,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+        });
+    });
+
         /*
         var hosts = [['google.com', 80], ['stackoverflow.com', 80], ['google.com', 444]];
         hosts.forEach(function(item) {

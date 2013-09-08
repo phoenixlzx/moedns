@@ -3,19 +3,23 @@
 body {
     padding-top: 70px;
     padding-bottom: 40px;
-    background-size:cover;
+    background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    background-attachment: fixed;
     height: 100%;
 }
 
 div#signin {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.7);
     border-radius: 5px;
     margin: auto;
     max-width: 350px;
 }
 
 div#user {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.7);
     border-radius: 5px;
     margin: auto;
     max-width: 500px;
@@ -79,7 +83,7 @@ div#domain {
     padding: 10px 30px 10px 30px;
     width: 95%;
     min-height: 500px;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.7);
     border-radius: 5px;
 }
 
@@ -129,3 +133,22 @@ div#domain-inner {
     border-color: #d0e3f0;
 }
 
+/* About page */
+
+#about {
+    margin: auto;
+    padding: 20px 40px 40px 40px;
+    position: static;
+    width: 70%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 5px;
+}
+
+#about>.about-inner h1, h2, h3, h4, h5, h6 {
+    text-align: center;
+}
+
+#about>.about-inner img {
+    width: 100%;
+}

@@ -66,7 +66,7 @@
     "ADD_DOMAIN_HERE": "点击这里添加域名",
     "CANCEL": "取消",
     "TYPE_DOMAIN_HERE": "在此输入域名",
-    "ADD_DOMAIN_HELP": "您需要将您的域名服务器改为下列地址才能使用我们的服务",
+    "ADD_DOMAIN_HELP": "您需要将您的域名服务器改为下列地址才能使用我们的服务。请注意：在您成功添加域名后，系统会自动将我们的域名服务器添加到您域名的 NS 记录中。",
     "DOMAIN_NOT_VALID": "您输入的域名不合法",
     "DOMAIN_EXISTS": "域名已存在。请联系管理员以解决此问题。",
     "ADD_DOMAIN_SUCCESS": "域名添加成功",

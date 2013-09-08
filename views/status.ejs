@@ -88,37 +88,40 @@
 
     <div class="container" style="min-height: 500px;">
         <div id="domain">
-            <h2>
-                <%= __('SERVER_STATUS') %>
-            </h2>
-            <table class="table">
-                <tr>
-                    <th>
-                        <%= __('DNS_SERVERS') %>
-                    </th>
-                    <th>
-                        <%= __('STATUS') %>
-                    </th>
-                </tr>
-                <% powerservers.forEach(function(server) { %>
-                <tr>
-                    <td>
-                        <span class="glyphicon glyphicon-tasks"></span>
-                        &nbsp;&nbsp;
-                        <%= server %>
-                    </td>
-                    <td >
-                        <div id="status-<%= server %>">
+            <div id="domain-inner">
+                <h2 style="display: inline-block; ">
+                    <%= __('SERVER_STATUS') %>
+                </h2>
+                <table class="table">
+                    <tr>
+                        <th>
+                            <%= __('DNS_SERVERS') %>
+                        </th>
+                        <th>
+                            <%= __('STATUS') %>
+                        </th>
+                    </tr>
+                    <% powerservers.forEach(function(server) { %>
+                    <tr>
+                        <td>
+                            <span class="glyphicon glyphicon-tasks"></span>
+                            &nbsp;&nbsp;
+                            <%= server %>
+                        </td>
+                        <td >
+                            <div id="status-<%= server %>">
 
-                        </div>
-                        <script type="text/javascript">
-                            loadStatus("<%= server %>");
-                        </script>
-                        <!-- server status goes here -->
-                    </td>
-                </tr>
-                <% }) %>
-            </table>
+                            </div>
+                            <script type="text/javascript">
+                                loadStatus("<%= server %>");
+                            </script>
+                            <!-- server status goes here -->
+                        </td>
+                    </tr>
+                    <% }) %>
+                </table>
+            </div>
+
         </div>
     </div>
 

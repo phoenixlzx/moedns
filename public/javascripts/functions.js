@@ -13,7 +13,7 @@
      '006.jpg',
      '007.jpg'
  ];
- $('body').css({'background-image': 'url(/images/background/' + images[Math.floor(Math.random() * images.length)] + ')'});
+ $('body').css({'background-image': 'url(/images/background/' + images[Math.floor(Math.random() * images.length)] + ')' });
 
 // Remove spaces in an array
 Array.prototype.cleanArray = function(valueToDelete){
@@ -129,26 +129,7 @@ $(document).ready(function() {
     });
 
 
-    /*$("td[id^='status-']").on("load", function() {
-        var server = $(this).attr('id').substring(7);
-        $.ajax({
-            url: 'statusapi/' + server, // $(this).substring($(this).attr('id').indexOf('-'))
-            success: function (data) {
-                switch (data) {
-                    case "0":
-                        $(this).html('<span class="glyphicon glyphicon-ok-sign"></span>&nbsp;&nbsp;<span class="text-success">UP</span>');
-                        break;
-                    case "1":
-                        $(this).html('<span class="glyphicon glyphicon-remove-sign"></span>&nbsp;&nbsp;<span class="text-danger">DOWN</span>');
-                        break;
-                    case "2":
-                        $(this).html('<span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;<span class="text-warning">TIMEDOUT</span>');
-                        break;
-                }
-
-            }
-        })
-    });*/
+    $("div.about-inner").load('static_html/about.html');
 
 });
 

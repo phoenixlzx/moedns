@@ -3,7 +3,7 @@
 <script type="text/javascript">
     // Load server status
     function loadStatus(server) {
-        $.ajaxSetup({timeout:100000});
+        $.ajaxSetup({timeout:6000});
         $.get("statusapi/" + server, function(data, status) {
             // alert(data);
             switch (data) {
@@ -14,7 +14,7 @@
                     $("div[id$='" + server + "']").html('<span class="glyphicon glyphicon-remove-sign"></span>&nbsp;&nbsp;<span class="text-danger">DOWN</span>');
                     break;
                 case "2":
-                    $("div[id$='" + server + "']").html('<span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;<span class="text-warning">TIMEDOUT</span>');
+                    $("div[id$='" + server + "']").html('<span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;<span class="text-warning">TIMEOUT</span>');
                     break;
             }
         });
@@ -94,7 +94,7 @@
                 </h2>
                 <table class="table">
                     <tr>
-                        <th>
+                        <th style="width: 75%;">
                             <%= __('DNS_SERVERS') %>
                         </th>
                         <th>
@@ -103,7 +103,7 @@
                     </tr>
                     <% powerservers.forEach(function(server) { %>
                     <tr>
-                        <td>
+                        <td style="width: 75%;">
                             <span class="glyphicon glyphicon-tasks"></span>
                             &nbsp;&nbsp;
                             <%= server %>

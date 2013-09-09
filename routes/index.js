@@ -616,7 +616,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/statusapi/:server', function(req, res) {
+    app.get('/statusapi/:server', checkLogin, function(req, res) {
         var server = req.params.server,
             status = null,
             sock = new net.Socket();

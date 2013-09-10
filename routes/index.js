@@ -14,7 +14,8 @@ var config = require('../config.js'),
     Record = require('../models/record.js'),
     check = require('validator').check,
     sanitize = require('validator').sanitize,
-    tld = require('tldjs');
+    tld = require('tldjs'),
+    Email = require('email').Email;
     // dns = require('dns');
 
 // function to test a object is empty.
@@ -101,7 +102,7 @@ module.exports = function(app) {
         });
         // check if username exists.
         User.check(newUser.name, newUser.email, function(err, user){
-            console.log(user);
+            // console.log(user);
             if(user) {
                 err = 'USER_EXISTS';
             }
@@ -647,23 +648,64 @@ module.exports = function(app) {
         });
     });
 
-        /*
-        var hosts = [['google.com', 80], ['stackoverflow.com', 80], ['google.com', 444]];
-        hosts.forEach(function(item) {
-            var sock = new net.Socket();
-            sock.setTimeout(2500);
-            sock.on('connect', function() {
-                console.log(item[0]+':'+item[1]+' is up.');
-                sock.destroy();
-            }).on('error', function(e) {
-                    console.log(item[0]+':'+item[1]+' is down: ' + e.message);
-                }).on('timeout', function(e) {
-                    console.log(item[0]+':'+item[1]+' is down: timeout');
-                }).connect(item[1], item[0]);
-        });
-        */
 
-    /* Default 404 page
+    /*
+    * Contact page
+    * */
+    app.get('/contact', function(req, res) {
+        res.render('contact', {
+            title: res.__('CONTACT') + ' - ' + config.siteName,
+            siteName: config.siteName,
+            siteTagline: config.siteTagline,
+            allowReg: config.allowReg,
+            user: req.session.user,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+        });
+    });
+
+    app.post('/contact', function(req, res) {
+        // Get user IP address.
+        var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+        var from = req.body.email || req.session.user.email,
+            to = config.adminMail,
+            replyTo = config.adminMail,
+            subject = req.body.subject + " - " + config.siteName,
+            body = req.body.message;
+
+        try {
+            check(from, 'EMAIL_INVALID').isEmail()
+        } catch (e) {
+            req.flash('error', res.__(e.message));
+            return res.redirect('/contact');
+        }
+
+        var msg = new Email({
+            from: from,
+            to: to,
+            replyTo: replyTo,
+            subject: subject,
+            body: body
+        });
+
+        // console.log(ip);
+        // console.log(sender);
+        // console.log(receiver);
+        // console.log(subject);
+        // console.log(body);
+
+        msg.send(function(err) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/contact');
+            }
+            req.flash('success', res.__('MSG_SENT'));
+            res.redirect('/');
+        });
+    });
+
+     /* Default 404 page
     app.all('/', function(req, res) {
         res.send(404, "The page cannot be found. :-(");
     });

@@ -105,5 +105,11 @@
     "RECORD_DELETED": "记录删除成功",
     "RECORD_UPDATED": "记录修改成功",
     "DNS_SERVERS": "DNS 服务器",
-    "STATUS": "状态"
+    "STATUS": "状态",
+    "MSG_SENT": "消息发送成功",
+    "CONTACT": "联系我们",
+    "CONTACT_HELP": "如果您希望和我们取得联系，请填写下面的表格。",
+    "SUBJECT": "主题",
+    "CONTENT": "内容",
+    "SEND": "发送"
 }

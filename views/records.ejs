@@ -161,6 +161,7 @@
                             <label for="record-type" class="control-label col-lg-2"><%= __('RECORD_TYPE') %></label>
                             <div class="col-lg-4">
                                 <select class="form-control col-lg-2" id="record-type" name="type">
+                                    <option value="default" disabled="disabled" selected><%= __('PLEASE_SELECT') %></option>
                                     <option value="A">A</option>
                                     <option value="AAAA">AAAA</option>
                                     <option value="CNAME">CNAME</option>
@@ -171,32 +172,11 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="record-name" class="control-label col-lg-2"><%= __('RECORD') %></label>
-                            <div class="col-lg-8">
-                                <input type="text" class="form-control" id="record-name" name="name" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="record-prio" class="col-lg-2 control-label"><%= __('RECORD_PRIORITY') %></label>
-                            <div class="col-lg-3">
-                                <input type="text" class="form-control" id="record-prio" name="prio" placeholder="" disabled>
-                            </div>
-                            <label for="record-ttl" class="col-lg-2 control-label"><%= __('TTL') %></label>
-                            <div class="col-lg-3">
-                                <input type="text" class="form-control" id="record-ttl" name="ttl" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="record-content" class="control-label col-lg-2"><%= __('RECORD_CONTENT') %></label>
-                            <div class="col-lg-8">
-                                <input type="text" class="form-control" id="record-content" name="content" placeholder="">
-                            </div>
-                        </div>
+                        <div id="record-data"></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('CANCEL') %></button>
-                        <button type="submit" class="btn btn-primary"><%= __('ADD_RECORD') %></button>
+                        <button type="submit" class="btn btn-primary" id="submit"><%= __('ADD_RECORD') %></button>
                     </div>
                 </form>
             </div><!-- /.modal-content -->

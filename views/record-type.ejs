@@ -1,0 +1,167 @@
+<div id="A">
+    <div class="form-group">
+        <label for="record-name" class="control-label col-lg-2"><%= __('RECORD') %></label>
+        <div class="col-lg-8">
+            <input type="text" class="form-control" id="record-name" name="name" placeholder="www">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="record-ttl" class="col-lg-2 control-label"><%= __('TTL') %></label>
+        <div class="col-lg-3">
+            <input type="text" class="form-control" id="record-ttl" name="ttl" placeholder="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="record-content" class="control-label col-lg-2"><%= __('TARGET') %></label>
+        <div class="col-lg-8">
+            <input type="text" class="form-control" id="record-content" name="content" placeholder="127.0.0.1">
+        </div>
+    </div>
+</div>
+<div id="AAAA">
+    <div class="form-group">
+        <label for="record-name" class="control-label col-lg-2"><%= __('RECORD') %></label>
+        <div class="col-lg-8">
+            <input type="text" class="form-control" id="record-name" name="name" placeholder="www">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="record-ttl" class="col-lg-2 control-label"><%= __('TTL') %></label>
+        <div class="col-lg-3">
+            <input type="text" class="form-control" id="record-ttl" name="ttl" placeholder="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="record-content" class="control-label col-lg-2"><%= __('TARGET') %></label>
+        <div class="col-lg-8">
+            <input type="text" class="form-control" id="record-content" name="content" placeholder="::1">
+        </div>
+    </div>
+</div>
+<div id="CNAME">
+    <div class="form-group">
+        <label for="record-name" class="control-label col-lg-2"><%= __('RECORD') %></label>
+        <div class="col-lg-8">
+            <input type="text" class="form-control" id="record-name" name="name" placeholder="www">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="record-ttl" class="col-lg-2 control-label"><%= __('TTL') %></label>
+        <div class="col-lg-3">
+            <input type="text" class="form-control" id="record-ttl" name="ttl" placeholder="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="record-content" class="control-label col-lg-2"><%= __('TARGET') %></label>
+        <div class="col-lg-8">
+            <input type="text" class="form-control" id="record-content" name="content" placeholder="">
+        </div>
+    </div>
+</div>
+<div id="MX">
+    <div class="form-group">
+        <label for="record-name" class="control-label col-lg-2"><%= __('RECORD') %></label>
+        <div class="col-lg-8">
+            <input type="text" class="form-control" id="record-name" name="name" placeholder="@">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="record-prio" class="col-lg-2 control-label"><%= __('RECORD_PRIORITY') %></label>
+        <div class="col-lg-3">
+            <input type="text" class="form-control" id="record-prio" name="prio" placeholder="">
+        </div>
+        <label for="record-ttl" class="col-lg-2 control-label"><%= __('TTL') %></label>
+        <div class="col-lg-3">
+            <input type="text" class="form-control" id="record-ttl" name="ttl" placeholder="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="record-content" class="control-label col-lg-2"><%= __('RECORD_CONTENT') %></label>
+        <div class="col-lg-8">
+            <input type="text" class="form-control" id="record-content" name="content" placeholder="">
+        </div>
+    </div>
+</div>
+<div id="TXT">
+    <div class="form-group">
+        <label for="record-name" class="control-label col-lg-2"><%= __('RECORD') %></label>
+        <div class="col-lg-8">
+            <input type="text" class="form-control" id="record-name" name="name" placeholder="service">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="record-ttl" class="col-lg-2 control-label"><%= __('TTL') %></label>
+        <div class="col-lg-3">
+            <input type="text" class="form-control" id="record-ttl" name="ttl" placeholder="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="record-content" class="control-label col-lg-2"><%= __('RECORD_CONTENT') %></label>
+        <div class="col-lg-8">
+            <input type="text" class="form-control" id="record-content" name="content" placeholder="Text value...">
+        </div>
+    </div>
+</div>
+<div id="SRV">
+    <div class="form-group">
+        <label for="record-service" class="control-label col-lg-2"><%= __('SERVICE_NAME') %></label>
+        <div class="col-lg-3">
+            <input type="text" class="form-control" id="record-service" name="service" placeholder="">
+        </div>
+        <label for="record-protocol" class="control-label col-lg-2"><%= __('PROTOCOL') %></label>
+        <div class="col-lg-3">
+            <select name="protocol" id="record-protocol" class="form-control">
+                <option value="tcp">TCP</option>
+                <option value="udp">UDP</option>
+                <option value="tls">TLS</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="record-ttl" class="col-lg-2 control-label"><%= __('TTL') %></label>
+        <div class="col-lg-3">
+            <input type="text" class="form-control" id="record-ttl" name="ttl" placeholder="">
+        </div>
+        <label for="record-prio" class="col-lg-2 control-label"><%= __('RECORD_PRIORITY') %></label>
+        <div class="col-lg-3">
+            <input type="text" class="form-control" id="record-prio" name="prio" placeholder="">
+        </div>
+    </div>
+    <div class="form-group">
+
+        <label for="record-weight" class="col-lg-2 control-label"><%= __('WEIGHT') %></label>
+        <div class="col-lg-3">
+            <input type="text" class="form-control" id="record-weight" name="weight" placeholder="">
+        </div>
+        <label for="record-ttl" class="col-lg-2 control-label"><%= __('PORT') %></label>
+        <div class="col-lg-3">
+            <input type="text" class="form-control" id="record-portl" name="port" placeholder="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="record-content" class="control-label col-lg-2"><%= __('TARGET') %></label>
+        <div class="col-lg-8">
+            <input type="text" class="form-control" id="record-content" name="content" placeholder="">
+        </div>
+    </div>
+</div>
+<div id="NS">
+    <div class="form-group">
+        <label for="record-name" class="control-label col-lg-2"><%= __('RECORD') %></label>
+        <div class="col-lg-8">
+            <input type="text" class="form-control" id="record-name" name="name" placeholder="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="record-ttl" class="col-lg-2 control-label"><%= __('TTL') %></label>
+        <div class="col-lg-3">
+            <input type="text" class="form-control" id="record-ttl" name="ttl" placeholder="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="record-content" class="control-label col-lg-2"><%= __('TARGET') %></label>
+        <div class="col-lg-8">
+            <input type="text" class="form-control" id="record-content" name="content" placeholder="">
+        </div>
+    </div>
+</div>

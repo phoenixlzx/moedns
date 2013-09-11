@@ -356,12 +356,57 @@ module.exports = function(app) {
         var type = req.body.type,
             name = req.body.name + '.' + req.params.domain,
             ttl = req.body.ttl,
-            prio = req.body.prio,
+            prio = req.body.prio || null,
             content = req.body.content;
+
+        switch (type) {
+            case "A":
+                check(content, 'NEED_IPV4').isIPv4();
+                prio = null;
+                break;
+            case "AAAA":
+                check(content, 'NEED_IPV6').isIPv6();
+                prio = null;
+                break;
+            case ("CNAME" || "NS"):
+                if (tld.isValid(content) && tld.tldExists(content)) {
+                    prio = null;
+                } else {
+                    throw new Error("VALUE_ERROR");
+                }
+                break;
+            case "MX":
+                if (tld.isValid(content) && tld.tldExists(content)) {
+                    //  Better DNS check module needed.
+                    //    dns.resolve(content, function(err, addresses) {
+                    //        console.log(addresses);
+                    //        if (addresses === undefined) {
+                    //            throw new Error("NEED_A_RECORD");
+                    //        } else {
+                    //
+                    //        }
+                    //    });
+                    //
+                } else {
+                    throw new Error("VALUE_ERROR");
+                }
+                check(prio, 'PRIO_ERROR').isDecimal().max(100).min(1);
+                break;
+            case "SRV":
+                // _service._proto.name. TTL class SRV priority weight port target.
+                name = "_" + req.body.service + "._" + req.body.protocol + "." + req.params.domain;
+                content = req.body.weight + " " + req.body.port + " " + req.body.content;
+                break;
+            case "TXT":
+                prio = null;
+                break;
+            default:
+                throw new Error("TYPE_ERROR");
+        }
 
         // TODO Check user inputs for record validity
         // Better RegEx required.
-        try {
+/*        try {
             check(type, 'TYPE_ERROR').isIn([
                 "A",
                 "AAAA",
@@ -390,16 +435,16 @@ module.exports = function(app) {
                     break;
                 case "MX":
                     if (tld.isValid(content) && tld.tldExists(content)) {
-                    /*  Better DNS check module needed.
-                        dns.resolve(content, function(err, addresses) {
-                            console.log(addresses);
-                            if (addresses === undefined) {
-                                throw new Error("NEED_A_RECORD");
-                            } else {
-
-                            }
-                        });
-                    */
+                    //  Better DNS check module needed.
+                    //    dns.resolve(content, function(err, addresses) {
+                    //        console.log(addresses);
+                    //        if (addresses === undefined) {
+                    //            throw new Error("NEED_A_RECORD");
+                    //        } else {
+                    //
+                    //        }
+                    //    });
+                    //
                     } else {
                         throw new Error("VALUE_ERROR");
                     }
@@ -419,6 +464,7 @@ module.exports = function(app) {
             req.flash('error', res.__(e.message));
             return res.redirect('/domain/' + req.params.domain);
         }
+*/
 
         Domain.checkOwner(req.params.domain, req.session.user.name, function(err, doc) {
             // console.log(doc);
@@ -472,6 +518,10 @@ module.exports = function(app) {
                 });
             }
         });
+    });
+
+    app.get('/addrecordapi', checkLogin, function(req, res) {
+        res.render('record-type');
     });
 
     // Remove a record
@@ -567,7 +617,6 @@ module.exports = function(app) {
                             check(prio, 'PRIO_ERROR').isDecimal().max(100).min(1);
                             break;
                         case "SRV":
-                            prio = null;
                             break;
                         case "TXT":
                             prio = null;
@@ -668,11 +717,17 @@ module.exports = function(app) {
         // Get user IP address.
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-        var from = req.body.email || req.session.user.email,
+        var from = config.serviceMail,
             to = config.adminMail,
-            replyTo = config.adminMail,
+            replyTo = req.body.email || req.session.user.email,
             subject = req.body.subject + " - " + config.siteName,
-            body = req.body.message;
+            body = req.body.message + '\n\n' + res.__('IP_ADDR')  + ip;
+
+        // console.log(ip);
+        // console.log(from);
+        // console.log(to);
+        // console.log(subject);
+        // console.log(body);
 
         try {
             check(from, 'EMAIL_INVALID').isEmail()
@@ -689,14 +744,10 @@ module.exports = function(app) {
             body: body
         });
 
-        // console.log(ip);
-        // console.log(sender);
-        // console.log(receiver);
-        // console.log(subject);
-        // console.log(body);
 
         msg.send(function(err) {
             if (err) {
+                console.log(err);
                 req.flash('error', err);
                 return res.redirect('/contact');
             }

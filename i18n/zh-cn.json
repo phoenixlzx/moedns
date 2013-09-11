@@ -111,5 +111,12 @@
     "CONTACT_HELP": "如果您希望和我们取得联系，请填写下面的表格。",
     "SUBJECT": "主题",
     "CONTENT": "内容",
-    "SEND": "发送"
+    "SEND": "发送",
+    "IP_ADDR": "IP 地址: ",
+    "TARGET": "指向",
+    "SERVICE_NAME": "服务名",
+    "PROTOCOL": "协议",
+    "WEIGHT": "权重",
+    "PORT": "端口",
+    "PLEASE_SELECT": "请选择一项..."
 }

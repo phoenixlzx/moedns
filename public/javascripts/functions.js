@@ -73,7 +73,7 @@ $(document).ready(function() {
 
     // Enable 'priority' if type is MX
     $("#record-type").change(function() {
-        if ($(this).val() == 'MX') {
+        if ($(this).val() == 'MX' || $(this).val() == 'SRV') {
             $("#record-prio").prop("disabled", false);
         } else {
             $("#record-prio").prop("disabled", true);
@@ -130,6 +130,18 @@ $(document).ready(function() {
 
 
     $("div.about-inner").load('static_html/about.html');
+
+    // Record form show by type
+    $("button#submit").prop("disabled", true);
+    $("#record-type").change(function() {
+        // alert($(this).val());
+        var type = $(this).val();
+        $("div#record-data").load('/addrecordapi #' + type);
+        // $("div#record-data>div[id!='+type+']").attr("class", "hide");
+        // $("div#" + type).attr("class", "").slideDown("fast");
+        $("button#submit").prop("disabled", false);
+
+    });
 
 });
 

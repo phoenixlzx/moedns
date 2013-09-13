@@ -903,29 +903,31 @@ module.exports = function(app) {
                        return res.redirect('/admin/userlist');
                    }
                    // console.log(domains);
-                    async.eachSeries(domains, function(domain, callback) {
-                        console.log(domain);
-                        Domain.remove(domain.id, req.body.username, function(err) {
-                            if (err) {
-                                req.flash('error', err);
-                                return res.redirect('/admin/userlist');
-                            }
-                            callback (null);
-                        });
-                    }, function(err) {
+                    User.delete(req.body.username, function(err) {
                         if (err) {
                             req.flash('error', err);
                             return res.redirect('/admin/userlist');
                         }
-                        User.delete(req.body.username, function(err) {
+                        async.eachSeries(domains, function(domain, callback) {
+                            console.log(domain);
+                            Domain.remove(domain.id, req.body.username, function(err) {
+                                if (err) {
+                                    req.flash('error', err);
+                                    return res.redirect('/admin/userlist');
+                                }
+                                callback (null);
+                            });
+                        }, function(err) {
                             if (err) {
                                 req.flash('error', err);
                                 return res.redirect('/admin/userlist');
                             }
-                            req.flash('success', res.__('DELETE_USER_SUCCESS'));
-                            res.redirect('/admin/userlist');
+                            console.log('executed');
                         });
+                        req.flash('success', res.__('DELETE_USER_SUCCESS'));
+                        res.redirect('/admin/userlist');
                     });
+
                 });
             }
         });

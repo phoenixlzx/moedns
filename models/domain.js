@@ -188,6 +188,7 @@ Domain.remove = function(domainId, user, callback) {
                     mongoclient.close();
                     return callback(err);
                 }
+                mongoclient.close();
                 // console.log("executed");
                 // delete from MySQL
                 mysql.getConnection(function(err, myConnection) {

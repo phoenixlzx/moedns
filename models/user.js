@@ -58,6 +58,7 @@ User.get = function(name, callback) {
             collection.findOne({
                 name: name
             }, function(err, doc) {
+                // console.log(doc);
                 mongoclient.close();
                 if(doc) {
                     var user = new User(doc);
@@ -84,8 +85,8 @@ User.check = function(name, email, callback) {
                 return callback(err);
             }
             collection.findOne({ $or : [
-                {name: new RegExp('^' + name)},
-                {email: new RegExp('^' + email)}
+                {name: name},
+                {email: email}
             ]}, function(err, doc) {
                 mongoclient.close();
                 if(doc) {

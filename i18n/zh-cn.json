@@ -118,5 +118,19 @@
     "PROTOCOL": "协议",
     "WEIGHT": "权重",
     "PORT": "端口",
-    "PLEASE_SELECT": "请选择一项..."
+    "PLEASE_SELECT": "请选择一项...",
+    "ADMIN_INDEX": "管理首页",
+    "ADMIN_DASHBOARD": "管理面板",
+    "ROLE": "身份",
+    "USERS_LIST": "用户列表",
+    "USERS": "用户数量",
+    "DOMAINS": "域名数量",
+    "RECORDS": "记录数量",
+    "SYS_LOAD": "系统负载",
+    "ADD_USER": "增加用户",
+    "EDIT_USER": "编辑用户",
+    "DELETE_USER": "删除用户",
+    "USER_DELETION_WARNING": "您将要删除以下用户，这将删除该用户所有的域名和记录信息。您确定删除下列用户吗？",
+    "ADD_USER_SUCCESS": "添加用户成功",
+    "DELETE_USER_SUCCESS": "删除用户成功"
 }

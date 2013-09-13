@@ -4,7 +4,7 @@
 * */
 
 var config = require('../config.js'),
-    mongodb = require('./mongodb.js'),
+    mongoclient = require('./mongodb.js'),
     mysql = require('./mysql.js');
 
 function Domain(domain) {
@@ -50,20 +50,21 @@ Domain.prototype.save = function(callback) {
 
             // console.log(domain);
             // insert to MongoDB
-            mongodb.open(function(err, db) {
+            mongoclient.open(function(err, mongoclient) {
                 if(err) {
                     return callback(err);
                 }
+                var db = mongoclient.db(config.mongodb);
                 db.collection('domains', function(err, collection) {
                     if(err) {
-                        mongodb.close;
+                        mongoclient.close;
                         return callback(err);
                     }
                     // Make sure domain has 'id'
                     console.log(domain.id);
                     // insert new domain to collection.
                     collection.insert(domain, {safe: true}, function(err, domain) {
-                        mongodb.close();
+                        mongoclient.close();
                         callback(err, domain); // return user data if success.
                     });
                 });
@@ -74,26 +75,27 @@ Domain.prototype.save = function(callback) {
 
 Domain.check = function(name, callback) {
     //open database.
-    mongodb.open(function(err, db) {
+    mongoclient.open(function(err, mongoclient) {
         if(err) {
             return callback(err);
         }
+        var db = mongoclient.db(config.mongodb);
         // read users collection.
         db.collection('domains', function(err, collection) {
             if(err) {
-                mongodb.close();
+                mongoclient.close();
                 return callback(err);
             }
             collection.findOne({
                 "name": name
             }, function(err, doc) {
                 if(doc) {
-                    mongodb.close();
+                    mongoclient.close();
                     var domain = new Domain(doc);
                     // console.log(user);
                     callback(err, domain); // query success, return user data.
                 } else {
-                    mongodb.close();
+                    mongoclient.close();
                     callback(err, null); // query failed, return null.
                 }
             });
@@ -103,14 +105,15 @@ Domain.check = function(name, callback) {
 
 Domain.checkOwner = function(domain, user, callback) {
     //open database.
-    mongodb.open(function(err, db) {
+    mongoclient.open(function(err, mongoclient) {
         if(err) {
             return callback(err);
         }
+        var db = mongoclient.db(config.mongodb);
         // read users collection.
         db.collection('domains', function(err, collection) {
             if(err) {
-                mongodb.close();
+                mongoclient.close();
                 return callback(err);
             }
             collection.findOne({
@@ -118,12 +121,12 @@ Domain.checkOwner = function(domain, user, callback) {
                 "belongs": user
             }, function(err, doc) {
                 if(doc) {
-                    mongodb.close();
+                    mongoclient.close();
                     var domain = new Domain(doc);
                     // console.log(user);
                     callback(err, domain); // query success, return user data.
                 } else {
-                    mongodb.close();
+                    mongoclient.close();
                     callback(err, null); // query failed, return null.
                 }
             });
@@ -132,13 +135,14 @@ Domain.checkOwner = function(domain, user, callback) {
 };
 
 Domain.getList = function(username, callback) {
-    mongodb.open(function (err, db) {
+    mongoclient.open(function (err, mongoclient) {
         if (err) {
             return callback(err);
         }
+        var db = mongoclient.db(config.mongodb);
         db.collection('domains', function(err, collection) {
             if (err) {
-                mongodb.close();
+                mongoclient.close();
                 return callback(err);
             }
             // return array containing domain name only
@@ -148,10 +152,10 @@ Domain.getList = function(username, callback) {
                 "id": 1,
                 "name": 1
             }).toArray(function(err, docs) {
-                    mongodb.close();
                     if (err) {
                         callback(err, null);
                     }
+                    mongoclient.close();
                     callback(null, docs);
             });
         });
@@ -162,16 +166,17 @@ Domain.remove = function(domainId, user, callback) {
     // console.log(domainId);
     // console.log(user);
     // Delete from mongodb first
-    mongodb.open(function(err, db) {
+    mongoclient.open(function(err, mongoclient) {
         // console.log(err);
         if(err) {
             return callback(err);
         }
+        var db = mongoclient.db(config.mongodb);
         // read users collection.
         db.collection('domains', function(err, collection) {
             // console.log(err);
             if(err) {
-                mongodb.close();
+                mongoclient.close();
                 return callback(err);
             }
             collection.remove({
@@ -180,10 +185,9 @@ Domain.remove = function(domainId, user, callback) {
             }, true, function(err) {
                 // console.log(err);
                 if(err) {
-                    mongodb.close();
+                    mongoclient.close();
                     return callback(err);
                 }
-                mongodb.close();
                 // console.log("executed");
                 // delete from MySQL
                 mysql.getConnection(function(err, myConnection) {

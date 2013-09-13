@@ -81,7 +81,7 @@ div#notification {
 div#domain {
     margin: auto;
     padding: 10px 30px 10px 30px;
-    width: 95%;
+    width: 85%;
     min-height: 500px;
     background: rgba(255, 255, 255, 0.7);
     border-radius: 5px;
@@ -168,4 +168,19 @@ div#domain-inner {
 #contact-inner {
     margin: auto;
     padding: 10px 40px 10px 0;
+}
+
+
+/* Admin styles */
+#admin {
+    margin: auto;
+    padding: 20px 40px 40px 40px;
+    width: 70%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 5px;
+}
+
+.stats {
+    text-align: center;
 }

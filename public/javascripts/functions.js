@@ -128,20 +128,52 @@ $(document).ready(function() {
         $("#recordContent-static").text(recordArray[3].slice(0, recordArray[3].lastIndexOf('.')));
     });
 
+    // Get data from a single tr when editing a user
+    $("a[id^='user-edit']").click(function() {
+        var line = 'user-row' + $(this).attr('id').substring($(this).attr('id').lastIndexOf('-'));
+        var userData = $("tr#" + line).children("td").map(function() {
+            return $(this).text();
+        }).get();
+        var userArray = jQuery.makeArray(userData);
+        // alert(userArray);
+        // Set values for edit modal
 
-    $("div.about-inner").load('static_html/about.html');
+        $("#user-name-edit").val(userArray[0]);
+        $("#user-email-edit").val(userArray[1]);
+        $("#user-role-edit").val(userArray[2]);
+    });
+
+    // Get data from a single tr when deleting a user
+    $("a[id^='user-delete']").click(function() {
+        var line = 'user-row' + $(this).attr('id').substring($(this).attr('id').lastIndexOf('-'));
+        var userData = $("tr#" + line).children("td").map(function() {
+            return $(this).text();
+        }).get();
+        var userArray = jQuery.makeArray(userData);
+        // alert(userArray);
+        // Set values for edit modal
+        $("input#username").val(userArray[0]);
+        $("#username-static").text(userArray[0]);
+        $("#email-static").text(userArray[1])
+        $("#role-static").text(userArray[2]);
+    });
+
+
+    // $("div.about-inner").load('static_html/about.html');
 
     // Record form show by type
-    $("button#submit").prop("disabled", true);
+    $("button#submit-record").prop("disabled", true);
     $("#record-type").change(function() {
         // alert($(this).val());
         var type = $(this).val();
         $("div#record-data").load('/addrecordapi #' + type);
         // $("div#record-data>div[id!='+type+']").attr("class", "hide");
         // $("div#" + type).attr("class", "").slideDown("fast");
-        $("button#submit").prop("disabled", false);
+        $("button#submit-record").prop("disabled", false);
 
     });
+
+
 
 });
 

@@ -1,0 +1,267 @@
+<%-include header%>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><%= siteName %></a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/"><%= __('HOME') %></a></li>
+                <% if(user) { %>
+                <li><a href="/domains"><%= __('MY_DOMAINS') %></a></li>
+                <li><a href="/status"><%= __('SERVER_STATUS') %></a></li>
+                <% } %>
+                <li><a href="/about"><%= __('ABOUT') %></a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <% if(!user) { %>
+                <li><a href="/login"><%= __('LOGIN') %></a></li>
+                <% if(allowReg) { %>
+                <li><a href="/reg"><%= __('REGISTER') %></a></li>
+                <% }} else { %>
+                <li><p class="navbar-text"><%= __('WELCOME') %>,
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= user.name %><b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/domains"><%= __('MY_DOMAINS') %></a></li>
+                        <li><a href="/account"><%= __('MY_ACCOUNT') %></a></li>
+                        <li><a href="/contact"><%= __('FEEDBACK') %></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <form class="navbar-form" action="/logout" method="post">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-danger"><%= __('LOGOUT') %></button>
+                        </div>
+
+                    </form>
+                </li>
+                <% } %>
+            </ul>
+
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
+
+<div class="container">
+
+    <div id="notification">
+        <% if (locals.success) { %>
+        <div class="alert alert-success alert-dismissable fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <%= success %>
+        </div>
+        <% } %>
+        <% if (locals.error) { %>
+        <div class="alert alert-danger alert-dismissable fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <%= error %>
+        </div>
+        <% } %>
+    </div>
+
+
+    <div class="container">
+        <div id="admin">
+            <div class="row">
+                <h2 style="display: inline-block; padding-left: 20px;"><a href="/admin"><%= __('ADMIN_DASHBOARD') %></a>:&nbsp;<a
+                        href="/admin/userlist"><%= __('USERS_LIST') %></a></h2>
+                &nbsp;&nbsp;
+                <a type="button" data-toggle="modal" href="#addUser" class="btn btn-success" style="vertical-align: 15%;">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    &nbsp;<%= __('ADD_USER') %>
+                </a>
+            </div>
+            <div>
+                <table class="table table-stripped">
+                    <tr>
+                        <th><%= __('USERNAME') %></th>
+                        <th><%= __('EMAIL') %></th>
+                        <th><%= __('ROLE')%></th>
+                        <th><%= __('ACTION') %></th>
+                    </tr>
+                    <% users.forEach(function(userData) { %>
+                    <tr id="user-row-<%= userData.name %>">
+                        <td><%= userData.name %></td>
+                        <td><%= userData.email %></td>
+                        <td><%= userData.role %></td>
+                        <td>
+                            <div>
+                                <a type="button" class="btn btn-default btn-xs" data-toggle="modal" href="#editUser" id="user-edit-<%= userData.name %>">
+                                    <%= __('EDIT') %>
+                                </a>
+                                <a type="button" class="btn btn-danger btn-xs" data-toggle="modal" href="#deleteUser" id="user-delete-<%= userData.name %>">
+                                    <%= __('DELETE') %>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </table>
+                <%-include pagination%>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add user modal -->
+    <div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><%= __('ADD_USER') %></h4>
+                </div>
+                <form action="/admin/adduser" class="form form-horizontal" role="form" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="username" class="col-lg-3 control-label"><%= __('USERNAME') %></label>
+                            <div class="col-lg-8">
+                                <input type="text" name="username" class="form-control" id="username" placeholder="<%= __('USERNAME') %>" autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-lg-3 control-label"><%= __('EMAIL') %></label>
+                            <div class="col-lg-8">
+                                <input type="email" name="email" class="form-control" id="email" placeholder="<%= __('EMAIL') %>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-lg-3 control-label"><%= __('PASSWORD') %></label>
+                            <div class="col-lg-8">
+                                <input type="password" name="password" class="form-control" id="password" placeholder="<%= __('PASSWORD') %>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password-repeat" class="col-lg-3 control-label"><%= __('REPEAT_PASSWORD') %></label>
+                            <div class="col-lg-8">
+                                <input type="password" name="password-repeat" class="form-control" id="password-repeat" placeholder="<%= __('REPEAT_PASSWORD') %>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="role" class="col-lg-3 control-label"><%= __('ROLE') %></label>
+                            <div class="col-lg-3">
+                                <select class="form-control" id="role" name="role">
+                                    <option value="user" selected>user</option>
+                                    <option value="admin">admin</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('CANCEL') %></button>
+                        <button type="submit" class="btn btn-primary" id="submit"><%= __('ADD_USER') %></button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Edit user modal -->
+    <div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><%= __('EDIT_USER') %></h4>
+                </div>
+                <form action="/admin/edituser" class="form form-horizontal" role="form" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="user-name-edit" class="col-lg-3 control-label"><%= __('USERNAME') %></label>
+                            <div class="col-lg-8">
+                                <input type="text" name="username" class="form-control" id="user-name-edit" autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="user-email-edit" class="col-lg-3 control-label"><%= __('EMAIL') %></label>
+                            <div class="col-lg-8">
+                                <input type="email" name="email" class="form-control" id="user-email-edit" placeholder="<%= __('EMAIL') %>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-lg-3 control-label"><%= __('PASSWORD') %></label>
+                            <div class="col-lg-8">
+                                <input type="password" name="password" class="form-control" id="password" placeholder="<%= __('PASSWORD') %>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password-repeat" class="col-lg-3 control-label"><%= __('REPEAT_PASSWORD') %></label>
+                            <div class="col-lg-8">
+                                <input type="password" name="password-repeat" class="form-control" id="password-repeat" placeholder="<%= __('REPEAT_PASSWORD') %>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="role" class="col-lg-3 control-label"><%= __('ROLE') %></label>
+                            <div class="col-lg-3">
+                                <select class="form-control" id="user-role-edit" name="role">
+                                    <option value="user" selected>user</option>
+                                    <option value="admin">admin</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('CANCEL') %></button>
+                        <button type="submit" class="btn btn-primary" id="submit"><%= __('EDIT_USER') %></button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Delete user modal -->
+    <div class="modal fade" id="deleteUser" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><%= __('DELETE_USER') %></h4>
+                </div>
+                <form action="/admin/deleteuser" class="form form-horizontal" role="form" method="post">
+                    <div class="modal-body">
+                        <div class="callout callout-danger">
+                            <p>
+                                <%= __('USER_DELETION_WARNING') %>
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="username-static" class="col-lg-2 control-label"><%= __('USERNAME') %></label>
+                            <div class="col-lg-4">
+                                <input class="form-control" type="text" id="username" name="username" style="display: none;"/>
+                                <p class="form-control-static" id="username-static">
+                                    <!-- user.name -->
+                                </p>
+                            </div>
+                            <label for="email-static" class="col-lg-2 control-label"><%= __('EMAIL') %></label>
+                            <div class="col-lg-4">
+                                <p class="form-control-static" id="email-static">
+                                    <!-- user.email -->
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="role-static" class="col-lg-2 control-label"><%= __('ROLE') %></label>
+                            <div class="col-lg-8">
+                                <p class="form-control-static" id="role-static">
+                                    <!-- user.role -->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('CANCEL') %></button>
+                        <button type="submit" class="btn btn-danger"><%= __('DELETE_USER') %></button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+</div><!-- /.container -->
+<%-include footer%>

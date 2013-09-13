@@ -8,6 +8,7 @@
 var config = require('../config.js'),
     crypto = require('crypto'),
     net = require('net'),
+    async = require('async'),
     User = require('../models/user.js'),
     Admin = require('../models/admin.js'),
     Domain = require('../models/domain.js'),
@@ -756,24 +757,195 @@ module.exports = function(app) {
         });
     });
 
-     /* Default 404 page
-    app.all('/', function(req, res) {
-        res.send(404, "The page cannot be found. :-(");
+    /*
+    * Admin routes
+    * */
+
+    // Admin dashboard
+    app.get('/admin', checkLogin, function(req, res) {
+        User.check(req.session.user.name, req.session.user.email, function(err, user) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/');
+            }
+            if(user.role != 'admin') {
+                req.flash('error', res.__('NO_PERMISSION'));
+                return res.redirect('/');
+            } else {
+                Admin.stats(function(err, stats) {
+                    if (err) {
+                        req.flash('error', err);
+                    }
+                    res.render('admin', {
+                        siteName: config.siteName,
+                        siteTagline: config.siteTagline,
+                        title: res.__('ADMIN_INDEX') + ' - ' + config.siteName,
+                        allowReg: config.allowReg,
+                        user: req.session.user,
+                        stats: stats,
+                        success: req.flash('success').toString(),
+                        error: req.flash('error').toString()
+                    });
+                });
+            }
+        });
     });
-     */
+
+     // Get users list
+    app.get('/admin/userlist', checkLogin, function(req, res) {
+        var page = req.query.p?parseInt(req.query.p):1,
+            limit = req.query.limit?parseInt(req.query.limit):50;
+        // Check user has permission to access admin dashbord.
+        User.check(req.session.user.name, req.session.user.email, function(err, user) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/');
+            }
+            if(user.role != 'admin') {
+                req.flash('error', res.__('NO_PERMISSION'));
+                return res.redirect('/');
+            } else {
+                Admin.userlist(page, limit, function(err, users) {
+                    if(err) {
+                        users = [];
+                        req.flash('error', err);
+                    }
+                    res.render('userlist', {
+                        siteName: config.siteName,
+                        siteTagline: config.siteTagline,
+                        title: res.__('USERS_LIST') + ' - ' + config.siteName,
+                        allowReg: config.allowReg,
+                        user: req.session.user,
+                        users: users,
+                        page: page,
+                        success: req.flash('success').toString(),
+                        error: req.flash('error').toString()
+                    });
+                });
+            }
+        });
+    });
+
+    app.post('/admin/adduser', checkLogin, function(req, res) {
+        User.check(req.session.user.name, req.session.user.email, function(err, user) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/');
+            }
+            if(user.role != 'admin') {
+                req.flash('error', res.__('NO_PERMISSION'));
+                return res.redirect('/');
+            } else {
+                var name = req.body.username,
+                    mail = req.body.email,
+                    password = req.body.password,
+                    repeatPassword = req.body['password-repeat'],
+                    role = req.body.role;
+
+                try {
+                    check(name, 'USERNAME_EMPTY').notEmpty();
+                    check(name, 'USERNAME_ALPHANUMERIC').isAlphanumeric();
+                    check(password, 'PASSWORD_EMPTY').notEmpty();
+                    check(repeatPassword, 'PASSWORD_NOT_EQUAL').equals(password);
+                    check(mail, 'EMAIL_INVALID').len(4, 64).isEmail();
+                } catch (e) {
+                    req.flash('error', res.__(e.message));
+                    return res.redirect('/admin/userlist');
+                }
+
+                // get password hash
+                var hash = crypto.createHash('sha256'),
+                    password = hash.update(req.body.password).digest('hex');
+                var newUser = new User({
+                    name: name,
+                    password: password,
+                    email: mail,
+                    role: role
+                });
+                // check if username exists.
+                User.check(newUser.name, newUser.email, function(err, user){
+                    // console.log(user);
+                    if(user) {
+                        err = 'USER_EXISTS';
+                    }
+                    if(err) {
+                        req.flash('error', res.__(err));
+                        return res.redirect('/admin/userlist');
+                    }
+                    newUser.save(function(err){
+                        if(err){
+                            req.flash('error',err);
+                            return res.redirect('/reg');
+                        }
+                        req.session.user = newUser; // store user information to session.
+                        req.flash('success',res.__('ADD_USER_SUCCESS'));
+                        res.redirect('/admin/userlist');
+                    });
+                });
+            }
+        });
+    });
+
+    app.post('/admin/deleteuser', checkLogin, function(req, res) {
+        // console.log(req.body.username);
+        User.check(req.session.user.name, req.session.user.email, function(err, user) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/');
+            }
+            if(user.role != 'admin') {
+                req.flash('error', res.__('NO_PERMISSION'));
+                return res.redirect('/');
+            } else {
+                Domain.getList(req.body.username, function(err, domains) {
+                   if (err) {
+                       req.flash('error', err);
+                       return res.redirect('/admin/userlist');
+                   }
+                   // console.log(domains);
+                    async.eachSeries(domains, function(domain, callback) {
+                        console.log(domain);
+                        Domain.remove(domain.id, req.body.username, function(err) {
+                            if (err) {
+                                req.flash('error', err);
+                                return res.redirect('/admin/userlist');
+                            }
+                            callback (null);
+                        });
+                    }, function(err) {
+                        if (err) {
+                            req.flash('error', err);
+                            return res.redirect('/admin/userlist');
+                        }
+                        User.delete(req.body.username, function(err) {
+                            if (err) {
+                                req.flash('error', err);
+                                return res.redirect('/admin/userlist');
+                            }
+                            req.flash('success', res.__('DELETE_USER_SUCCESS'));
+                            res.redirect('/admin/userlist');
+                        });
+                    });
+                });
+            }
+        });
+    });
+
+
+    // TODO A default 404 page.
 
     // Session functions
     function checkLogin(req, res, next) {
-        if(!req.session.user){
-            req.flash('error',res.__('LOGIN_NEEDED'));
+        if(!req.session.user) {
+            req.flash('error', res.__('LOGIN_NEEDED'));
             return res.redirect('/login');
         }
         next();
     }
 
-    function checkNotLogin(req,res,next) {
-        if(req.session.user){
-            req.flash('error',res.__('ALREADY_LOGIN'));
+    function checkNotLogin(req, res, next) {
+        if(req.session.user) {
+            req.flash('error', res.__('ALREADY_LOGIN'));
             return res.redirect('/');
         }
         next();

@@ -1343,11 +1343,11 @@ th {
 }
 .table-striped > tbody > tr:nth-child(odd) > td,
 .table-striped > tbody > tr:nth-child(odd) > th {
-  background-color: #f9f9f9;
+  background-color: rgba(249, 249, 249, 0.75);
 }
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
-  background-color: #f5f5f5;
+  background-color: rgba(249, 249, 249, 0.75);
 }
 table col[class*="col-"] {
   float: none;
@@ -1370,7 +1370,7 @@ table th[class*="col-"] {
 .table > thead > tr.active > th,
 .table > tbody > tr.active > th,
 .table > tfoot > tr.active > th {
-  background-color: #f5f5f5;
+  background-color: rgba(249, 249, 249, 0.75);
 }
 .table > thead > tr > td.success,
 .table > tbody > tr > td.success,
@@ -2798,7 +2798,7 @@ input[type="button"].btn-block {
   margin: 2px 0 0;
   list-style: none;
   font-size: 14px;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.8);
   border: 1px solid #cccccc;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 4px;

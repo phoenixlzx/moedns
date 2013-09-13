@@ -94,6 +94,7 @@
                     </tr>
                     <!-- records goes here -->
                     <% records.forEach(function(record) { %>
+                    <% if(record.type == 'SOA') return; %>
                     <tr id="record-row-<%= record.id %>">
                         <td><%= record.id %></td>
                         <td><%= record.name.substring(0, record.name.search(domain.name) - 1) %></td>

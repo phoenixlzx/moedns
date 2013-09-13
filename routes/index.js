@@ -16,8 +16,20 @@ var config = require('../config.js'),
     check = require('validator').check,
     sanitize = require('validator').sanitize,
     tld = require('tldjs'),
-    Email = require('email').Email;
+    nodemailer = require("nodemailer");
     // dns = require('dns');
+
+// create reusable transport method (opens pool of SMTP connections)
+var smtpTransport = nodemailer.createTransport("SMTP", {
+    service: config.serviceMailSMTP,
+    // host: "smtp.163.com", // hostname
+    // secureConnection: true, // use SSL
+    // port: 465, // port for secure SMTP
+    auth: {
+        user: config.serviceMailUser,
+        pass: config.serviceMailPass
+    }
+});
 
 // function to test a object is empty.
 // Via http://stackoverflow.com/questions/4994201/is-object-empty
@@ -718,9 +730,7 @@ module.exports = function(app) {
         // Get user IP address.
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-        var from = config.serviceMail,
-            to = config.adminMail,
-            replyTo = req.body.email || req.session.user.email,
+        var reply = req.body.email || req.session.user.email,
             subject = req.body.subject + " - " + config.siteName,
             body = req.body.message + '\n\n' + res.__('IP_ADDR')  + ip;
 
@@ -731,29 +741,37 @@ module.exports = function(app) {
         // console.log(body);
 
         try {
-            check(from, 'EMAIL_INVALID').isEmail()
+            check(reply, 'EMAIL_INVALID').isEmail()
         } catch (e) {
             req.flash('error', res.__(e.message));
             return res.redirect('/contact');
         }
+        // console.log(reply);
 
-        var msg = new Email({
-            from: from,
-            to: to,
-            replyTo: replyTo,
-            subject: subject,
-            body: body
-        });
+        // setup e-mail data with unicode symbols
+        var mailOptions = {
+            from: config.serviceMailUser, // sender address
+            to: config.adminMail, // list of receivers
+            replyTo: reply,
+            subject: subject, // Subject line
+            text: body // plaintext body
+        }
 
-
-        msg.send(function(err) {
+        // console.log('executed');
+        // send mail with defined transport object
+        smtpTransport.sendMail(mailOptions, function(err, response) {
+            // console.log('executed');
             if (err) {
                 console.log(err);
                 req.flash('error', err);
                 return res.redirect('/contact');
+            } else {
+                req.flash('success', res.__('MSG_SENT'))
+                res.redirect('/');
             }
-            req.flash('success', res.__('MSG_SENT'));
-            res.redirect('/');
+
+            // if you don't want to use this transport object anymore, uncomment following line
+            //smtpTransport.close(); // shut down the connection pool, no more messages
         });
     });
 
@@ -817,6 +835,7 @@ module.exports = function(app) {
                         allowReg: config.allowReg,
                         user: req.session.user,
                         users: users,
+                        paginationData: users,
                         page: page,
                         success: req.flash('success').toString(),
                         error: req.flash('error').toString()
@@ -877,7 +896,6 @@ module.exports = function(app) {
                             req.flash('error',err);
                             return res.redirect('/reg');
                         }
-                        req.session.user = newUser; // store user information to session.
                         req.flash('success',res.__('ADD_USER_SUCCESS'));
                         res.redirect('/admin/userlist');
                     });
@@ -928,6 +946,194 @@ module.exports = function(app) {
                         res.redirect('/admin/userlist');
                     });
 
+                });
+            }
+        });
+    });
+
+    app.post('/admin/edituser', checkLogin, function(req, res) {
+        var username = req.body.username,
+            email = req.body.email,
+            role = req.body.role,
+            password = req.body.password,
+            repeatPassword = req.body['password-repeat'],
+            inputError = '';
+
+        try {
+            check(email, 'EMAIL_INVALID').len(4, 64).isEmail();
+            check(password, 'PASSWORD_EMPTY').notEmpty();
+        } catch (e) {
+            inputError = e.message;
+        }
+
+        if (password === repeatPassword) {
+            var hash = crypto.createHash('sha256'),
+                password = hash.update(req.body.password).digest('hex');
+            var hash = crypto.createHash('sha256'),
+                repeatPassword = hash.update(repeatPassword).digest('hex');
+
+        } else {
+            inputError = 'PASSWORD_NOT_EQUAL';
+        }
+
+        if (inputError) {
+            req.flash('error', res.__(inputError));
+            return res.redirect('/admin/userlist');
+        }
+
+        var newUser = new User({
+            name: username,
+            email: email,
+            password: password,
+            role: role
+        });
+
+        Admin.useredit(newUser, function(err, user){
+            if(err) {
+                req.flash('error', res.__(err));
+                return res.redirect('/admin/userlist');
+            }
+            req.flash('success', res.__('USER_UPDATED'));
+            res.redirect('/admin/userlist');
+        });
+    });
+
+    app.get('/admin/domainlist', checkLogin, function(req, res) {
+        var page = req.query.p?parseInt(req.query.p):1,
+            limit = req.query.limit?parseInt(req.query.limit):50;
+        // Check user has permission to access admin dashbord.
+        User.check(req.session.user.name, req.session.user.email, function(err, user) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/');
+            }
+            if(user.role != 'admin') {
+                req.flash('error', res.__('NO_PERMISSION'));
+                return res.redirect('/');
+            } else {
+                Admin.domainlist(page, limit, function(err, domains) {
+                    if(err) {
+                        domains = [];
+                        req.flash('error', err);
+                    }
+                    res.render('domainlist', {
+                        siteName: config.siteName,
+                        siteTagline: config.siteTagline,
+                        title: res.__('DOMAINS_LIST') + ' - ' + config.siteName,
+                        allowReg: config.allowReg,
+                        user: req.session.user,
+                        domains: domains,
+                        paginationData: domains,
+                        page: page,
+                        success: req.flash('success').toString(),
+                        error: req.flash('error').toString()
+                    });
+                });
+            }
+        });
+    });
+
+    app.post('/admin/adddomain', checkLogin, function(req, res) {
+        console.log(req.body.belongs);
+        User.check(req.session.user.name, req.session.user.email, function(err, user) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/');
+            }
+            if(user.role != 'admin') {
+                req.flash('error', res.__('NO_PERMISSION'));
+                return res.redirect('/');
+            } else {
+                var newDomain = new Domain({
+                    name: req.body.domain,
+                    belongs: req.body.belongs
+                });
+                if (tld.getDomain(newDomain.name) == newDomain.name && tld.tldExists(newDomain.name)) {
+                    // Domain valid, check if domain exists in db.
+                    Domain.check(newDomain.name, function(err, data) {
+                        if (data) {
+                            // console.log(data);
+                            // Domain exists, return error.
+                            req.flash('error', res.__('DOMAIN_EXISTS'));
+                            return res.redirect('/admin/domainlist');
+                        } else {
+                            // Check for owner.
+                            User.check(req.body.belongs, null, function(err, user) {
+                                if (!user) {
+                                    req.flash('error', res.__('USER_NOT_EXIST'));
+                                    return res.redirect('/admin/domainlist');
+                                }
+                                // Domain not exist, insert into database.
+                                newDomain.save(function(err) {
+                                    if (err) {
+                                        res.redirect('/admin/domainlist');
+                                        return req.flash('error',err);
+                                    }
+                                    req.flash('success',res.__('ADD_DOMAIN_SUCCESS'));
+                                    res.redirect('/admin/domainlist');
+                                });
+                            });
+                        }
+                    });
+                } else {
+                    req.flash('error', res.__('DOMAIN_NOT_VALID'));
+                    return res.redirect('/domainlist');
+                }
+            }
+        });
+    });
+
+    app.post('/admin/editdomain', checkLogin, function(req, res) {
+        // console.log(req.body.domainId);
+        // console.log(req.body.belongs);
+        User.check(req.session.user.name, req.session.user.email, function(err, user) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/');
+            }
+            if(user.role != 'admin') {
+                req.flash('error', res.__('NO_PERMISSION'));
+                return res.redirect('/');
+            } else {
+                User.check(req.body.belongs, null, function(err, user) {
+                    if (!user) {
+                        req.flash('error', res.__('USER_NOT_EXIST'));
+                        return res.redirect('/admin/domainlist');
+                    }
+                    // Domain not exist, insert into database.
+                    Admin.editdomain(parseInt(req.body.domainId), req.body.belongs, function(err) {
+                        if (err) {
+                            req.flash('error', err);
+                            return res.redirect('/admin/domainlist');
+                        } else {
+                            req.flash('success', res.__('DOMAIN_UPDATED'));
+                            res.redirect('/admin/domainlist');
+                        }
+                    });
+                });
+            }
+        });
+    });
+
+    app.post('/admin/deletedomain', checkLogin, function(req, res) {
+        // console.log(req.body.domainId);
+        console.log(req.body.belongs);
+        User.check(req.session.user.name, req.session.user.email, function(err, user) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/admin/domainlist');
+            }
+            if(user.role != 'admin') {
+                req.flash('error', res.__('NO_PERMISSION'));
+                return res.redirect('/');
+            } else {
+                Domain.remove(parseInt(req.body.domainId), req.body.belongs, function(err) {
+                    if (err) {
+                        req.flash('error', err);
+                        return res.redirect('/admin/domainlist');
+                    }
+                    req.flash('success', res.__('DOMAIN_DELETED'));
+                    res.redirect('/admin/domainlist');
                 });
             }
         });

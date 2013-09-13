@@ -6,8 +6,8 @@ var os = require('os'),
     config = require('../config.js'),
     mysql = require('./mysql.js'),
     mongoclient = require('./mongodb.js'),
-    user = require('./user.js'),
-    domain = require('./domain.js');
+    User = require('./user.js'),
+    Domain = require('./domain.js');
 
 exports.test = function() {
     return true;
@@ -91,3 +91,84 @@ exports.userlist = function(page, limit, callback) {
     });
 }
 
+exports.useredit = function(user, callback) {
+    mongoclient.open(function(err, mongoclient) {
+        var db = mongoclient.db(config.mongodb);
+        if (err) {
+            return callback(err);
+        }
+        db.collection('users', function(err, collection) {
+            if (err) {
+                mongoclient.close();
+                return callback(err);
+            }
+            collection.update({"name":user.name}, {$set : {
+                "name": user.name,
+                "password": user.password,
+                "email": user.email,
+                "role": user.role
+            }}, function(err) {
+                if (err) {
+                    mongoclient.close();
+                    return callback(err);
+                }
+                mongoclient.close();
+                callback(err, user);
+            });
+        });
+    });
+};
+
+exports.domainlist = function(page, limit, callback) {
+    mongoclient.open(function(err, mongoclient) {
+        var db = mongoclient.db(config.mongodb);
+        if(err) {
+            return callback(err);
+        }
+        db.collection('domains', function(err, collection) {
+            if(err) {
+                mongoclient.close();
+                return callback(err);
+            }
+            collection.find({}, {skip: (page - 1) * limit, limit: limit}).sort({
+                belongs: 1,
+                id: 1
+            }).toArray(function(err, domains) {
+                    if (err) {
+                        callback(err, null);
+                    }
+                    mongoclient.close();
+                    callback(null, domains);
+                });
+        });
+
+    });
+}
+
+exports.editdomain = function(id, belongs, callback) {
+    mongoclient.open(function(err, mongoclient) {
+        var db = mongoclient.db(config.mongodb);
+        if(err) {
+            return callback(err);
+        }
+        db.collection('domains', function(err, collection) {
+            if(err) {
+                mongoclient.close();
+                return callback(err);
+            }
+            // console.log(id);
+            // console.log(belongs);
+            collection.update({ "id": id }, { $set : {
+                "belongs": belongs
+            }}, function(err) {
+                if (err) {
+                    mongoclient.close();
+                    return callback(err);
+                }
+                mongoclient.close();
+                callback(null);
+            });
+        });
+
+    });
+}

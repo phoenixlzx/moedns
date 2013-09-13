@@ -19,10 +19,15 @@ module.exports={
 
     // Site configuration.
     url: 'example.com',
-    adminMail: 'dnsadmin@example.com',
     siteName: 'PhoenixDNS',
     siteTagline: 'Yet another PowerDNS Web UI.',
     allowReg: true,
+
+    // Mail configuration
+    adminMail: 'dnsadmin@example.com',
+    serviceMailSMTP: 'smtp.gmail.com',
+    serviceMailUser: 'gmail.user@gmail.com',
+    serviceMailPass: 'gmail.pass.here',
 
     // i18n settings.
     language: 'zh-cn'

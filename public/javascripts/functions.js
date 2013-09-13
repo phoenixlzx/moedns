@@ -158,6 +158,38 @@ $(document).ready(function() {
         $("#role-static").text(userArray[2]);
     });
 
+    // Get data from a single tr when editing a domain
+    $("a[id^='domain-edit']").click(function() {
+        var line = 'domain-row' + $(this).attr('id').substring($(this).attr('id').lastIndexOf('-'));
+        var domainData = $("tr#" + line).children("td").map(function() {
+            return $(this).text();
+        }).get();
+        var domainArray = jQuery.makeArray(domainData);
+        // alert(domainArray[1]);
+        // Set values for edit modal
+
+        $("#domainId").val(domainArray[0]);
+        $("#domain-id").text(domainArray[0])
+        $("#domain-name-edit").text(domainArray[1]);
+        $("#belongs").val(domainArray[2]);
+    });
+
+    // Get data from a single tr when deleting a domain
+    $("a[id^='domain-delete']").click(function() {
+        var line = 'domain-row' + $(this).attr('id').substring($(this).attr('id').lastIndexOf('-'));
+        var domainData = $("tr#" + line).children("td").map(function() {
+            return $(this).text();
+        }).get();
+        var domainArray = jQuery.makeArray(domainData);
+        // alert(userArray);
+        // Set values for edit modal
+        $("#domainId-delete").val(domainArray[0]);
+        $("#domain-id-static").text(domainArray[0])
+        $("#domain-name-static").text(domainArray[1]);
+        $("#domain-belongs-delete").val(domainArray[2]);
+        $("#domain-belongs-static").text(domainArray[2]);
+    });
+
 
     // $("div.about-inner").load('static_html/about.html');
 

@@ -84,14 +84,14 @@ User.check = function(name, email, callback) {
                 return callback(err);
             }
             collection.findOne({ $or : [
-                {name: name},
-                {email: email}
+                {name: new RegExp('^' + name)},
+                {email: new RegExp('^' + email)}
             ]}, function(err, doc) {
                 mongoclient.close();
                 if(doc) {
                     var user = new User(doc);
                     // console.log(user);
-                    callback(err, user); // query success, return user data.
+                    callback(null, user); // query success, return user data.
                 } else {
                     callback(err, null); // query failed, return null.
                 }
@@ -114,8 +114,8 @@ User.edit = function(user, callback) {
             collection.update({"name":user.name}, {$set : {
                 "name": user.name,
                 "password": user.password,
-                "email": user.email,
-                "role": user.role
+                "email": user.email
+                // "role": user.role
             }}, function(err) {
                 if (err) {
                     mongoclient.close();

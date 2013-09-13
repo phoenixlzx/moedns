@@ -184,3 +184,12 @@ div#domain-inner {
 .stats {
     text-align: center;
 }
+
+.admin-nav {
+    display: inline-block;
+    margin: auto;
+    padding: 5px;
+    width: 32%;
+    height: 30px;
+}
+

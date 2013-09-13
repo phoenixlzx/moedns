@@ -36,7 +36,8 @@ app.use(express.session({
     secret: config.cookieSecret,
     cookie: {maxAge: 1000 * 60 * 60 * 24 * 30},//30 days
     store: new MongoStore({
-        db: config.mongodb
+        db: config.mongodb,
+        clear_interval: 3600
     })
 }));
 app.use(i18n.init);

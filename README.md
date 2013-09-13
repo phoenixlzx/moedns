@@ -8,12 +8,14 @@ MoeDNS - A DNS Management app using Node.js, MongoDB &amp; PowerDNS with MySQL b
 ## Feature
 
 * Multi-user, multi-domain support.
-* [TODO] Admin functionality (All User/Domain/Records management)
+* [IN-PROGRESS] Admin functionality (All User/Domain/Records management)
 * [TODO] Better user input validation for domain records.
 * A, AAAA, MX, CNAME, SRV, TXT, NS, SOA record support.
-* [TODO] More user-friendly record-adding form.
+* [DONE] More user-friendly record-adding form.
 * Customize index, about and help pages.
 * Live DNS server status.
+* Domain Tansfer between users.
+* System stats.
 * Moe theme design!
 * And will be more...
 

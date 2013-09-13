@@ -3,7 +3,8 @@
 *
 * */
 
-var config = require('../config.js'),
+var async = require('async'),
+    config = require('../config.js'),
     mongoclient = require('./mongodb.js'),
     mysql = require('./mysql.js');
 
@@ -36,17 +37,32 @@ Domain.prototype.save = function(callback) {
             // Init domain with NS records.
             // TODO Add SOA records
             domain.id = result.insertId;
-            config.powerservers.forEach(function(nsServer) {
+            async.eachSeries(config.powerservers, function(nsServer, callback) {
                 myConnection.query('INSERT INTO `records` SET ?', {
                     "domain_id": domain.id,
                     "name": "@." + domain.name,
                     "type": "NS",
                     "content": nsServer,
                     "ttl": config.powerttl
+                }, function(err) {
+                    if (err) {
+                        return callback(err);
+                    }
+                    callback(null);
                 });
+            }, function(err) {
+                if (err) {
+                    return callback(err);
+                }
+                myConnection.query('INSERT INTO `records` SET ?', {
+                    "domain_id": domain.id,
+                    "name": domain.name,
+                    "type": "SOA",
+                    "content": config.powerservers[0] + ' ' + config.adminMail + ' 0 10800 3600 604800 ' + config.powerttl,
+                    "ttl": config.powerttl
+                });
+                myConnection.release();
             });
-
-            myConnection.release();
 
             // console.log(domain);
             // insert to MongoDB
@@ -61,7 +77,7 @@ Domain.prototype.save = function(callback) {
                         return callback(err);
                     }
                     // Make sure domain has 'id'
-                    console.log(domain.id);
+                    // console.log(domain.id);
                     // insert new domain to collection.
                     collection.insert(domain, {safe: true}, function(err, domain) {
                         mongoclient.close();
@@ -204,7 +220,7 @@ Domain.remove = function(domainId, user, callback) {
                         myConnection.release();
                     });
                     myConnection.query('DELETE FROM `records` WHERE ?', {
-                        "domain_id": domainId
+                        "domain_id": parseInt(domainId)
                     }, function(err, result) {
                         if (err) return (err);
                         // console.log(result);

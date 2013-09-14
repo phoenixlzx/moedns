@@ -22,8 +22,8 @@ var config = require('../config.js'),
 // create reusable transport method (opens pool of SMTP connections)
 var smtpTransport = nodemailer.createTransport("SMTP", {
     service: config.serviceMailSMTP,
-    // host: "smtp.163.com", // hostname
-    // secureConnection: true, // use SSL
+    // host: "smtp.moedns.com", // hostname
+    //secureConnection: true, // use SSL
     // port: 465, // port for secure SMTP
     auth: {
         user: config.serviceMailUser,
@@ -750,7 +750,7 @@ module.exports = function(app) {
 
         // setup e-mail data with unicode symbols
         var mailOptions = {
-            from: config.serviceMailUser, // sender address
+            from: config.serviceMailSender, // sender address
             to: config.adminMail, // list of receivers
             replyTo: reply,
             subject: subject, // Subject line

@@ -612,7 +612,14 @@ module.exports = function(app) {
                             check(content, 'NEED_IPV6').isIPv6();
                             prio = null;
                             break;
-                        case ("CNAME" || "NS"):
+                        case "CNAME":
+                            if (tld.isValid(content) && tld.tldExists(content)) {
+                                prio = null;
+                            } else {
+                                throw new Error("VALUE_ERROR");
+                            }
+                            break;
+                        case "NS":
                             if (tld.isValid(content) && tld.tldExists(content)) {
                                 prio = null;
                             } else {

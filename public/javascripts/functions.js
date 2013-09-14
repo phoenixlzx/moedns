@@ -219,6 +219,11 @@ $(document).ready(function() {
 
     });
 
+    // Table sorter
+    $("table.sortable").tablesorter({
+        // sort on the first column and third column, order asc
+        sortList: [[2,0]]
+    });
 
 
 });

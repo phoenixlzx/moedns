@@ -78,13 +78,16 @@
                 </a>
             </div>
             <div>
-                <table class="table table-stripped">
+                <table class="table table-stripped sortable">
+                    <thead>
                     <tr>
                         <th><%= __('USERNAME') %></th>
                         <th><%= __('EMAIL') %></th>
                         <th><%= __('ROLE')%></th>
                         <th><%= __('ACTION') %></th>
                     </tr>
+                    </thead>
+                    <tbody>
                     <% users.forEach(function(userData) { %>
                     <tr id="user-row-<%= userData.name %>">
                         <td><%= userData.name %></td>
@@ -102,6 +105,7 @@
                         </td>
                     </tr>
                     <% }) %>
+                    </tbody>
                 </table>
                 <%-include pagination%>
             </div>

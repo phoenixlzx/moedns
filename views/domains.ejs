@@ -86,7 +86,8 @@
                     <a data-toggle="modal" href="#addDomain" class="btn btn-primary btn-lg"><%= __('ADD_DOMAIN_HERE') %></a>
                 </div>
                 <% } else { %>
-                <table class="table table-hover" id="domain-list">
+                <table class="table table-hover sortable" id="domain-list">
+                    <thead>
                     <tr>
                         <th>
                             <%= __('DOMAIN_ID') %>
@@ -94,6 +95,8 @@
                             <%= __('DOMAIN_LIST') %>
                         </th>
                     </tr>
+                    </thead>
+                    <tbody>
                     <% domains.forEach(function(domain) { %>
                     <tr id="domain-row-<%= domain.id %>">
                         <td>
@@ -105,14 +108,15 @@
                             <a data-toggle="modal" class="btn btn-danger btn-xs pull-right domain-delete" href="#deleteDomain" id="delete-domain-<%= domain.id %>">
                                 <%= __('DELETE') %>
                             </a>
-                             <!-- <form action="/domain/<%= domain.name %>/delete" method="post" class="pull-right domain-delete">
-                                <button type="submit" class="btn btn-danger btn-xs" id=""
-                                        onclick="return confirm(<%= __('DOMAIN_DELETION_WARNING') %> + '\n\n\t<%= domain.name %>');">
-                                 </button>
-                            </form>  -->
+                            <!-- <form action="/domain/<%= domain.name %>/delete" method="post" class="pull-right domain-delete">
+                               <button type="submit" class="btn btn-danger btn-xs" id=""
+                                       onclick="return confirm(<%= __('DOMAIN_DELETION_WARNING') %> + '\n\n\t<%= domain.name %>');">
+                                </button>
+                           </form>  -->
                         </td>
                     </tr>
                     <% }) %>
+                    </tbody>
                 </table>
                 <% } %>
             </div>

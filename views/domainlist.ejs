@@ -78,13 +78,16 @@
             </a>
         </div>
         <div>
-            <table class="table table-stripped">
+            <table class="table table-stripped sortable">
+                <thead>
                 <tr>
                     <th><%= __('DOMAIN_ID') %></th>
                     <th><%= __('DOMAIN') %></th>
                     <th><%= __('BELONGS')%></th>
                     <th><%= __('ACTION') %></th>
                 </tr>
+                </thead>
+                <tbody>
                 <% domains.forEach(function(domainData) { %>
                 <tr id="domain-row-<%= domainData.id %>">
                     <td><%= domainData.id %></td>
@@ -102,6 +105,7 @@
                     </td>
                 </tr>
                 <% }) %>
+                </tbody>
             </table>
             <%-include pagination%>
         </div>

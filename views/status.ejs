@@ -8,13 +8,13 @@
             // alert(data);
             switch (data) {
                 case "0":
-                    $("div[id$='" + server + "']").html('<span class="glyphicon glyphicon-ok-sign"></span>&nbsp;&nbsp;<span class="text-success">UP</span>');
+                    $("div[id$='" + server + "']").html('<span class="glyphicon glyphicon-ok-sign"></span>&nbsp;&nbsp;<span class="text-success">ONLINE</span>');
                     break;
                 case "1":
-                    $("div[id$='" + server + "']").html('<span class="glyphicon glyphicon-remove-sign"></span>&nbsp;&nbsp;<span class="text-danger">DOWN</span>');
+                    $("div[id$='" + server + "']").html('<span class="glyphicon glyphicon-remove-sign"></span>&nbsp;&nbsp;<span class="text-danger">OFFLINE</span>');
                     break;
                 case "2":
-                    $("div[id$='" + server + "']").html('<span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;<span class="text-warning">TIMEOUT</span>');
+                    $("div[id$='" + server + "']").html('<span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;<span class="text-warning">TIMEDOUT</span>');
                     break;
             }
         });

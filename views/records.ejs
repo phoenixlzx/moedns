@@ -97,7 +97,13 @@
                     <% if(record.type == 'SOA') return; %>
                     <tr id="record-row-<%= record.id %>">
                         <td><%= record.id %></td>
-                        <td><%= record.name.substring(0, record.name.search(domain.name) - 1) %></td>
+                        <td>
+                            <% if (record.name == domain.name) { %>
+                            <%= record.name %>
+                            <% } else { %>
+                            <%= record.name.substring(0, record.name.search(domain.name) - 1) %>
+                            <% } %>
+                        </td>
                         <td><%= record.type %></td>
                         <td><%= record.content %>.</td>
                         <td>

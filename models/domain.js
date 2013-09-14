@@ -40,7 +40,7 @@ Domain.prototype.save = function(callback) {
             async.eachSeries(config.powerservers, function(nsServer, callback) {
                 myConnection.query('INSERT INTO `records` SET ?', {
                     "domain_id": domain.id,
-                    "name": "@." + domain.name,
+                    "name": domain.name,
                     "type": "NS",
                     "content": nsServer,
                     "ttl": config.powerttl

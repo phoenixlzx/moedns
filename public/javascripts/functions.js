@@ -26,6 +26,10 @@ Array.prototype.cleanArray = function(valueToDelete){
     return this;
 }
 
+trimSpace = function (str) {
+    return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+}
+
  /*function loadStatus(server) {
      // alert(server);
      $.ajax({
@@ -96,18 +100,27 @@ $(document).ready(function() {
             return $(this).text();
         }).get();
         var recordArray = jQuery.makeArray(recordData);
-        // alert(recordArray);
+        var pathname = window.location.pathname;
+        var path = pathname.substring(pathname.lastIndexOf('/') + 1);
+        // alert(trimSpace(recordArray[1]));
+        recordArray[1] = trimSpace(recordArray[1]);
         // Set values for edit modal
         $("#record-id-edit").val(recordArray[0]);
         $("#record-id-static").text(recordArray[0]);
-        if (recordArray[4] == '-') {
+        // alert(recordArray[4]);
+        if (trimSpace(recordArray[4]) == '-') {
             $("#record-type-edit").val(recordArray[2]);
             $("#record-prio-edit").prop("disabled", true);
         } else {
             $("#record-prio-edit").prop("disabled", false).val(recordArray[4]);
             $("#record-type-edit").val(recordArray[2]);
         }
-        $("#record-name-edit").val(recordArray[1]);
+        if (recordArray[1] == path) {
+            $("#record-name-edit").val('@');
+        } else {
+            $("#record-name-edit").val(recordArray[1]);
+        }
+
         $("#record-ttl-edit").val(recordArray[5]);
         $("#record-content-edit").val(recordArray[3].slice(0, recordArray[3].lastIndexOf('.')));
     });
@@ -165,8 +178,9 @@ $(document).ready(function() {
             return $(this).text();
         }).get();
         var domainArray = jQuery.makeArray(domainData);
-        // alert(domainArray[1]);
+        // alert(domainArray);
         // Set values for edit modal
+
 
         $("#domainId").val(domainArray[0]);
         $("#domain-id").text(domainArray[0])

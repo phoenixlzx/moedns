@@ -367,7 +367,7 @@ module.exports = function(app) {
     app.post('/domain/:domain/add-record', checkLogin, function(req, res) {
         // console.log(req.body);
         var type = req.body.type,
-            name = req.body.name + '.' + req.params.domain,
+            name = req.body.name == '@'?req.params.domain:req.body.name + '.' + req.params.domain,
             ttl = req.body.ttl,
             prio = req.body.prio || null,
             content = req.body.content;
@@ -579,7 +579,7 @@ module.exports = function(app) {
                 // Validate user input and update record.
                 var id = req.body.recordId,
                     type = req.body.type,
-                    name = req.body.name + '.' + req.params.domain,
+                    name = req.body.name == '@'?req.params.domain:req.body.name + '.' + req.params.domain,
                     ttl = req.body.ttl,
                     prio = req.body.prio,
                     content = req.body.content;

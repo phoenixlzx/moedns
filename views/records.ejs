@@ -99,7 +99,7 @@
                         <td><%= record.id %></td>
                         <td>
                             <% if (record.name == domain.name) { %>
-                            <%= record.name %>
+                            @
                             <% } else { %>
                             <%= record.name.substring(0, record.name.search(domain.name) - 1) %>
                             <% } %>

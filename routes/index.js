@@ -781,9 +781,9 @@ module.exports = function(app) {
 
     // Admin dashboard
     app.get('/admin', checkLogin, function(req, res) {
-        console.log(req.session.user);
+        // console.log(req.session.user);
         User.check(req.session.user.name, req.session.user.email, function(err, user) {
-            console.log(user);
+            // console.log(user);
             if (err) {
                 req.flash('error', err);
                 return res.redirect('/');

@@ -40,9 +40,23 @@ Record.prototype.save = function(callback) {
             "ttl": record.ttl,
             "prio": record.prio
         }, function(err, result) {
-            if (err) return (err);
+            if (err) {
+                return (err);
+            }
             // console.log(result);
-            callback(result);
+            var insertId = parseInt(result.insertId);
+            // console.log(insertId);
+            myConnection.query("UPDATE `records` SET change_date = UNIX_TIMESTAMP() WHERE ?", {
+                    id: insertId
+            }, function(err) {
+                if (err) {
+                    return (err);
+                }
+                // console.log(result2);
+                myConnection.release();
+                callback(result);
+            });
+            // console.log(result);
         });
     });
 };
@@ -120,8 +134,14 @@ Record.edit = function(record, callback) {
             if (err) {
                 return callback(err, null);
             }
+            // console.log(result);
+            myConnection.query("UPDATE `records` SET change_date = UNIX_TIMESTAMP() WHERE ?", {
+                "id": record.id
+            }, function(err) {
+                if (err) return (err);
+                myConnection.release();
+            });
             // console.log(result)
-            myConnection.release();
             callback(null, result);
         });
     });

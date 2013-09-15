@@ -222,7 +222,7 @@ $(document).ready(function() {
     // Table sorter
     $("table.sortable").tablesorter({
         // sort on the first column and third column, order asc
-        sortList: [[0,0], [2,0]]
+        sortList: [[2,0], [0,0], [1,0]]
     });
 
 

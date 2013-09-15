@@ -58,7 +58,7 @@ Domain.prototype.save = function(callback) {
                     "domain_id": domain.id,
                     "name": domain.name,
                     "type": "SOA",
-                    "content": config.powerservers[0] + ' ' + config.adminMail + ' 0 14400 3600 604800 ' + config.powerttl,
+                    "content": config.powerservers[0] + ' ' + config.adminMail + ' 0 3600 180 1209600 ' + config.powerttl,
                     "ttl": config.powerttl
                 });
                 myConnection.release();

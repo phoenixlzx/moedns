@@ -68,12 +68,6 @@ div#user {
  * Notification flash area
  */
 
-div#notification {
-    position: fixed;
-    margin: auto;
-    width: 90%;
-}
-
 /*
  * Domain frame
  */

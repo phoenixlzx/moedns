@@ -187,3 +187,10 @@ div#domain-inner {
     height: 30px;
 }
 
+td {
+    word-break: break-all;
+}
+
+#record-content {
+    width: 50%;
+}

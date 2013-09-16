@@ -372,57 +372,66 @@ module.exports = function(app) {
             prio = req.body.prio || null,
             content = req.body.content;
 
-        switch (type) {
-            case "A":
-                check(content, 'NEED_IPV4').isIPv4();
-                prio = null;
-                break;
-            case "AAAA":
-                check(content, 'NEED_IPV6').isIPv6();
-                prio = null;
-                break;
-            case ("CNAME"):
-                if (tld.isValid(content) && tld.tldExists(content)) {
+        try {
+            check(ttl, 'TTL_ERROR').isDecimal().min(60);
+            switch (type) {
+                case "A":
+                    check(content, 'NEED_IPV4').isIPv4();
                     prio = null;
-                } else {
-                    throw new Error("VALUE_ERROR");
-                }
-                break;
-            case "NS":
-                if (tld.isValid(content) && tld.tldExists(content)) {
+                    break;
+                case "AAAA":
+                    check(content, 'NEED_IPV6').isIPv6();
                     prio = null;
-                } else {
-                    throw new Error("VALUE_ERROR");
-                }
-                break;
-            case "MX":
-                if (tld.isValid(content) && tld.tldExists(content)) {
-                    //  Better DNS check module needed.
-                    //    dns.resolve(content, function(err, addresses) {
-                    //        console.log(addresses);
-                    //        if (addresses === undefined) {
-                    //            throw new Error("NEED_A_RECORD");
-                    //        } else {
-                    //
-                    //        }
-                    //    });
-                    //
-                } else {
-                    throw new Error("VALUE_ERROR");
-                }
-                check(prio, 'PRIO_ERROR').isDecimal().max(100).min(1);
-                break;
-            case "SRV":
-                // _service._proto.name. TTL class SRV priority weight port target.
-                name = "_" + req.body.service + "._" + req.body.protocol + "." + req.params.domain;
-                content = req.body.weight + " " + req.body.port + " " + req.body.content;
-                break;
-            case "TXT":
-                prio = null;
-                break;
-            default:
-                throw new Error("TYPE_ERROR");
+                    break;
+                case ("CNAME"):
+                    if (tld.isValid(content) && tld.tldExists(content)) {
+                        prio = null;
+                    } else {
+                        throw new Error("VALUE_ERROR");
+                    }
+                    break;
+                case "NS":
+                    if (tld.isValid(content) && tld.tldExists(content)) {
+                        prio = null;
+                    } else {
+                        throw new Error("VALUE_ERROR");
+                    }
+                    break;
+                case "MX":
+                    if (tld.isValid(content) && tld.tldExists(content)) {
+                        //  Better DNS check module needed.
+                        //    dns.resolve(content, function(err, addresses) {
+                        //        console.log(addresses);
+                        //        if (addresses === undefined) {
+                        //            throw new Error("NEED_A_RECORD");
+                        //        } else {
+                        //
+                        //        }
+                        //    });
+                        //
+                    } else {
+                        throw new Error("VALUE_ERROR");
+                    }
+                    check(prio, 'PRIO_ERROR').isDecimal().max(100).min(1);
+                    break;
+                case "SRV":
+                    // _service._proto.name. TTL class SRV priority weight port target.
+                    name = "_" + req.body.service + "._" + req.body.protocol + "." + req.params.domain;
+                    content = req.body.weight + " " + req.body.port + " " + req.body.content;
+                    break;
+                case "TXT":
+                    prio = null;
+                    break;
+                default:
+                    throw new Error("TYPE_ERROR");
+            }
+        } catch (e) {
+            console.log(e);
+            req.flash('error', res.__(e.message));
+            return res.redirect('/domain/' + req.params.domain);
         }
+
+
 
         // TODO Check user inputs for record validity
         // Better RegEx required.
@@ -675,9 +684,6 @@ module.exports = function(app) {
             }
         });
     })
-
-
-
 
     // Server status
     app.get('/status', checkLogin, function(req, res) {

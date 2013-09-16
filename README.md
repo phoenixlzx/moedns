@@ -37,9 +37,11 @@ MoeDNS - A DNS Management app using Node.js, MongoDB &amp; PowerDNS with MySQL b
 
 * Done!
 
-## APP TODOs
+## Translation (including moe translation)
 
-* use switch to generate record data for different record types, then write to database.
+https://www.transifex.com/projects/p/moedns/
+
+Special thanks to the translation team!
 
 
 

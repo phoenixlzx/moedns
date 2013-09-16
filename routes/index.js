@@ -263,11 +263,13 @@ module.exports = function(app) {
             name: req.body.domain,
             belongs: req.session.user.name
         });
-        if (tld.getDomain(newDomain.name) == newDomain.name && tld.tldExists(newDomain.name)) {
+        if (tld.getDomain(newDomain.name) == newDomain.name &&
+            tld.tldExists(newDomain.name) &&
+            /^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$/.test(newDomain.name)) {
             // Domain valid, check if domain exists in db.
             Domain.check(newDomain.name, function(err, data) {
                 if (data) {
-                    console.log(data);
+                    // console.log(data);
                     // Domain exists, return error.
 
                     req.flash('error', res.__('DOMAIN_EXISTS'));

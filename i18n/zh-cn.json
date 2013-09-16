@@ -121,5 +121,6 @@
     "EDIT_DOMAIN": "编辑域名",
     "BELONGS": "属主",
     "DOMAIN_DELETION_ADMIN_WARNING": "您将要删除以下域名，这将删除该域名的所有记录，可能导致所属用户的域名无法使用。您确定删除下列域名吗？",
-    "DOMAIN_UPDATED": "域名已更新"
+    "DOMAIN_UPDATED": "域名已更新",
+    "SENDER_MAIL": "发送者: "
 }

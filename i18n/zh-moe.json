@@ -121,5 +121,6 @@
     "ADD_RECORD_SUCCESS": "萌D娘已经记住这个记录了呢！",
     "ROLE": "主人身份",
     "CONFIRM_LEAVE": "主人，你已在此页面做出改动。\n如果离开此页面的话，主人所做的所有改动我都记不住啊。",
-    "DNS_SERVERS": "萌D娘列表"
+    "DNS_SERVERS": "萌D娘列表",
+    "SENDER_MAIL": "主人邮箱: "
 }

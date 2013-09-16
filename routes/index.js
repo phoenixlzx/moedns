@@ -755,7 +755,7 @@ module.exports = function(app) {
 
         var reply = req.body.email || req.session.user.email,
             subject = req.body.subject + " - " + config.siteName,
-            body = req.body.message + '\n\n' + res.__('IP_ADDR')  + ip;
+            body = res.__('SENDER_MAIL') + '\n\n' + req.body.message + '\n\n' + res.__('IP_ADDR')  + ip;
 
         // console.log(ip);
         // console.log(from);

@@ -700,6 +700,7 @@ module.exports = function(app) {
     });
 
     app.get('/statusapi/:server', checkLogin, function(req, res) {
+        console.log(req.session.user.name + ' requested status for ' + req.params.server);
         var server = req.params.server,
             status = null,
             sock = new net.Socket();

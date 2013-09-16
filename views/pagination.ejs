@@ -4,7 +4,7 @@
         <% if (page - 1) { %>
         <li><a href="?p=<%= page-1 %>"><%= __('PREVIOUS') %></a></li>
         <% } %>
-        <% if (paginationData.length >= 10) { %>
+        <% if (paginationData.length >= paginationLimit) { %>
         <li><a href="?p=<%= page+1 %>"><%= __('NEXT') %></a></li>
         <% } %>
     </ul>

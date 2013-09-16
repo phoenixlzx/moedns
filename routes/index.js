@@ -851,6 +851,7 @@ module.exports = function(app) {
                         users = [];
                         req.flash('error', err);
                     }
+                    // console.log(users.length);
                     res.render('userlist', {
                         siteName: config.siteName,
                         siteTagline: config.siteTagline,
@@ -859,6 +860,7 @@ module.exports = function(app) {
                         user: req.session.user,
                         users: users,
                         paginationData: users,
+                        paginationLimit: limit,
                         page: page,
                         success: req.flash('success').toString(),
                         error: req.flash('error').toString()
@@ -1047,6 +1049,7 @@ module.exports = function(app) {
                         user: req.session.user,
                         domains: domains,
                         paginationData: domains,
+                        paginationLimit: limit,
                         page: page,
                         success: req.flash('success').toString(),
                         error: req.flash('error').toString()

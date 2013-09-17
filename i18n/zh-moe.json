@@ -1,4 +1,5 @@
 {
+    "SENDER_MAIL": "主人邮箱: ",
     "REG_NOT_ALLOWED": "暂时不能和萌D娘签订契约",
     "ADD_RECORD": "添加记录",
     "CURRENT_PASSWORD": "当前契约密文",
@@ -7,7 +8,7 @@
     "ALREADY_LOGIN": "您已经召唤了萌D娘",
     "NEXT": "下一页",
     "DOMAIN_NOT_VALID": "主人，不正确的域名我会看不懂哦！",
-    "ADMIN_INDEX": "萌D娘中枢",
+    "ADMIN_INDEX": "萌D娘中枢管理书",
     "ACTION": "魔法",
     "ADD_DOMAIN": "给萌D娘喂域名",
     "PRIO_ERROR": "主人，优先级不对我会看不懂哦！",
@@ -29,7 +30,7 @@
     "SAVE": "记住",
     "DELETE": "忘记",
     "ABOUT": "关于萌D娘",
-    "PASSWORD_NOT_EQUAL": "契约密文不一样啊QAQ",
+    "PASSWORD_NOT_EQUAL": "契约密文不一样啊  >︿<",
     "WRONG_PASSWORD": "契约密文不正确TAT",
     "RECORD_TYPE": "记录类型",
     "USER": "主人",
@@ -100,7 +101,7 @@
     "SYSTEM": "萌D娘中枢",
     "MSG_SENT": "哔——魔法施放成功！",
     "CONTACT": "联系萌D娘中枢",
-    "LOGIN_FAIL": "召唤失败TAT",
+    "LOGIN_FAIL": "召唤失败QAQ",
     "LOGIN": "召唤萌D娘",
     "OPTIONS": "选择魔法",
     "DELETE_USER_SUCCESS": "契约解除成功",
@@ -121,6 +122,5 @@
     "ADD_RECORD_SUCCESS": "萌D娘已经记住这个记录了呢！",
     "ROLE": "主人身份",
     "CONFIRM_LEAVE": "主人，你已在此页面做出改动。\n如果离开此页面的话，主人所做的所有改动我都记不住啊。",
-    "DNS_SERVERS": "萌D娘列表",
-    "SENDER_MAIL": "主人邮箱: "
+    "DNS_SERVERS": "萌D娘列表"
 }

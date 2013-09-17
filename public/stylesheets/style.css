@@ -191,12 +191,12 @@ td {
     word-break: break-all;
 }
 
-#record-name-width {
+#record-name-table {
     width: 10%;
     max-width: 15%;
 }
 
-#record-content {
+#record-content-table {
     width: 40%;
     max-width: 50%;
 }

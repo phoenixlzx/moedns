@@ -200,3 +200,7 @@ td {
     width: 40%;
     max-width: 50%;
 }
+
+#domain-id-table {
+    width: 12%;
+}

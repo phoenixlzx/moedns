@@ -66,13 +66,17 @@ $(document).ready(function() {
             return $(this).text();
         }).get();
         var domain = jQuery.makeArray(domainObj);
-        domain = domain[0].split(/[\n\s]+/g);
+        // alert(domain);
+        var domainId = domain[0].split(/[\n\s]+/g),
+            domainName = domain[1].split(/[\n\s]+/g);
+        // alert(domainId);
+        // alert(domainName);
 
         // Set values
-        $("form#domain-delete-form").attr("action", "/domain/" + domain[2] + "/delete");
-        $("input#domainId").val(domain[1]);
-        $("#domainId-static").text(domain[1]);
-        $("#domainName-static").text(domain[2]);
+        $("form#domain-delete-form").attr("action", "/domain/" + domainName[1] + "/delete");
+        $("input#domainId").val(domainId[1]);
+        $("#domainId-static").text(domainId[1]);
+        $("#domainName-static").text(domainName[1]);
     });
 
     // Enable 'priority' if type is MX

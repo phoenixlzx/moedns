@@ -88,10 +88,13 @@
                 <table class="table table-hover sortable" id="domain-list">
                     <thead>
                     <tr>
-                        <th>
+                        <th id="domain-id-table">
                             <%= __('DOMAIN_ID') %>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
+                        </th>
+                        <th>
                             <%= __('DOMAIN_LIST') %>
+                        </th>
+                        <th>
                         </th>
                     </tr>
                     </thead>
@@ -102,8 +105,11 @@
                             <span class="glyphicon glyphicon-globe"></span>
                             &nbsp;
                             <%= domain.id %>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td>
                             <a href="/domain/<%= domain.name %>"><%= domain.name %></a>
+                        </td>
+                        <td>
                             <a data-toggle="modal" class="btn btn-danger btn-xs pull-right domain-delete" href="#deleteDomain" id="delete-domain-<%= domain.id %>">
                                 <%= __('DELETE') %>
                             </a>

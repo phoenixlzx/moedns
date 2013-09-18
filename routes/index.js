@@ -832,110 +832,78 @@ module.exports = function(app) {
     });
 
     // DDNS
-    app.post('/api', function(req, res) {
-        var domain = req.params.domain,
-            apikey = req.params.key;
-        Domain.checkOwner(domain, user.name, function(err, doc) {
+    app.get('/api', function(req, res) {
+        console.log(req.query);
+        var domain = req.query.domain,
+            recordId = req.query.id,
+            type = req.query.type,
+            ip = req.query.ip,
+            nat = req.query.nat,
+            apikey = req.query.key;
+        if (nat) {
+            ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+        } else {
+            ip = req.query.ip;
+        }
+        User.checkApi(apikey, function(err, user) {
             if (err) {
-                req.flash('error', err);
-                return res.redirect('/domains');
+                return res.send(500, 'Server error.');
             }
-            if (doc == null) {
-                req.flash('error', res.__('DOMAIN_NOT_OWNED'));
-                return res.redirect('/domains');
+            if (!user) {
+                return res.send(401, 'User unauthorized.');
             } else {
-                // Validate user input and update record.
-                var id = req.body.recordId,
-                    type = req.body.type,
-                    name = req.body.name == '@'?req.params.domain:req.body.name + '.' + req.params.domain,
-                    ttl = req.body.ttl,
-                    prio = req.body.prio,
-                    content = req.body.content;
-                // TODO Check user inputs for record validity
-                // Better RegEx required.
-                try {
-                    check(type, 'TYPE_ERROR').isIn([
-                        "A",
-                        "AAAA",
-                        "CNAME",
-                        "NS",
-                        "MX",
-                        "SRV",
-                        "TXT"
-                    ]);
-                    check(ttl, 'TTL_ERROR').isDecimal().min(60);
-                    switch (type) {
-                        case "A":
-                            check(content, 'NEED_IPV4').isIPv4();
-                            prio = null;
-                            break;
-                        case "AAAA":
-                            check(content, 'NEED_IPV6').isIPv6();
-                            prio = null;
-                            break;
-                        case "CNAME":
-                            if (tld.isValid(content) && tld.tldExists(content)) {
-                                prio = null;
-                            } else {
-                                throw new Error("VALUE_ERROR");
-                            }
-                            break;
-                        case "NS":
-                            if (tld.isValid(content) && tld.tldExists(content)) {
-                                prio = null;
-                            } else {
-                                throw new Error("VALUE_ERROR");
-                            }
-                            break;
-                        case "MX":
-                            if (tld.isValid(content) && tld.tldExists(content)) {
-                                /*  Better DNS check module needed.
-                                 dns.resolve(content, function(err, addresses) {
-                                 console.log(addresses);
-                                 if (addresses === undefined) {
-                                 throw new Error("NEED_A_RECORD");
-                                 } else {
-
-                                 }
-                                 });
-                                 */
-                            } else {
-                                throw new Error("VALUE_ERROR");
-                            }
-                            check(prio, 'PRIO_ERROR').isDecimal().max(100).min(1);
-                            break;
-                        case "SRV":
-                            break;
-                        case "TXT":
-                            prio = null;
-                            break;
-                        default:
-                            throw new Error("TYPE_ERROR");
-                    }
-                } catch (e) {
-                    console.log(e);
-                    req.flash('error', res.__(e.message));
-                    return res.redirect('/domain/' + req.params.domain);
-                }
-                var newRecord = new Record({
-                    id: id,
-                    name: name,
-                    type: type,
-                    content: content,
-                    ttl: ttl,
-                    prio: prio
-                });
-                Record.edit(newRecord, function(err) {
+                // console.log(tld.getDomain(domain));
+                // console.log(user.name);
+                Domain.checkOwner(tld.getDomain(domain), user.name, function(err, doc) {
                     if (err) {
-                        req.flash('error', err);
-                        return res.redirect('/domain/' + domain);
+                        return res.send(500, 'Server error.');
                     }
-                    req.flash('success', res.__('RECORD_UPDATED'));
-                    res.redirect('/domain/' + domain);
+                    if (doc == null) {
+                        return res.send(401, 'Domain unauthorized.');
+                    } else {
+                        // Validate user input and update record.
+                        var name = domain,
+                            ttl = 60,
+                            prio = null,
+                            content = ip;
+                        // TODO Check user inputs for record validity
+                        // Better RegEx required.
+                        try {
+                            check(type, 'TYPE_ERROR').isIn([
+                                "A",
+                                "AAAA",
+                            ]);
+                            switch (type) {
+                                case "A":
+                                    check(content, 'NEED_IPV4').isIPv4();
+                                    break;
+                                case "AAAA":
+                                    check(content, 'NEED_IPV6').isIPv6();
+                                    break;
+                            }
+                        } catch (e) {
+                            // console.log(e);
+                            return res.send(400, 'Bad request.');
+                        }
+                        var newRecord = new Record({
+                            id: recordId,
+                            name: name,
+                            type: type,
+                            content: ip,
+                            ttl: ttl,
+                            prio: prio
+                        });
+                        Record.edit(newRecord, function(err) {
+                            if (err) {
+                                return res.send(500, 'Server error.')
+                            }
+                            res.send(200, 'Record updated.');
+                        });
+                    }
                 });
             }
         });
-    })
+    });
 
     /*
     * Admin routes

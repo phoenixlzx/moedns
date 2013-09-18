@@ -191,13 +191,42 @@ User.getApi = function(username, callback) {
                 return callback(err);
             }
             collection.findOne({
-                name: username
+                "name": username
             }, function(err, doc) {
                 // console.log(doc);
                 mongoclient.close();
                 if(doc) {
                     // console.log(doc.apikey);
                     callback(err, doc.apikey); // query success, return user data.
+                } else {
+                    callback(err, null); // query failed, return null.
+                }
+            });
+        });
+    });
+}
+
+User.checkApi = function(apikey, callback) {
+    // console.log(apikey);
+    mongoclient.open(function(err, mongoclient) {
+        var db = mongoclient.db(config.mongodb);
+        if(err) {
+            return callback(err);
+        }
+        // read users collection.
+        db.collection('users', function(err, collection) {
+            if(err) {
+                mongoclient.close();
+                return callback(err);
+            }
+            collection.findOne({
+                "apikey": apikey
+            }, function(err, doc) {
+                mongoclient.close();
+                // console.log(doc);
+                if(doc) {
+                    // console.log(doc.apikey);
+                    callback(err, doc); // query success, return user data.
                 } else {
                     callback(err, null); // query failed, return null.
                 }

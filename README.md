@@ -55,13 +55,13 @@ Path: `/api`
 Method: GET
 
 Params:
-* `domain`: target domain-name to resolve, such as `example.com` or `sub.example.com`.
-* `id`: target record id to update, so you need to create it before using.
-* `type`: record type, currently only `A` and `AAAA` is supported.
-* `ip`: target IP{v4, v6} address to update.
-* `ttl`: Time To Live option, if not present then will be set to 60 for faster resolve.
-* `nat`: if set to `true`, connection IP will be used as target IP (for clients behind NAT networks).
-* `key`: your API key.
+* `domain`: Required - target domain-name to resolve, such as `example.com` or `sub.example.com`.
+* `id`: Required - target record id to update, so you need to create it before using.
+* `type`: Required - record type, currently only `A` and `AAAA` is supported.
+* `ip`: Required(Optional if nat is set to true) - target IP{v4, v6} address to update.
+* `ttl`: Optional - Time To Live option, if not present then will be set to 60 for faster resolve.
+* `nat`: Optional - if set to `true`, connection IP will be used as target IP (for clients behind NAT networks).
+* `key`: Required - your API key.
 
 Example: 
 
@@ -72,5 +72,11 @@ Example:
 GET `/api?domain=test.com&id=30&type=A&ip=127.0.1.1&key=1e10a17f50b057acb17bdc1432d095ee`
 
 Now `test.com` will point to `127.0.1.1`.
+
+If your Router does not support custom DDNS service, you could reach your goal using a simple command. e.g., add the following line to your crontab (using criterias above, assuming service url is example.com):
+
+`curl http://example.com/api?domain=test.com&id=30&type=A&nat=true&ttl=600&key=1e10a17f50b057acb17bdc1432d095ee`
+
+And `test.com` will points to the public IP of your side with TTL set to 600.
 
 

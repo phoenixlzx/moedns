@@ -798,7 +798,9 @@ module.exports = function(app) {
         });
     });
 
-    // API access
+    /*
+     * APIs
+     * */
     app.post('/getapi', checkLogin, function(req, res) {
         User.createApi(req.session.user.name, function(err, apikey) {
             if (err) {
@@ -829,7 +831,111 @@ module.exports = function(app) {
         });
     });
 
+    // DDNS
+    app.post('/api', function(req, res) {
+        var domain = req.params.domain,
+            apikey = req.params.key;
+        Domain.checkOwner(domain, user.name, function(err, doc) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/domains');
+            }
+            if (doc == null) {
+                req.flash('error', res.__('DOMAIN_NOT_OWNED'));
+                return res.redirect('/domains');
+            } else {
+                // Validate user input and update record.
+                var id = req.body.recordId,
+                    type = req.body.type,
+                    name = req.body.name == '@'?req.params.domain:req.body.name + '.' + req.params.domain,
+                    ttl = req.body.ttl,
+                    prio = req.body.prio,
+                    content = req.body.content;
+                // TODO Check user inputs for record validity
+                // Better RegEx required.
+                try {
+                    check(type, 'TYPE_ERROR').isIn([
+                        "A",
+                        "AAAA",
+                        "CNAME",
+                        "NS",
+                        "MX",
+                        "SRV",
+                        "TXT"
+                    ]);
+                    check(ttl, 'TTL_ERROR').isDecimal().min(60);
+                    switch (type) {
+                        case "A":
+                            check(content, 'NEED_IPV4').isIPv4();
+                            prio = null;
+                            break;
+                        case "AAAA":
+                            check(content, 'NEED_IPV6').isIPv6();
+                            prio = null;
+                            break;
+                        case "CNAME":
+                            if (tld.isValid(content) && tld.tldExists(content)) {
+                                prio = null;
+                            } else {
+                                throw new Error("VALUE_ERROR");
+                            }
+                            break;
+                        case "NS":
+                            if (tld.isValid(content) && tld.tldExists(content)) {
+                                prio = null;
+                            } else {
+                                throw new Error("VALUE_ERROR");
+                            }
+                            break;
+                        case "MX":
+                            if (tld.isValid(content) && tld.tldExists(content)) {
+                                /*  Better DNS check module needed.
+                                 dns.resolve(content, function(err, addresses) {
+                                 console.log(addresses);
+                                 if (addresses === undefined) {
+                                 throw new Error("NEED_A_RECORD");
+                                 } else {
 
+                                 }
+                                 });
+                                 */
+                            } else {
+                                throw new Error("VALUE_ERROR");
+                            }
+                            check(prio, 'PRIO_ERROR').isDecimal().max(100).min(1);
+                            break;
+                        case "SRV":
+                            break;
+                        case "TXT":
+                            prio = null;
+                            break;
+                        default:
+                            throw new Error("TYPE_ERROR");
+                    }
+                } catch (e) {
+                    console.log(e);
+                    req.flash('error', res.__(e.message));
+                    return res.redirect('/domain/' + req.params.domain);
+                }
+                var newRecord = new Record({
+                    id: id,
+                    name: name,
+                    type: type,
+                    content: content,
+                    ttl: ttl,
+                    prio: prio
+                });
+                Record.edit(newRecord, function(err) {
+                    if (err) {
+                        req.flash('error', err);
+                        return res.redirect('/domain/' + domain);
+                    }
+                    req.flash('success', res.__('RECORD_UPDATED'));
+                    res.redirect('/domain/' + domain);
+                });
+            }
+        });
+    })
 
     /*
     * Admin routes
@@ -1200,10 +1306,6 @@ module.exports = function(app) {
         });
     });
 
-    /*
-    * APIs
-    * */
-    // DDNS
 
 
     // TODO A default 404 page.

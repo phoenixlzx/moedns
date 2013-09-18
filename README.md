@@ -16,8 +16,8 @@ MoeDNS - A DNS Management app using Node.js, MongoDB &amp; PowerDNS with MySQL b
 * Live DNS server status.
 * Domain Tansfer between users.
 * System stats.
-* Moe theme design!
 * Dynamic DNS API.
+* Moe theme design!
 * And will be more...
 
 ## Usage & System requirements
@@ -43,6 +43,10 @@ MoeDNS - A DNS Management app using Node.js, MongoDB &amp; PowerDNS with MySQL b
 https://www.transifex.com/projects/p/moedns/
 
 Special thanks to the translation team!
+
+## Support
+
+IRC channel: #moedns @ freenode
 
 ## DDNS Usage
 

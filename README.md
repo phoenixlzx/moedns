@@ -55,6 +55,7 @@ Params:
 * `id`: target record id to update, so you need to create it before using.
 * `type`: record type, currently only `A` and `AAAA` is supported.
 * `ip`: target IP{v4, v6} address to update.
+* `ttl`: Time To Live option, if not present then will be set to 60 for faster resolve.
 * `nat`: if set to `true`, connection IP will be used as target IP (for clients behind NAT networks).
 * `key`: your API key.
 

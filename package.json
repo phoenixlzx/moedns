@@ -17,6 +17,7 @@
         "validator": "*",
         "i18n": "*",
         "tldjs": "~1.2.0",
-        "nodemailer": "*"
+        "nodemailer": "*",
+        "hat": "*"
     }
 }

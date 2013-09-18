@@ -798,6 +798,39 @@ module.exports = function(app) {
         });
     });
 
+    // API access
+    app.post('/getapi', checkLogin, function(req, res) {
+        User.createApi(req.session.user.name, function(err, apikey) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/api');
+            }
+            req.flash('success', res.__('API_GET'));
+            res.redirect('/myapi');
+        });
+    });
+
+    app.get('/myapi', checkLogin, function(req, res) {
+        User.getApi(req.session.user.name, function(err, apikey) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/myapi');
+            }
+            res.render('api', {
+                title: res.__('API_ACCESS') + ' - ' + config.siteName,
+                siteName: config.siteName,
+                siteTagline: config.siteTagline,
+                allowReg: config.allowReg,
+                user: req.session.user,
+                apikey: apikey,
+                success: req.flash('success').toString(),
+                error: req.flash('error').toString()
+            });
+        });
+    });
+
+
+
     /*
     * Admin routes
     * */
@@ -1166,6 +1199,11 @@ module.exports = function(app) {
             }
         });
     });
+
+    /*
+    * APIs
+    * */
+    // DDNS
 
 
     // TODO A default 404 page.

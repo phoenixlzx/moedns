@@ -204,3 +204,12 @@ td {
 #domain-id-table {
     width: 12%;
 }
+
+#apikey {
+    margin: auto;
+    padding: 10px 30px 20px 30px;
+    width: 60%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 5px;
+}

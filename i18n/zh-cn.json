@@ -122,5 +122,12 @@
     "BELONGS": "属主",
     "DOMAIN_DELETION_ADMIN_WARNING": "您将要删除以下域名，这将删除该域名的所有记录，可能导致所属用户的域名无法使用。您确定删除下列域名吗？",
     "DOMAIN_UPDATED": "域名已更新",
-    "SENDER_MAIL": "发送者: "
+    "SENDER_MAIL": "发送者: ",
+    "API_ACCESS": "API Key",
+    "GENERATE_API": "生成 API Key",
+    "NO_API": "您没有API Key，单击下面的按钮来生成一个",
+    "REGEN_API": "重新生成 API",
+    "API_GET": "成功生成 API",
+    "YOUR_APIKEY": "您已获得 API Key",
+    "MY_API": "我的 API"
 }

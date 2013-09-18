@@ -44,5 +44,26 @@ https://www.transifex.com/projects/p/moedns/
 
 Special thanks to the translation team!
 
+## DDNS Usage
+
+Path: `/api`
+Method: GET
+Params:
+* `domain`: target domain-name to resolve, such as `example.com` or `sub.example.com`.
+* `id`: target record id to update, so you need to create it before using.
+* `type`: record type, currently only `A` and `AAAA` is supported.
+* `ip`: target IP{v4, v6} address to update.
+* `nat`: if set to `true`, connection IP will be used as target IP (for clients behind NAT networks).
+* `key`: your API key.
+
+Example: 
+
+1. Create an 'A' record in your domain `test.com` records list, assuming record ID is `30`.
+
+2. Get your API key at `/myapi`, assuming API key is `1e10a17f50b057acb17bdc1432d095ee`
+
+GET `/api?domain=test.com&id=30&type=A&ip=127.0.1.1&key=1e10a17f50b057acb17bdc1432d095ee`
+
+Now `test.com` will point to `127.0.1.1`.
 
 

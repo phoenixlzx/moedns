@@ -833,7 +833,7 @@ module.exports = function(app) {
 
     // DDNS
     app.get('/api', function(req, res) {
-        console.log(req.query);
+        // console.log(req.query);
         var domain = req.query.domain,
             recordId = req.query.id,
             type = req.query.type,

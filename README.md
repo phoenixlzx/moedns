@@ -47,7 +47,9 @@ Special thanks to the translation team!
 ## DDNS Usage
 
 Path: `/api`
+
 Method: GET
+
 Params:
 * `domain`: target domain-name to resolve, such as `example.com` or `sub.example.com`.
 * `id`: target record id to update, so you need to create it before using.

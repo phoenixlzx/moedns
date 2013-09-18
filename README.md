@@ -17,6 +17,7 @@ MoeDNS - A DNS Management app using Node.js, MongoDB &amp; PowerDNS with MySQL b
 * Domain Tansfer between users.
 * System stats.
 * Moe theme design!
+* Dynamic DNS API.
 * And will be more...
 
 ## Usage & System requirements

@@ -838,6 +838,7 @@ module.exports = function(app) {
             recordId = req.query.id,
             type = req.query.type,
             ip = req.query.ip,
+            ttl = req.query.ttl || 60,
             nat = req.query.nat,
             apikey = req.query.key;
         if (nat) {
@@ -863,7 +864,6 @@ module.exports = function(app) {
                     } else {
                         // Validate user input and update record.
                         var name = domain,
-                            ttl = 60,
                             prio = null,
                             content = ip;
                         // TODO Check user inputs for record validity

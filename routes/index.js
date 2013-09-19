@@ -370,7 +370,7 @@ module.exports = function(app) {
         // console.log(req.body);
         var type = req.body.type,
             name = req.body.name == '@'?req.params.domain:req.body.name + '.' + req.params.domain,
-            ttl = req.body.ttl,
+            ttl = req.body.ttl || 3600,
             prio = req.body.prio || null,
             content = req.body.content;
 
@@ -754,8 +754,9 @@ module.exports = function(app) {
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
         var reply = req.body.email || req.session.user.email,
-            subject = req.body.subject + " - " + config.siteName,
-            body = res.__('SENDER_MAIL') + '\n\n' + req.body.message + '\n\n' + res.__('IP_ADDR')  + ip;
+            subject = req.body.subject + " - " + config.siteName;
+
+        var body = res.__('SENDER_MAIL') + reply + '\n\n' + req.body.message + '\n\n' + res.__('IP_ADDR')  + ip;
 
         // console.log(ip);
         // console.log(from);

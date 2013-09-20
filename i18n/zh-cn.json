@@ -129,5 +129,7 @@
     "REGEN_API": "重新生成 API",
     "API_GET": "成功生成 API",
     "YOUR_APIKEY": "您已获得 API Key",
-    "MY_API": "我的 API"
+    "MY_API": "我的 API",
+    "LOGIN_FAIL_WARNING": "登陆失败警告",
+    "LOGIN_FAIL_WARNING_BODY": "您的帐号在以下 IP 地址登陆失败，可能是恶意登录尝试。如果是您本人忘记密码，请直接联系管理员以解决该问题。尝试登陆的 IP: "
 }

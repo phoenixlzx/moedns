@@ -154,14 +154,33 @@ module.exports = function(app) {
             password = hash.update(req.body.password).digest('hex');
         // check login details
         User.get(req.body.username, function(err, user) {
-            if(!user || user.password != password) {
+            if (!user) {
                 req.flash('error', res.__('LOGIN_FAIL'));
                 return res.redirect('/login');
+            } else if (user.password != password) {
+                // Send warning message.
+                var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+                // setup e-mail data with unicode symbols
+                var mailOptions = {
+                    from: config.serviceMailSender, // sender address
+                    to: user.email, // list of receivers
+                    subject: res.__('LOGIN_FAIL_WARNING') + ' - ' + config.siteName, // Subject line
+                    text: res.__('LOGIN_FAIL_WARNING_BODY') + ip // plaintext body
+                }
+                // send mail with defined transport object
+                smtpTransport.sendMail(mailOptions, function(err, response) {
+                    // console.log('executed');
+                    if (err) {
+                        console.log(err);
+                    }
+                    req.flash('error', res.__('LOGIN_FAIL'));
+                    return res.redirect('/login');
+                });
+            } else {
+                req.session.user = user;
+                req.flash('success', res.__('LOGIN_SUCCESS'));
+                res.redirect('/');
             }
-            // Login success, store user information to session.
-            req.session.user = user;
-            req.flash('success', res.__('LOGIN_SUCCESS'));
-            res.redirect('/');
         });
     });
 

@@ -26,7 +26,7 @@ module.exports={
     // Mail configuration
     adminMail: 'dnsadmin@example.com',
     serviceMailSMTP: 'Gmail',
-    serviceMailSender: 'service@moedns.com',
+    serviceMailSender: 'service@example.com',
     serviceMailUser: 'gmail.user@gmail.com',
     serviceMailPass: 'gmail.pass.here',
 

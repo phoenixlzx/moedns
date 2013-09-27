@@ -124,16 +124,22 @@ Record.edit = function(record, callback) {
         if (err) {
             return (err);
         }
-        myConnection.query("UPDATE `records` SET ? WHERE id = ? ", [{
+        myConnection.query("UPDATE `records` SET ? WHERE `id` = ? AND `domain_id` = ?", [{
             "name": record.name,
             "type": record.type,
             "content": record.content,
             "ttl": record.ttl,
             "prio": record.prio
-        }, record.id ], function(err, result) {
+        }, record.id, record.domainId ], function(err, result) {
             if (err) {
                 return callback(err, null);
             }
+            // return error message if record is not under specific domain.
+            // console.log(typeof(result.changedRows));
+            if(result.changedRows === 0) {
+                return callback(null, null);
+            }
+
             // console.log(result);
             myConnection.query("UPDATE `records` SET change_date = UNIX_TIMESTAMP() WHERE ?", {
                 "id": record.id
@@ -141,7 +147,7 @@ Record.edit = function(record, callback) {
                 if (err) return (err);
                 myConnection.release();
             });
-            // console.log(result)
+            // console.log(result.message);
             callback(null, result);
         });
     });

@@ -613,8 +613,10 @@ module.exports = function(app) {
                 req.flash('error', res.__('DOMAIN_NOT_OWNED'));
                 return res.redirect('/domains');
             } else {
+                // console.log(doc);
                 // Validate user input and update record.
-                var id = req.body.recordId,
+                var id = parseInt(req.body.recordId),
+                    domainId = parseInt(doc.id),
                     type = req.body.type,
                     name = req.body.name == '@'?req.params.domain:req.body.name + '.' + req.params.domain,
                     ttl = req.body.ttl,
@@ -688,6 +690,7 @@ module.exports = function(app) {
                 }
                 var newRecord = new Record({
                     id: id,
+                    domainId: domainId,
                     name: name,
                     type: type,
                     content: content,
@@ -883,7 +886,8 @@ module.exports = function(app) {
                         return res.send(401, 'Domain unauthorized.');
                     } else {
                         // Validate user input and update record.
-                        var name = domain,
+                        var domainId = parseInt(doc.id),
+                            name = domain,
                             prio = null,
                             content = ip;
                         // TODO Check user inputs for record validity
@@ -907,17 +911,21 @@ module.exports = function(app) {
                         }
                         var newRecord = new Record({
                             id: recordId,
+                            domainId: domainId,
                             name: name,
                             type: type,
                             content: ip,
                             ttl: ttl,
                             prio: prio
                         });
-                        Record.edit(newRecord, function(err) {
+                        Record.edit(newRecord, function(err, result) {
                             if (err) {
                                 return res.send(500, 'Server error.')
+                            } else if (!result) {
+                                return res.send(400, 'Bad request.')
+                            } else {
+                                return res.send(200, 'Record updated.');
                             }
-                            res.send(200, 'Record updated.');
                         });
                     }
                 });

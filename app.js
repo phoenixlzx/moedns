@@ -40,13 +40,17 @@ app.use(express.methodOverride());
     })
 }));
 */
-app.use(express.cookieParser());
-app.use(express.cookieSession({
-    key: 'moedns',
-    secret: config.cookieSecret,
-    cookie: { maxAge: 60 * 60 * 1000 },
-    proxy: true
-}));
+app
+    .use(express.cookieParser(app.set(config.cookieSecret)))
+    .use(express.session({
+        key: 'moedns',
+        secret: config.cookieSecret,
+        domain   : config.url,
+        httpOnly : true,
+        cookie: { maxAge: 60 * 60 * 1000 },
+        proxy: true
+    })
+);
 
 app.use(i18n.init);
 app.use(flash());

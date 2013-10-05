@@ -40,11 +40,8 @@ app.use(express.session({
         clear_interval: 3600
     })
 }));
-
-
 app.use(i18n.init);
 app.use(flash());
-app.use(express.session());
 app.use(app.router);
 app.use(require('less-middleware')({ src: __dirname + '/public' }));
 app.use(express.static(path.join(__dirname, 'public')));

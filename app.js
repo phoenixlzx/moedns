@@ -7,7 +7,7 @@ var express = require('express')
     , routes = require('./routes')
     , http = require('http')
     , path = require('path')
-    // , connect = require('connect')
+    , MongoStore = require('connect-mongo')(express)
     , config = require('./config.js')
     , flash = require('connect-flash')
     , i18n = require('i18n');
@@ -31,7 +31,8 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-/* app.use(express.session({
+app.use(express.cookieParser(config.cookieSecret));
+app.use(express.session({
     secret: config.cookieSecret,
     cookie: {maxAge: 1000 * 60 * 60 * 24 * 30},//30 days
     store: new MongoStore({
@@ -39,18 +40,7 @@ app.use(express.methodOverride());
         clear_interval: 3600
     })
 }));
-*/
-app
-    .use(express.cookieParser(config.cookieSecret))
-    .use(express.session({
-        key: 'moedns',
-        secret: config.cookieSecret,
-        domain   : config.url,
-        httpOnly : true,
-        cookie: { maxAge: 60 * 60 * 1000 },
-        proxy: true
-    })
-);
+
 
 app.use(i18n.init);
 app.use(flash());

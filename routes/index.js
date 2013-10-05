@@ -859,7 +859,7 @@ module.exports = function(app) {
         // console.log(req.query);
         var domain = req.query.domain,
             recordId = req.query.id,
-            type = req.query.type,
+            type = req.query.type.toUpperCase(),
             ip = req.query.ip,
             ttl = req.query.ttl || 60,
             nat = req.query.nat,

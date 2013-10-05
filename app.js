@@ -41,7 +41,7 @@ app.use(express.methodOverride());
 }));
 */
 app
-    .use(express.cookieParser(app.set(config.cookieSecret)))
+    .use(express.cookieParser(config.cookieSecret))
     .use(express.session({
         key: 'moedns',
         secret: config.cookieSecret,

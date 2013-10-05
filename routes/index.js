@@ -895,7 +895,7 @@ module.exports = function(app) {
                         try {
                             check(type, 'TYPE_ERROR').isIn([
                                 "A",
-                                "AAAA",
+                                "AAAA"
                             ]);
                             switch (type) {
                                 case "A":

@@ -12,7 +12,6 @@
         "less-middleware": "*",
         "mongodb": "*",
         "mysql": "*",
-        "connect-mongo": "*",
         "connect-flash": "*",
         "validator": "*",
         "i18n": "*",

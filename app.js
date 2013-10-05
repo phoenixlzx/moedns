@@ -42,6 +42,7 @@ app.use(express.methodOverride());
 */
 app.use(express.cookieParser());
 app.use(express.cookieSession({
+    key: 'moedns',
     secret: config.cookieSecret,
     cookie: { maxAge: 60 * 60 * 1000 },
     proxy: true

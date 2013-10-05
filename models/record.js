@@ -50,6 +50,7 @@ Record.prototype.save = function(callback) {
                     id: insertId
             }, function(err) {
                 if (err) {
+                    myConnection.release();
                     return (err);
                 }
                 // console.log(result2);
@@ -65,6 +66,7 @@ Record.prototype.save = function(callback) {
 Record.getList = function(domainId, callback) {
     mysql.getConnection(function(err, myConnection) {
         if (err) {
+            myConnection.release();
             return (err);
         }
         // console.log(domainId);
@@ -72,6 +74,7 @@ Record.getList = function(domainId, callback) {
             "domain_id": domainId
         }, function(err, result) {
             if (err) {
+                myConnection.release();
                 return callback(err, null);
             }
             myConnection.release();
@@ -85,12 +88,14 @@ Record.getList = function(domainId, callback) {
 Record.check = function(record, callback) {
     mysql.getConnection(function(err, myConnection) {
         if (err) {
+            myConnection.release();
             return (err);
         }
         myConnection.query("SELECT * FROM `records` WHERE `domain_id` = ? AND `name` = ? AND `type` = ? AND `content` = ?", [
             record.domainId, record.name, record.type, record.content
         ], function(err, result) {
             if (err) {
+                myConnection.release();
                 return callback(err, null);
             }
             // console.log(result)
@@ -103,6 +108,7 @@ Record.check = function(record, callback) {
 Record.delete = function(recordId, callback) {
     mysql.getConnection(function(err, myConnection) {
         if (err) {
+            myConnection.release();
             return (err);
         }
 
@@ -110,6 +116,7 @@ Record.delete = function(recordId, callback) {
             "id": recordId
         }, function(err, result) {
             if (err) {
+                myConnection.release();
                 return callback(err, null);
             }
             myConnection.release();
@@ -122,6 +129,7 @@ Record.edit = function(record, callback) {
     // console.log(record);
     mysql.getConnection(function(err, myConnection) {
         if (err) {
+            myConnection.release();
             return (err);
         }
         myConnection.query("UPDATE `records` SET ? WHERE `id` = ? AND `domain_id` = ?", [{
@@ -132,11 +140,13 @@ Record.edit = function(record, callback) {
             "prio": record.prio
         }, record.id, record.domainId ], function(err, result) {
             if (err) {
+                myConnection.release();
                 return callback(err, null);
             }
             // return error message if record is not under specific domain.
             // console.log(typeof(result.changedRows));
             if(result.changedRows === 0) {
+                myConnection.release();
                 return callback(null, null);
             }
 
@@ -144,7 +154,10 @@ Record.edit = function(record, callback) {
             myConnection.query("UPDATE `records` SET change_date = UNIX_TIMESTAMP() WHERE ?", {
                 "id": record.id
             }, function(err) {
-                if (err) return (err);
+                if (err) {
+                    myConnection.release();
+                    return (err);
+                }
                 myConnection.release();
             });
             // console.log(result.message);

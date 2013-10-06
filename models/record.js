@@ -139,13 +139,14 @@ Record.edit = function(record, callback) {
             "ttl": record.ttl,
             "prio": record.prio
         }, record.id, record.domainId ], function(err, result) {
+	    // console.log(result)
             if (err) {
                 myConnection.release();
                 return callback(err, null);
             }
             // return error message if record is not under specific domain.
             // console.log(typeof(result.changedRows));
-            if(result.changedRows === 0) {
+            if(result.affectedRows === 0) {
                 myConnection.release();
                 return callback(null, null);
             }

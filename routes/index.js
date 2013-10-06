@@ -919,11 +919,14 @@ module.exports = function(app) {
                             prio: prio
                         });
                         Record.edit(newRecord, function(err, result) {
+			    // console.log(result);
                             if (err) {
-                                return res.send(500, 'Server error.')
-                            } else if (!result) {
-                                return res.send(400, 'Bad request.')
-                            } else {
+                                return res.send(500, 'Server error.');
+			    } else if (!result) {
+				return res.send(400, 'Bad request.');
+                            } else if (result.changedRows === 0) {
+                                return res.send(200, 'Record unchange.');
+			    } else {
                                 return res.send(200, 'Record updated.');
                             }
                         });

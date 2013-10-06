@@ -3,7 +3,7 @@ moedns
 
 MoeDNS - A DNS Management app using Node.js, MongoDB &amp; PowerDNS with MySQL backend.
 
-# === Under heavy development ===
+Demo: [MoeDNS](http://moedns.phoenixlzx.com)  **ATTENTION** Please do NOT point your domain to this site, as it didnt have a DNS server running.
 
 ## Feature
 

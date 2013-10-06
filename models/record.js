@@ -1,5 +1,6 @@
 var mysql = require('./mysql.js'),
-    mongodb = require('./mongodb.js');
+    mongodb = require('./mongodb.js'),
+    config = require('../config.js');
 
 
 // MySQL struct: id, domain_id, name, type, content, ttl, prio, change_date
@@ -44,11 +45,15 @@ Record.prototype.save = function(callback) {
                 return (err);
             }
             // console.log(result);
-            var insertId = parseInt(result.insertId);
+            // var insertId = parseInt(result.insertId);
             // console.log(insertId);
-            myConnection.query("UPDATE `records` SET change_date = UNIX_TIMESTAMP() WHERE ?", {
-                    id: insertId
-            }, function(err) {
+            // SOA content: config.powerservers[0] + ' ' + config.adminMail + ' 0 3600 360 1209600 ' + config.powerttl
+            // UNIX_TIMESTAMP in Javascript: var ts = Math.round((new Date()).getTime() / 1000);
+            var SOAcontent = config.powerservers[0] + ' ' + config.adminMail + ' ' + Math.round((new Date()).getTime() / 1000) + ' 3600 360 1209600 ' + config.powerttl
+            myConnection.query("UPDATE `records` SET ? WHERE `domain_id` = ? AND `type` = 'SOA'", [{
+                "content": SOAcontent
+            }, parseInt(record.domainId)], function(err, resultSOA) {
+                // console.log(resultSOA);
                 if (err) {
                     myConnection.release();
                     return (err);
@@ -152,9 +157,12 @@ Record.edit = function(record, callback) {
             }
 
             // console.log(result);
-            myConnection.query("UPDATE `records` SET change_date = UNIX_TIMESTAMP() WHERE ?", {
-                "id": record.id
-            }, function(err) {
+            // var insertId = parseInt(record.domainId);
+            var SOAcontent = config.powerservers[0] + ' ' + config.adminMail + ' ' + Math.round((new Date()).getTime() / 1000) + ' 3600 360 1209600 ' + config.powerttl
+            myConnection.query("UPDATE `records` SET ? WHERE `domain_id` = ? AND `type` = 'SOA'", [{
+                "content": SOAcontent
+            }, parseInt(record.domainId)], function(err, resultSOA) {
+                // console.log(resultSOA);
                 if (err) {
                     myConnection.release();
                     return (err);

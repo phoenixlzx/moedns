@@ -11,7 +11,10 @@
      '004.jpg',
      '005.jpg',
      '006.jpg',
-     '007.jpg'
+     '007.jpg',
+     '008.jpg',
+     '009.jpg',
+     '010.jpg'
  ];
  $('body').css({'background-image': 'url(/images/background/' + images[Math.floor(Math.random() * images.length)] + ')' });
 

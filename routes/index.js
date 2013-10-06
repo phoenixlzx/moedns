@@ -869,6 +869,9 @@ module.exports = function(app) {
         } else {
             ip = req.query.ip;
         }
+        if (apikey == '' || apikey == null) {
+            return res.send(401, 'User unauthorized.');
+        }
         User.checkApi(apikey, function(err, user) {
             if (err) {
                 return res.send(500, 'Server error.');

@@ -388,10 +388,17 @@ module.exports = function(app) {
     app.post('/domain/:domain/add-record', checkLogin, function(req, res) {
         // console.log(req.body);
         var type = req.body.type,
-            name = req.body.name == '@'?req.params.domain:req.body.name + '.' + req.params.domain,
+            // name = req.body.name == '@'?req.params.domain:req.body.name + '.' + req.params.domain,
             ttl = req.body.ttl || 3600,
             prio = req.body.prio || null,
             content = req.body.content;
+
+        var name = null;
+        if (req.body.name == '@' || req.body.name == '') {
+            name = req.params.domain;
+        } else {
+            name = req.body.name + '.' + req.params.domain;
+        }
 
         try {
             check(ttl, 'TTL_ERROR').isDecimal().min(60);

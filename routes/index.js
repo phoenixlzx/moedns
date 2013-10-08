@@ -1319,7 +1319,7 @@ module.exports = function(app) {
         });
     });
 
-    // TODO A default 404 page.
+    // A default 404 page.
     app.all('*', function(req, res){
         req.flash('error', res.__('404'));
         res.redirect('/');

@@ -132,5 +132,6 @@
     "MY_API": "主人的 API",
     "LOGIN_FAIL_WARNING": "召唤失败警告",
     "LOGIN_FAIL_WARNING_BODY": "主人～～可能有人想要冒充主人召唤萌D娘啊＞﹏＜如果是主人忘记了契约密文，直接和萌D娘中枢联系就好了TAT 召唤失败的 IP 地址是： ",
-    "MISSING_FIELD": "主人您忘记了什么吧？"
+    "MISSING_FIELD": "主人您忘记了什么吧？",
+    "404": "阿诺...主人要的页面找不到呢喵..."
 }

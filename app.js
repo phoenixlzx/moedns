@@ -42,9 +42,9 @@ app.use(express.session({
 }));
 app.use(i18n.init);
 app.use(flash());
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(app.router);
 app.use(require('less-middleware')({ src: __dirname + '/public' }));
-app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {

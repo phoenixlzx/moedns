@@ -792,9 +792,13 @@ module.exports = function(app) {
         // console.log(to);
         // console.log(subject);
         // console.log(body);
+        if (!req.body.subject || !req.body.message) {
+            req.flash('error', res.__('MISSING_FIELD'));
+            return res.redirect('/contact');
+        }
 
         try {
-            check(reply, 'EMAIL_INVALID').isEmail()
+            check(reply, 'EMAIL_INVALID').isEmail();
         } catch (e) {
             req.flash('error', res.__(e.message));
             return res.redirect('/contact');
@@ -876,7 +880,7 @@ module.exports = function(app) {
         } else {
             ip = req.query.ip;
         }
-        if (apikey == '' || apikey == null) {
+        if (!apikey) {
             return res.send(401, 'User unauthorized.');
         }
         User.checkApi(apikey, function(err, user) {

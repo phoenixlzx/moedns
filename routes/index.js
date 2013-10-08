@@ -1322,7 +1322,16 @@ module.exports = function(app) {
     // A default 404 page.
     app.all('*', function(req, res){
         req.flash('error', res.__('404'));
-        res.redirect('/');
+        res.status(404);
+        res.render('index', {
+            siteName: config.siteName,
+            siteTagline: config.siteTagline,
+            title: res.__('HOME') + ' - ' + config.siteName,
+            allowReg: config.allowReg,
+            user: req.session.user,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+        });
     });
 
     // Session functions

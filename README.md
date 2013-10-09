@@ -22,9 +22,11 @@ Demo: [MoeDNS](http://moedns.phoenixlzx.com)  **ATTENTION** Please do NOT point 
 
 ## Usage & System requirements
 
-* One Linux server with MongoDB , sendmail & newer version of Node.js installed, other Linux servers with PowerDNS with MySQL backend.
+* MoeDNS Server: A Linux Server with MongoDB and newer version of Node.js installed.
 
-* Replication with MySQL is recommended.
+* PowerDNS Server: Linux server running PowerDNS with MySQL backend (import pdns schema first).
+
+* PowerDNS Servers replication with MySQL is recommended.
 
 --
 

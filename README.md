@@ -81,7 +81,7 @@ And `test.com` will points to the public IP of your side with TTL set to 600.
 
 ## License
 
-MoeDNS - DNS Management app powered by Node.js & MongoDB & PowerDNS.
+MoeDNS - A DNS Management app using Node.js, MongoDB &amp; PowerDNS with MySQL backend.
 Copyright (C) 2013  Phoenix Nemo <i@phoenixlzx.com>
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.

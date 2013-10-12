@@ -49,7 +49,7 @@ Record.prototype.save = function(callback) {
             // console.log(insertId);
             // SOA content: config.powerservers[0] + ' ' + config.adminMail + ' 0 3600 360 1209600 ' + config.powerttl
             // UNIX_TIMESTAMP in Javascript: var ts = Math.round((new Date()).getTime() / 1000);
-            var SOAcontent = config.powerservers[0] + ' ' + config.adminMail + ' ' + Math.round((new Date()).getTime() / 1000) + ' 3600 360 1209600 ' + config.powerttl
+            var SOAcontent = config.powerservers[0] + ' ' + config.adminMail + ' ' + Math.round((new Date()).getTime() / 1000) + ' 3600 360 1209600 180';
             myConnection.query("UPDATE `records` SET ? WHERE `domain_id` = ? AND `type` = 'SOA'", [{
                 "content": SOAcontent
             }, parseInt(record.domainId)], function(err, resultSOA) {
@@ -158,7 +158,7 @@ Record.edit = function(record, callback) {
 
             // console.log(result);
             // var insertId = parseInt(record.domainId);
-            var SOAcontent = config.powerservers[0] + ' ' + config.adminMail + ' ' + Math.round((new Date()).getTime() / 1000) + ' 3600 360 1209600 ' + config.powerttl
+            var SOAcontent = config.powerservers[0] + ' ' + config.adminMail + ' ' + Math.round((new Date()).getTime() / 1000) + ' 3600 360 1209600 180';
             myConnection.query("UPDATE `records` SET ? WHERE `domain_id` = ? AND `type` = 'SOA'", [{
                 "content": SOAcontent
             }, parseInt(record.domainId)], function(err, resultSOA) {

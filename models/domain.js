@@ -43,7 +43,7 @@ Domain.prototype.save = function(callback) {
                     "name": domain.name,
                     "type": "NS",
                     "content": nsServer,
-                    "ttl": 600
+                    "ttl": config.powerttl
                 }, function(err) {
                     if (err) {
                         return callback(err);
@@ -59,7 +59,7 @@ Domain.prototype.save = function(callback) {
                     "name": domain.name,
                     "type": "SOA",
                     "content": config.powerservers[0] + ' ' + config.adminMail + ' ' + Math.round((new Date()).getTime() / 1000) + ' 3600 360 1209600 180',
-                    "ttl": 600
+                    "ttl": config.powerttl
                 });
                 myConnection.release();
             });

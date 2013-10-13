@@ -19,6 +19,7 @@ module.exports={
 
     // Site configuration.
     url: 'example.com',
+    ssl: true,
     siteName: 'PhoenixDNS',
     siteTagline: 'Yet another PowerDNS Web UI.',
     allowReg: true,

@@ -6,7 +6,7 @@
     "VALUE_ERROR": "主人，记录值不正确我会看不懂喵！",
     "DOMAIN_ID": "域名ID",
     "ALREADY_LOGIN": "您已经召唤了萌D娘",
-    "LOGIN_FAIL_WARNING_BODY": "主人～～可能有人想要冒充主人召唤萌D娘啊＞﹏＜如果是主人忘记了契约密文，直接和萌D娘中枢联系就好了TAT 召唤失败的 IP 地址是： ",
+    "LOGIN_FAIL_WARNING_BODY": "主人～～可能有人想要冒充主人召唤萌D娘啊＞﹏＜如果是主人忘记了契约密文，直接和萌D娘中枢联系就好了TAT \n召唤失败的 IP 地址是： ",
     "NEXT": "下一页",
     "404": "阿诺...主人要的页面找不到呢喵...",
     "DOMAIN_NOT_VALID": "主人，不正确的域名我会看不懂喵！",
@@ -133,5 +133,13 @@
     "SYSTEM": "萌D娘中枢",
     "ROLE": "主人身份",
     "CONFIRM_LEAVE": "主人，你已在此页面做出改动。\n如果离开此页面的话，主人所做的所有改动我都记不住啊。",
-    "YOUR_APIKEY": "主人有 API 喵！"
+    "YOUR_APIKEY": "主人有 API 喵！",
+    "USER_NOT_FOUND": "木有找到对应的主人啊喵...",
+    "RESET_PASSWORD": "重新签订契约",
+    "RESET_PASS_BODY_1": "主人希望重新签订契约，请在1小时内通过下面的链接来完成～\n",
+    "RESET_PASS_BODY_2": "\n如果主人不希望重新签订契约，则无需采取任何操作。如果这不是主人的请求，要及时反馈给我的中枢哦。请求重新签订契约的主人 IP: ",
+    "RESET_MAIL_SENT": "重置魔法已释放～",
+    "FORGOT_PASSWORD": "重新签订契约",
+    "RESETKEY_INCORRECT": "重置密文不正确",
+    "PASSWORD_UPDATED": "重新签订契约成功=w="
 }

@@ -147,12 +147,18 @@ module.exports = function(app) {
             error: req.flash('error').toString()
         });
     });
-    // TODO password recovery.
+
     app.post('/login', checkNotLogin, function(req, res){
         // Generate password hash
         var hash = crypto.createHash('sha256'),
             password = hash.update(req.body.password).digest('hex');
         // check login details
+        try {
+            check(req.body.username, 'USERNAME_ALPHANUMERIC').isAlphanumeric();
+        } catch (e) {
+            req.flash('error', res.__(e.message));
+            return res.redirect('/login');
+        }
         User.get(req.body.username, function(err, user) {
             if (!user) {
                 req.flash('error', res.__('LOGIN_FAIL'));
@@ -182,6 +188,135 @@ module.exports = function(app) {
                 res.redirect('/');
             }
         });
+    });
+
+    // Password recovery
+    // TODO Replace setTimeout with Date()
+    app.get('/forgot-password', checkNotLogin, function(req, res) {
+        res.render('forgot-password',{
+            title: res.__('RESET_PASSWORD') + ' - ' + config.siteName,
+            siteName: config.siteName,
+            siteTagline: config.siteTagline,
+            allowReg: config.allowReg,
+            user: req.session.user,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+        });
+    });
+
+    app.post('/forgot-password', checkNotLogin, function(req, res) {
+        var mail = req.body.email,
+            ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+        // Check email format
+        try {
+            check(mail, 'EMAIL_INVALID').len(4, 64).isEmail();
+        } catch (e) {
+            req.flash('error', res.__(e.message));
+            return res.redirect('/forgot-password');
+        }
+
+        User.check(null, mail, function(err, user) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/forgot-password');
+            }
+            if (!user) {
+                req.flash('error', res.__('USER_NOT_FOUND'));
+                return res.redirect('/reset-password');
+            }
+
+            // Get user info, generate key then send to user.
+            User.createResetkey(user.name, user.email, function(err, resetkey) {
+                if (err) {
+                    req.flash('error', err);
+                    return res.redirect('/forgot-password');
+                }
+                // console.log(resetkey);
+
+                var resetLink = 'http://' + config.url + '/reset-password?resetkey=' + resetkey;
+                if (config.ssl) {
+                    resetLink = 'https://' + config.url + '/reset-password?resetkey=' + resetkey;
+                }
+                console.log(resetLink);
+                var mailOptions = {
+                    from: config.serviceMailSender, // sender address
+                    to: user.email, // list of receivers
+                    subject: res.__('RESET_PASSWORD') + ' - ' + config.siteName, // Subject line
+                    text: res.__('RESET_PASS_BODY_1') + resetLink + res.__('RESET_PASS_BODY_2') + ip // plaintext body
+                }
+                // send mail with defined transport object
+                // console.log(mailOptions.text);
+                smtpTransport.sendMail(mailOptions, function(err, response) {
+                    // console.log(response);
+                    if (err) {
+                        console.log(err);
+                    }
+                    User.clearResetkey(resetkey);
+                    req.flash('success', res.__('RESET_MAIL_SENT'));
+                    return res.redirect('/login');
+                });
+            });
+        });
+
+    });
+
+    app.get('/reset-password', checkNotLogin, function(req, res) {
+        res.render('reset-password',{
+            title: res.__('RESET_PASSWORD') + ' - ' + config.siteName,
+            siteName: config.siteName,
+            siteTagline: config.siteTagline,
+            allowReg: config.allowReg,
+            user: req.session.user,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+        });
+    });
+
+    app.post('/reset-password', checkNotLogin, function(req, res) {
+        var resetkey = req.query.resetkey;
+
+        try {
+            check(req.body.password, 'PASSWORD_EMPTY').notEmpty();
+            check(req.body['password-repeat'], 'PASSWORD_NOT_EQUAL').equals(req.body.password);
+            check(resetkey, 'RESETKEY_INCORRECT').isAlphanumeric().len(32);
+        } catch (e) {
+            req.flash('error', res.__(e.message));
+            return res.redirect('/');
+        }
+
+        // get password hash
+        var hash = crypto.createHash('sha256'),
+            password = hash.update(req.body.password).digest('hex');
+
+        User.checkResetkey(resetkey, function(err, user) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/');
+            }
+            if (!user) {
+                req.flash('error', res.__('USER_NOT_FOUND'));
+                return res.redirect('/');
+            }
+
+            var newUser = new User({
+                name: user.name,
+                password: password,
+                email: user.email
+            });
+
+            User.edit(newUser, function(err, user){
+                if(err) {
+                    req.flash('error', res.__(err));
+                    return res.redirect('/');
+                }
+                req.flash('success', res.__('PASSWORD_UPDATED'));
+                req.session.user = null;
+                res.redirect('/login');
+            });
+
+        });
+
     });
 
     app.post('/logout', checkLogin, function(req, res) {
@@ -241,14 +376,25 @@ module.exports = function(app) {
             password: password
         });
 
-        User.edit(newUser, function(err, user){
+        User.check(null, newUser.email, function(err, user){
+            // console.log(user);
+            if(user && newUser.email != req.session.user.email) {
+                err = 'USER_EXISTS';
+            }
             if(err) {
                 req.flash('error', res.__(err));
-                return res.redirect('/me');
+                return res.redirect('/reg');
             }
-            req.flash('success', res.__('USER_UPDATED'));
-            req.session.user = null;
-            res.redirect('/login');
+
+            User.edit(newUser, function(err, user){
+                if(err) {
+                    req.flash('error', res.__(err));
+                    return res.redirect('/me');
+                }
+                req.flash('success', res.__('USER_UPDATED'));
+                req.session.user = null;
+                res.redirect('/login');
+            });
         });
     });
 

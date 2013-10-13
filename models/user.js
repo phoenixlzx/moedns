@@ -235,4 +235,89 @@ User.checkApi = function(apikey, callback) {
     });
 }
 
+User.createResetkey = function(username, email, callback) {
+    mongoclient.open(function(err, mongoclient) {
+        var db = mongoclient.db(config.mongodb);
+        if (err) {
+            mongoclient.close();
+            return callback(err);
+        }
+        db.collection('users', function(err, collection) {
+            if (err) {
+                mongoclient.close();
+                return callback(err);
+            }
+            var resetkey = hat();
+            collection.update({
+                "name":username,
+                "email":email
+            }, {$set : {
+                "resetkey": resetkey
+            }}, function(err) {
+                if (err) {
+                    mongoclient.close();
+                    return callback(err);
+                }
+                mongoclient.close();
+                callback(err, resetkey);
+            });
+        });
+    });
+}
+
+User.clearResetkey = function(resetkey) {
+    setTimeout(function () {
+        mongoclient.open(function(err, mongoclient) {
+            var db = mongoclient.db(config.mongodb);
+            if (err) {
+                mongoclient.close();
+            }
+            db.collection('users', function(err, collection) {
+                if (err) {
+                    mongoclient.close();
+                }
+                collection.update({"resetkey":resetkey}, {$set : {
+                    "resetkey": null
+                }}, function(err) {
+                    if (err) {
+                        mongoclient.close();
+                        console.log(err);
+                    }
+                    mongoclient.close();
+                    console.log('Resetkey ' + resetkey + ' Cleared.')
+                });
+            });
+        });
+    }, 3600000)
+}
+
+User.checkResetkey = function(resetkey, callback) {
+    // console.log(apikey);
+    mongoclient.open(function(err, mongoclient) {
+        var db = mongoclient.db(config.mongodb);
+        if(err) {
+            return callback(err);
+        }
+        // read users collection.
+        db.collection('users', function(err, collection) {
+            if(err) {
+                mongoclient.close();
+                return callback(err);
+            }
+            collection.findOne({
+                "resetkey": resetkey
+            }, function(err, doc) {
+                mongoclient.close();
+                // console.log(doc);
+                if(doc) {
+                    // console.log(doc.apikey);
+                    callback(err, doc); // query success, return user data.
+                } else {
+                    callback(err, null); // query failed, return null.
+                }
+            });
+        });
+    });
+}
+
 // TODO Add user-specified TTL.

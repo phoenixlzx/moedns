@@ -247,12 +247,14 @@ User.createResetkey = function(username, email, callback) {
                 mongoclient.close();
                 return callback(err);
             }
-            var resetkey = hat();
+            var resetkey = hat(),
+                resetTime = new Date().getTime();
             collection.update({
                 "name":username,
                 "email":email
             }, {$set : {
-                "resetkey": resetkey
+                "resetkey": resetkey,
+                "resetTime": resetTime
             }}, function(err) {
                 if (err) {
                     mongoclient.close();
@@ -310,7 +312,10 @@ User.checkResetkey = function(resetkey, callback) {
                 mongoclient.close();
                 // console.log(doc);
                 if(doc) {
-                    // console.log(doc.apikey);
+                    var date = new Date().getTime();
+                    if (date - doc.resetTime > 3600000) {
+                        return callback('RESETKEY_INVALID', null);
+                    }
                     callback(err, doc); // query success, return user data.
                 } else {
                     callback(err, null); // query failed, return null.

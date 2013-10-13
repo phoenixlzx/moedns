@@ -238,7 +238,7 @@ module.exports = function(app) {
                 if (config.ssl) {
                     resetLink = 'https://' + config.url + '/reset-password?resetkey=' + resetkey;
                 }
-                console.log(resetLink);
+                // console.log(resetLink);
                 var mailOptions = {
                     from: config.serviceMailSender, // sender address
                     to: user.email, // list of receivers
@@ -291,7 +291,7 @@ module.exports = function(app) {
 
         User.checkResetkey(resetkey, function(err, user) {
             if (err) {
-                req.flash('error', err);
+                req.flash('error', res.__(err));
                 return res.redirect('/');
             }
             if (!user) {

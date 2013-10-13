@@ -136,10 +136,11 @@
     "YOUR_APIKEY": "主人有 API 喵！",
     "USER_NOT_FOUND": "木有找到对应的主人啊喵...",
     "RESET_PASSWORD": "重新签订契约",
-    "RESET_PASS_BODY_1": "主人希望重新签订契约，请在1小时内通过下面的链接来完成～\n",
-    "RESET_PASS_BODY_2": "\n如果主人不希望重新签订契约，则无需采取任何操作。如果这不是主人的请求，要及时反馈给我的中枢哦。请求重新签订契约的主人 IP: ",
+    "RESET_PASS_BODY_1": "主人希望重新签订契约，请在1小时内通过下面的链接来完成～\n\n",
+    "RESET_PASS_BODY_2": "\n\n如果主人不希望重新签订契约，则无需采取任何操作。如果这不是主人的请求，要及时反馈给我的中枢哦。请求重新签订契约的主人 IP: ",
     "RESET_MAIL_SENT": "重置魔法已释放～",
     "FORGOT_PASSWORD": "重新签订契约",
     "RESETKEY_INCORRECT": "重置密文不正确",
-    "PASSWORD_UPDATED": "重新签订契约成功=w="
+    "PASSWORD_UPDATED": "重新签订契约成功=w=",
+    "RESETKEY_INVALID": "重置魔法似乎失效了的说 QAQ"
 }

@@ -136,10 +136,11 @@
     "404": "未找到页面",
     "USER_NOT_FOUND": "未找到对应用户",
     "RESET_PASSWORD": "重置密码",
-    "RESET_PASS_BODY_1": "您请求重置密码。请在1小时内通过下面的链接进行密码重置。\n",
-    "RESET_PASS_BODY_2": "\n如果该请求不是您本人所为，您当前无需采取任何操作。或者您可以将该问题反馈给管理员。请求重置密码的 IP 为: ",
+    "RESET_PASS_BODY_1": "您请求重置密码。请在1小时内通过下面的链接进行密码重置。\n\n",
+    "RESET_PASS_BODY_2": "\n\n如果该请求不是您本人所为，您当前无需采取任何操作。或者您可以将该问题反馈给管理员。请求重置密码的 IP 为: ",
     "RESET_MAIL_SENT": "重置密码邮件已发送",
     "FORGOT_PASSWORD": "忘记密码",
     "RESETKEY_INCORRECT": "重置密钥不正确",
-    "PASSWORD_UPDATED": "密码已更新。请重新登陆"
+    "PASSWORD_UPDATED": "密码已更新。请重新登陆",
+    "RESETKEY_INVALID": "重置密钥无效"
 }

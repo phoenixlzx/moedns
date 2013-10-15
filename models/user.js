@@ -6,6 +6,8 @@ function User(user) {
     this.name = user.name;
     this.email = user.email;
     this.password = user.password;
+    this.active = user.active;
+    this.activekey = user.activekey;
     this.role = user.role;
 }
 
@@ -18,6 +20,8 @@ User.prototype.save = function(callback) {
         name: this.name,
         email: this.email,
         password: this.password,
+        active: this.active,
+        activekey: this.activekey,
         role: "user"
     };
     // open database.
@@ -37,6 +41,61 @@ User.prototype.save = function(callback) {
             collection.insert(user, {safe: true}, function(err, user) {
                 mongoclient.close();
                 callback(err, user); // return user data if success.
+            });
+        });
+    });
+};
+
+User.checkActivekey = function(activekey, callback) {
+    mongoclient.open(function(err, mongoclient) {
+        var db = mongoclient.db(config.mongodb);
+        if(err) {
+            return callback(err);
+        }
+        // read users collection.
+        db.collection('users', function(err, collection) {
+            if(err) {
+                mongoclient.close();
+                return callback(err);
+            }
+            collection.findOne({
+                "activekey": activekey,
+                "active": false
+            }, function(err, doc) {
+                mongoclient.close();
+                // console.log(doc);
+                if(doc) {
+                    // console.log(doc.apikey);
+                    callback(err, doc); // query success, return user data.
+                } else {
+                    callback(err, null); // query failed, return null.
+                }
+            });
+        });
+    });
+}
+
+User.activate = function(activekey, callback) {
+    mongoclient.open(function(err, mongoclient) {
+        var db = mongoclient.db(config.mongodb);
+        if (err) {
+            return callback(err);
+        }
+        db.collection('users', function(err, collection) {
+            if (err) {
+                mongoclient.close();
+                return callback(err);
+            }
+            collection.update({"activekey":activekey}, {$set : {
+                "active": true,
+                "activekey": null
+            }}, function(err) {
+                if (err) {
+                    mongoclient.close();
+                    return callback(err);
+                }
+                mongoclient.close();
+                callback(null);
             });
         });
     });

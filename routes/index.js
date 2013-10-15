@@ -9,6 +9,7 @@ var config = require('../config.js'),
     crypto = require('crypto'),
     net = require('net'),
     async = require('async'),
+    hat = require('hat'),
     User = require('../models/user.js'),
     Admin = require('../models/admin.js'),
     Domain = require('../models/domain.js'),
@@ -111,7 +112,9 @@ module.exports = function(app) {
         var newUser = new User({
             name: name,
             password: password,
-            email: mail
+            email: mail,
+            active: false,
+            activekey: hat()
         });
         // check if username exists.
         User.check(newUser.name, newUser.email, function(err, user){
@@ -128,10 +131,57 @@ module.exports = function(app) {
                     req.flash('error',err);
                     return res.redirect('/reg');
                 }
-                req.session.user = newUser; // store user information to session.
-                req.flash('success',res.__('REG_SUCCESS'));
-                res.redirect('/');
+                // Send verification Email.
+                var activeLink = 'http://' + config.url + '/activate?activekey=' + newUser.activekey;
+                if (config.ssl) {
+                    activeLink = 'https://' + config.url + '/activate?activekey=' + newUser.activekey;
+                }
+                // console.log(activeLink);
+                var mailOptions = {
+                    from: config.serviceMailSender, // sender address
+                    to: newUser.email, // list of receivers
+                    subject: res.__('USER_VERIFICATION') + ' - ' + config.siteName, // Subject line
+                    text: res.__('USER_VERIFICATION_BODY', newUser.name, config.siteName, activeLink)
+                }
+                console.log(mailOptions.text);
+                // send mail with defined transport object
+                smtpTransport.sendMail(mailOptions, function(err, response) {
+                    // console.log('executed');
+                    if (err) {
+                        console.log(err);
+                    }
+                    // req.session.user = newUser; // store user information to session.
+                    req.flash('success',res.__('REG_AWAITING_VERIFICATION'));
+                    res.redirect('/');
+                });
+
             });
+        });
+    });
+
+    // User activation
+    app.get('/activate', checkNotLogin, function(req, res) {
+        var activekey = req.query.activekey;
+        User.checkActivekey(activekey, function(err, user) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/');
+            }
+
+            if (!user) {
+                req.flash('error', res.__('USER_ACTIVATED_NOT_EXIST'));
+                return res.redirect('/');
+            }
+
+            User.activate(activekey, function(err) {
+                if (err) {
+                    req.flash('error', err);
+                    return res.redirect('/');
+                }
+                req.session.user = user;
+                req.flash('success', res.__('LOGIN_SUCCESS'));
+                res.redirect('/');
+            })
         });
     });
 
@@ -183,15 +233,19 @@ module.exports = function(app) {
                     return res.redirect('/login');
                 });
             } else {
+                // use 'user.active === false' for user registered before this function implemented.
+                if (user.active === false) {
+                    req.flash('error', res.__('USER_NOT_ACTIVATED'));
+                    return res.redirect('/login');
+                }
                 req.session.user = user;
-                req.flash('success', res.__('LOGIN_SUCCESS'));
+                req.flash('success', res.__('USER_ACTIVATED'));
                 res.redirect('/');
             }
         });
     });
 
     // Password recovery
-    // TODO Replace setTimeout with Date()
     app.get('/forgot-password', checkNotLogin, function(req, res) {
         res.render('forgot-password',{
             title: res.__('RESET_PASSWORD') + ' - ' + config.siteName,
@@ -252,7 +306,7 @@ module.exports = function(app) {
                     if (err) {
                         console.log(err);
                     }
-                    User.clearResetkey(resetkey);
+                    // User.clearResetkey(resetkey);
                     req.flash('success', res.__('RESET_MAIL_SENT'));
                     return res.redirect('/login');
                 });
@@ -1310,6 +1364,7 @@ module.exports = function(app) {
             name: username,
             email: email,
             password: password,
+            active: true,
             role: role
         });
 

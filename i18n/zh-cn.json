@@ -142,5 +142,11 @@
     "FORGOT_PASSWORD": "忘记密码",
     "RESETKEY_INCORRECT": "重置密钥不正确",
     "PASSWORD_UPDATED": "密码已更新。请重新登陆",
-    "RESETKEY_INVALID": "重置密钥无效"
+    "RESETKEY_INVALID": "重置密钥无效",
+    "USER_NOT_ACTIVATED": "用户尚未激活",
+    "REG_AWAITING_VERIFICATION": "注册成功，请注意查收激活邮件",
+    "USER_VERIFICATION": "用户激活",
+    "USER_VERIFICATION_BODY": "亲爱的 %s, 感谢您注册%s。请通过下面的链接来激活您的帐号。\n\n %s \n\n如果您没有在本站点注册帐号，则您的邮件可能已被盗用。请反馈给本站管理员。",
+    "USER_ACTIVATED_NOT_EXIST": "用户已激活或不存在",
+    "USER_ACTIVATED": "用户激活成功"
 }

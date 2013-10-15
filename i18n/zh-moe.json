@@ -142,5 +142,11 @@
     "FORGOT_PASSWORD": "重新签订契约",
     "RESETKEY_INCORRECT": "重置密文不正确",
     "PASSWORD_UPDATED": "重新签订契约成功=w=",
-    "RESETKEY_INVALID": "重置魔法似乎失效了的说 QAQ"
+    "RESETKEY_INVALID": "重置魔法似乎失效了的说 QAQ",
+    "USER_NOT_ACTIVATED": "阿诺...契约尚未生效呢...",
+    "REG_AWAITING_VERIFICATION": "契约签订成功～激活契约链接已发送～",
+    "USER_VERIFICATION": "激活契约",
+    "USER_VERIFICATION_BODY": "亲爱滴主人 %s, 您已在%s签订契约。请通过下面的链接来激活契约，否则魔法不能生效喵～\n\n %s \n\n如果您没有和我签订契约，则您的邮箱可能已被盗用。请联系本站中枢。",
+    "USER_ACTIVATED_NOT_EXIST": "契约已经生效或主人不存在TAT",
+    "USER_ACTIVATED": "契约生效～"
 }

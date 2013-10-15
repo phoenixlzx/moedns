@@ -1496,5 +1496,10 @@ module.exports = function(app) {
         }
         next();
     }
+    
+    function csrf(req, res, next) {
+	res.locals.csrftoken = req.csrfToken();
+	next();
+    }
 
 };

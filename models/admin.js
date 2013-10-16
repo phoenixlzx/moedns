@@ -172,3 +172,29 @@ exports.editdomain = function(id, belongs, callback) {
 
     });
 }
+
+exports.emaillist = function(callback) {
+    mongoclient.open(function(err, mongoclient) {
+        var db = mongoclient.db(config.mongodb);
+        if(err) {
+            return callback(err);
+        }
+        db.collection('users', function(err, collection) {
+            if(err) {
+                mongoclient.close();
+                return callback(err);
+            }
+            collection.find({}, {
+                "email": 1,
+                "_id": 0
+            }).toArray(function(err, emails) {
+                    if (err) {
+                        callback(err, null);
+                    }
+                    mongoclient.close();
+                    callback(null, emails);
+                });
+        });
+
+    });
+}

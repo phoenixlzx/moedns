@@ -143,13 +143,14 @@ module.exports = function(app) {
                     subject: res.__('USER_VERIFICATION') + ' - ' + config.siteName, // Subject line
                     text: res.__('USER_VERIFICATION_BODY', newUser.name, config.siteName, activeLink)
                 }
-                console.log(mailOptions.text);
+                // console.log(mailOptions.text);
                 // send mail with defined transport object
                 smtpTransport.sendMail(mailOptions, function(err, response) {
                     // console.log('executed');
                     if (err) {
                         console.log(err);
                     }
+                    smtpTransport.close();
                     // req.session.user = newUser; // store user information to session.
                     req.flash('success',res.__('REG_AWAITING_VERIFICATION'));
                     res.redirect('/');
@@ -229,6 +230,7 @@ module.exports = function(app) {
                     if (err) {
                         console.log(err);
                     }
+                    smtpTransport.close();
                     req.flash('error', res.__('LOGIN_FAIL'));
                     return res.redirect('/login');
                 });
@@ -307,6 +309,7 @@ module.exports = function(app) {
                         console.log(err);
                     }
                     // User.clearResetkey(resetkey);
+                    smtpTransport.close();
                     req.flash('success', res.__('RESET_MAIL_SENT'));
                     return res.redirect('/login');
                 });
@@ -1028,7 +1031,7 @@ module.exports = function(app) {
             }
 
             // if you don't want to use this transport object anymore, uncomment following line
-            //smtpTransport.close(); // shut down the connection pool, no more messages
+            smtpTransport.close(); // shut down the connection pool, no more messages
         });
     });
 
@@ -1498,7 +1501,7 @@ module.exports = function(app) {
 
     app.post('/admin/deletedomain', checkLogin, function(req, res) {
         // console.log(req.body.domainId);
-        console.log(req.body.belongs);
+        // console.log(req.body.belongs);
         User.check(req.session.user.name, req.session.user.email, function(err, user) {
             if (err) {
                 req.flash('error', err);
@@ -1519,6 +1522,89 @@ module.exports = function(app) {
             }
         });
     });
+
+    app.get('/admin/send-broadcast', checkLogin, function(req, res) {
+        User.check(req.session.user.name, req.session.user.email, function(err, user) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/admin/');
+            }
+            if(user.role != 'admin') {
+                req.flash('error', res.__('NO_PERMISSION'));
+                return res.redirect('/');
+            } else {
+                res.render('send-broadcast', {
+                    siteName: config.siteName,
+                    siteTagline: config.siteTagline,
+                    title: res.__('SEND_BROADCAST') + ' - ' + config.siteName,
+                    allowReg: config.allowReg,
+                    user: req.session.user,
+                    success: req.flash('success').toString(),
+                    error: req.flash('error').toString()
+                });
+            }
+        });
+    });
+
+    app.post('/admin/send-broadcast', checkLogin, function(req, res) {
+
+        if (!req.body.subject || !req.body.message) {
+            req.flash('error', res.__('MISSING_FIELD'));
+            return res.redirect('/contact');
+        }
+
+        User.check(req.session.user.name, req.session.user.email, function(err, user) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/admin/');
+            }
+            if(user.role != 'admin') {
+                req.flash('error', res.__('NO_PERMISSION'));
+                return res.redirect('/');
+            } else {
+                Admin.emaillist(function(err, emails) {
+                    if (err) {
+                        req.flash('error', err);
+                        return res.redirect('/admin/send-broadcast');
+                    }
+
+                    // Join emails array to string
+                    // console.log(emails);
+                    var receivers = '';
+                    emails.forEach(function(email) {
+                        console.log(email.email);
+                        receivers = receivers.concat(email.email + ", ");
+                    });
+                    console.log(receivers);
+
+                    var mailOptions = {
+                        from: config.serviceMailSender, // sender address
+                        to: receivers, // list of receivers
+                        subject: req.body.subject + ' - ' + config.siteName, // Subject line
+                        html: req.body.message // html body
+                    }
+
+                    // console.log('executed');
+                    // send mail with defined transport object
+                    smtpTransport.sendMail(mailOptions, function(err, response) {
+                        // console.log('executed');
+                        if (err) {
+                            console.log(err);
+                            req.flash('error', err);
+                            return res.redirect('/admin/send-broadcast');
+                        } else {
+                            req.flash('success', res.__('MSG_SENT'))
+                            res.redirect('/admin');
+                        }
+
+                        // if you don't want to use this transport object anymore, uncomment following line
+                        smtpTransport.close(); // shut down the connection pool, no more messages
+                    });
+                });
+            }
+        });
+    });
+
 
     // A default 404 page.
     app.all('*', function(req, res){

@@ -66,62 +66,36 @@
     </div>
 
 
-    <div class="container">
-        <div id="admin">
-            <div class="row">
-                <h2 style="display: inline-block; padding-left: 20px;"><a href="/admin"><%= __('ADMIN_DASHBOARD') %></a></h2>
-            </div>
-            <div class="row">
-                <table class="table">
-                    <tr>
-                        <th class="stats">
-                            <%= __('USERS') %>
-                            &nbsp;
-                            <span class="label label-info">
-                                <%= stats[0] %>
-                            </span>
-                        </th>
-                        <th class="stats">
-                            <%= __('DOMAINS') %>
-                            &nbsp;
-                            <span class="label label-success">
-                                <%= stats[1] %>
-                            </span>
-                        </th>
-                        <th class="stats">
-                            <%= __('RECORDS') %>
-                            &nbsp;
-                            <span class="label label-warning">
-                                <%= stats[2] %>
-                            </span>
-                        </th>
-                        <th>
-                            <%= __('SYS_LOAD') %>
-                            &nbsp;
-                            <%= stats[3] %> <%= stats[4] %> <%= stats[5] %>
-                        </th>
-                    </tr>
-                </table>
-            </div>
-            <div class="row">
-                <div class="admin-nav">
-                    <a href="/admin/userlist" type="button" class="btn btn-info btn-block">
-                        <%= __('USERS_LIST') %>
-                    </a>
-                </div>
-                <div class="admin-nav">
-                    <a href="/admin/domainlist" type="button" class="btn btn-success btn-block">
-                        <%= __('DOMAINS_LIST') %>
-                    </a>
-                </div>
-                <div class="admin-nav">
-                    <a href="/admin/send-broadcast" type="button" class="btn btn-warning btn-block">
-                        <%= __('SEND_BROADCAST') %>
-                    </a>
-                </div>
+    <div class="container" style="min-height: 500px;">
+        <div id="contact">
+            <h2 style="display: inline-block; padding-left: 20px;"><%= __('SEND_BROADCAST') %></h2>
+            <p><%= __('BROADCAST_HELP') %></p>
+            <hr />
+            <div id="contact-inner">
+                <form class="form-horizontal" role="form" method="post">
+                    <div class="form-group">
+                        <label for="subject" class="col-lg-2 control-label"><%= __('SUBJECT') %></label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="subject" name="subject" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="col-lg-2 control-label"><%= __('BROADCAST_MESSAGE') %></label>
+                        <div class="col-lg-9">
+                            <textarea class="form-control" id="message" name="message" rows="10"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-9">
+                            <button type="submit" class="btn btn-success"><%= __('SEND') %></button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
+
     </div>
+
 
 
 </div><!-- /.container -->

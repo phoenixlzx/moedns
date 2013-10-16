@@ -37,11 +37,23 @@ User.prototype.save = function(callback) {
                 mongoclient.close;
                 return callback(err);
             }
-            // insert user data to collection.
-            collection.insert(user, {safe: true}, function(err, user) {
-                mongoclient.close();
-                callback(err, user); // return user data if success.
+
+            collection.count(function (err, count) {
+                if(err) {
+                    mongoclient.close;
+                    return callback(err);
+                }
+                // Check if user is first one
+                if (count === 0) {
+                    user.role = "admin";
+                }
+                // insert user data to collection.
+                collection.insert(user, {safe: true}, function(err, user) {
+                    mongoclient.close();
+                    callback(err, user); // return user data if success.
+                });
             });
+
         });
     });
 };

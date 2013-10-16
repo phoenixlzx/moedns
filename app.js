@@ -43,14 +43,44 @@ app.use(express.session({
 // app.use(express.csrf());
 app.use(i18n.init);
 app.use(flash());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(require('less-middleware')({ 
-  dest: __dirname + '/public/', 
-  src: __dirname + '/public', 
-  compress: true
-}));
 app.use(app.router);
+app.use(require('less-middleware')({
+    dest: __dirname + '/public/',
+    src: __dirname + '/public',
+    compress: true
+}));
+app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(function(req, res) {
+    req.flash('error', res.__('404'));
+    res.status(404);
+    res.render('index', {
+        siteName: config.siteName,
+        siteTagline: config.siteTagline,
+        title: res.__('HOME') + ' - ' + config.siteName,
+        allowReg: config.allowReg,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+    });
+});
+
+// Handle 500
+/*
+app.use(function(error, req, res, next) {
+    req.flash('error', res.__('404'));
+    res.status(404);
+    res.render('index', {
+        siteName: config.siteName,
+        siteTagline: config.siteTagline,
+        title: res.__('HOME') + ' - ' + config.siteName,
+        allowReg: config.allowReg,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+    });
+});
+*/
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());

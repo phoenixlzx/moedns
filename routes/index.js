@@ -1607,6 +1607,7 @@ module.exports = function(app) {
 
 
     // A default 404 page.
+    /*
     app.all('*', function(req, res){
         req.flash('error', res.__('404'));
         res.status(404);
@@ -1620,6 +1621,7 @@ module.exports = function(app) {
             error: req.flash('error').toString()
         });
     });
+    */
 
     // Session functions
     function checkLogin(req, res, next) {

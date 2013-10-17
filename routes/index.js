@@ -965,6 +965,19 @@ module.exports = function(app) {
         });
     });
 
+    /* Help page */
+    app.get('/help', function(req, res) {
+        res.render('help', {
+            title: res.__('HELP') + ' - ' + config.siteName,
+            siteName: config.siteName,
+            siteTagline: config.siteTagline,
+            allowReg: config.allowReg,
+            user: req.session.user,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+        });
+    });
+
 
     /*
     * Contact page

@@ -151,5 +151,6 @@
     "USER_ACTIVATED": "用户激活成功",
     "SEND_BROADCAST": "发送公告",
     "BROADCAST_HELP": "在这里向所有用户发送公告邮件。支持 HTML 标签。",
-    "BROADCAST_MESSAGE": "公告信息"
+    "BROADCAST_MESSAGE": "公告信息",
+    "HELP": "帮助"
 }

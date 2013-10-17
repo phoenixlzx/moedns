@@ -15,6 +15,7 @@
                 <li class="active"><a href="/domains"><%= __('MY_DOMAINS') %></a></li>
                 <li><a href="/status"><%= __('SERVER_STATUS') %></a></li>
                 <% } %>
+                <li><a href="/help"><%= __('HELP') %></a></li>
                 <li><a href="/about"><%= __('ABOUT') %></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -104,7 +105,7 @@
                             <% if (record.name == domain.name) { %>
                             @
                             <% } else { %>
-                            <%= record.name.substring(0, record.name.search(domain.name) - 1) %>
+                            <%= record.name.substring(0, record.name.lastIndexOf(domain.name) - 1) %>
                             <% } %>
                         </td>
                         <td><%= record.type %></td>

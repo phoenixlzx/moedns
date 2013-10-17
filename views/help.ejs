@@ -15,8 +15,8 @@
                 <li><a href="/domains"><%= __('MY_DOMAINS') %></a></li>
                 <li><a href="/status"><%= __('SERVER_STATUS') %></a></li>
                 <% } %>
-                <li><a href="/help"><%= __('HELP') %></a></li>
                 <li><a href="/about"><%= __('ABOUT') %></a></li>
+                <li class="active"><a href="/help"><%= __('HELP') %></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <% if(!user) { %>
@@ -68,30 +68,11 @@
 
 
     <div class="container" style="min-height: 500px;">
-        <div id="contact">
-            <h2 style="display: inline-block; padding-left: 20px;"><%= __('SEND_BROADCAST') %></h2>
-            <p><%= __('BROADCAST_HELP') %></p>
+        <div id="about">
+            <h1 style="text-align: center"><%= siteName %><br /><small><%= __('HELP') %></small></h1>
             <hr />
-            <div id="contact-inner">
-                <form class="form-horizontal" role="form" method="post">
-                    <div class="form-group">
-                        <label for="subject" class="col-lg-2 control-label"><%= __('SUBJECT') %></label>
-                        <div class="col-lg-9">
-                            <input type="text" class="form-control" id="subject" name="subject" placeholder="">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="message" class="col-lg-2 control-label"><%= __('BROADCAST_MESSAGE') %></label>
-                        <div class="col-lg-9">
-                            <textarea class="form-control" id="message" name="message" rows="10"></textarea>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-lg-offset-2 col-lg-9">
-                            <button type="submit" class="btn btn-success"><%= __('SEND') %></button>
-                        </div>
-                    </div>
-                </form>
+            <div class="about-inner">
+                <%-include help-content%>
             </div>
         </div>
 

@@ -147,6 +147,30 @@ div#domain-inner {
     width: 100%;
 }
 
+/* Help page */
+
+#help {
+    margin: auto;
+    padding: 20px 40px 40px 40px;
+    position: static;
+    width: 70%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 5px;
+}
+
+#help>h1 {
+    text-align: left;
+}
+
+#help>.help-inner h1, h2, h3, h4, h5, h6 {
+    text-align: left;
+}
+
+#help>.help-inner img {
+    width: 90%;
+}
+
 /* Contact page */
 
 #contact {

@@ -1,1 +1,57 @@
-<p>这里是帮助信息喵</p>
+<h2>域名</h2>
+
+<h4>添加域名</h4>
+
+<p>在主页点击 <a href="/domains">主人的域名</a> 即可进入域名列表。如果想要把域名交与萌D娘管理，则要首先将该域名喂给萌D娘。</p>
+
+<p><img src="/images/help_img/help_domain_list.png" alt="Domain list" title="" /></p>
+
+<p>点击 <strong>给萌D娘喂域名</strong> ，萌D娘会提示主人记得把域名的 NS 记录改为萌D娘的萌D使(NS服务器)们。</p>
+
+<h2>记录</h2>
+
+<h4>记录列表</h4>
+
+<p>在域名列表中点击一个域名即进入该域名的解析记录列表。</p>
+
+<p><img src="/images/help_img/help_record_list.png" alt="Record list" title="" /></p>
+
+<h4>添加 A 记录</h4>
+
+<p>A 记录是解析域名到 IPv4 地址的基本记录。若要添加 A 记录，点击 <strong>添加记录</strong> ，并在 <strong>记录类型</strong> 中选择 <strong>A 记录</strong> 。</p>
+
+<p><img src="/images/help_img/help_add_record_a.png" alt="Add A record" title="" /></p>
+
+<p><strong>记录</strong> 即为想要解析的域名。例如解析 <code>www.example.com</code> 则记录值为 <code>www</code> 而不是 <code>www.example.com</code>。</p>
+
+<p><strong>TTL</strong> Time-To-Live 时长。</p>
+
+<p><strong>指向</strong> 域名解析得到的结果。A记录对应的应该是一个 IPv4 地址。</p>
+
+<h4>添加 AAAA 记录</h4>
+
+<p>AAAA 记录是解析域名到 IPv6 地址的基本记录。若要添加 AAAA 记录，点击 <strong>添加记录</strong> ，并在 <strong>记录类型</strong> 中选择 <strong>AAAA 记录</strong> 。</p>
+
+<p><img src="/images/help_img/help_add_record_aaaa.png" alt="Add AAAA record" title="" /></p>
+
+<h4>添加 CNAME 记录</h4>
+
+<p>CNAME 即为 Canonical Name，这是一个主机的别名，例如 <code>domain-a.example.com</code> 是 <code>domain-b.example.com</code> 的别名，则访问 <code>domain-a.example.com</code> 即相当于访问 <code>domain-b.example.com</code></p>
+
+<p><img src="/images/help_img/help_add_record_cname.png" alt="Add CNAME record" title="" /></p>
+
+<h4>添加 MX 记录</h4>
+
+<p>MX (Mail eXchange), 电邮交互记录，即引导域名到该域名的邮件传输代理列表。如果要使用该域名接收邮件，则必须有一个 MX 记录。MX 记录依赖于一个有效的 A 记录，例如邮件服务器地址为 <code>208.91.199.205</code>，则首先需要一个 A 记录 <code>mail.example.com</code> 解析到该地址，之后才可以将 MX 记录交付 <code>mail.example.com</code> 处理。</p>
+
+<p><img src="/images/help_img/help_add_record_mx.png" alt="Add MX record" title="" /></p>
+
+<h4>添加 SRV 记录</h4>
+
+<p>SRV 记录大多用来定位服务，例如 XMPP 协议使用 SRV 记录。</p>
+
+<p><img src="/images/help_img/help_add_record_srv.png" alt="Add SRV record" title="" /></p>
+
+<h4>添加 TXT 记录</h4>
+
+<p><img src="/images/help_img/help_add_record_txt.png" alt="Add TXT record" title="" /></p>

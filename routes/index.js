@@ -180,7 +180,7 @@ module.exports = function(app) {
                     return res.redirect('/');
                 }
                 req.session.user = user;
-                req.flash('success', res.__('LOGIN_SUCCESS'));
+                req.flash('success', res.__('USER_ACTIVATED'));
                 res.redirect('/');
             })
         });
@@ -239,10 +239,15 @@ module.exports = function(app) {
                 if (user.active === false) {
                     req.flash('error', res.__('USER_NOT_ACTIVATED'));
                     return res.redirect('/login');
+                } else if (user.active === null) {
+                    req.session.user = user;
+                    req.flash('success', res.__('USER_ACTIVATED'));
+                    res.redirect('/');
+                } else {
+                    req.session.user = user;
+                    req.flash('success', res.__('LOGIN_SUCCESS'));
+                    res.redirect('/');
                 }
-                req.session.user = user;
-                req.flash('success', res.__('USER_ACTIVATED'));
-                res.redirect('/');
             }
         });
     });

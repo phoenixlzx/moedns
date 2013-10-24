@@ -1590,14 +1590,14 @@ module.exports = function(app) {
                     // console.log(emails);
                     var receivers = '';
                     emails.forEach(function(email) {
-                        console.log(email.email);
+                        // console.log(email.email);
                         receivers = receivers.concat(email.email + ", ");
                     });
-                    console.log(receivers);
+                    // console.log(receivers);
 
                     var mailOptions = {
                         from: config.serviceMailSender, // sender address
-                        to: receivers, // list of receivers
+                        bcc: receivers, // list of receivers
                         subject: req.body.subject + ' - ' + config.siteName, // Subject line
                         html: req.body.message // html body
                     }

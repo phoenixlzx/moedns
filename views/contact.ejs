@@ -75,6 +75,7 @@
             <div id="contact-inner">
                 <% if(user) { %>
                 <form class="form-horizontal" role="form" method="post">
+                    <input type="hidden" name="_csrf" value="<%= locals.token %>"/>
                     <div class="form-group">
                         <label for="username" class="col-lg-2 control-label"><%= __('USERNAME') %></label>
                         <div class="col-lg-9">
@@ -101,6 +102,7 @@
                 </form>
                 <% } else { %>
                 <form class="form-horizontal" role="form" method="post">
+                    <input type="hidden" name="_csrf" value="<%= locals.token %>"/>
                     <div class="form-group">
                         <label for="email" class="col-lg-2 control-label"><%= __('EMAIL') %></label>
                         <div class="col-lg-9">

@@ -987,7 +987,7 @@ module.exports = function(app) {
     /*
     * Contact page
     * */
-    app.get('/contact', function(req, res) {
+    app.get('/contact', csrf, function(req, res) {
         res.render('contact', {
             title: res.__('CONTACT') + ' - ' + config.siteName,
             siteName: config.siteName,
@@ -999,7 +999,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/contact', function(req, res) {
+    app.post('/contact', csrf, function(req, res) {
         // Get user IP address.
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
@@ -1657,10 +1657,11 @@ module.exports = function(app) {
         }
         next();
     }
-    
+
+    // CSRF Protect
     function csrf(req, res, next) {
-	res.locals.csrftoken = req.csrfToken();
-	next();
+        res.locals.token = req.session._csrf;
+        next();
     }
 
 };

@@ -36,6 +36,7 @@
                 </li>
                 <li>
                     <form class="navbar-form" action="/logout" method="post">
+                        <input type="hidden" name="_csrf" value="<%= locals.token %>"/>
                         <div class="form-group">
                             <button type="submit" class="btn btn-danger"><%= __('LOGOUT') %></button>
                         </div>
@@ -139,6 +140,7 @@
                     <h4 class="modal-title"><%= __('ADD_DOMAIN') %></h4>
                 </div>
                 <form action="/add-domain" method="post">
+                    <input type="hidden" name="_csrf" value="<%= locals.token %>"/>
                 <div class="modal-body">
                     <label for="domain-name"><%= __('TYPE_DOMAIN_HERE') %></label>
                     <input type="text" class="form-control" id="domain-name" name="domain" placeholder="domain.tld" autofocus />
@@ -170,6 +172,7 @@
                     <h4 class="modal-title"><%= __('DELETE_DOMAIN') %></h4>
                 </div>
                 <form class="form form-horizontal" id="domain-delete-form" role="form" method="post">
+                    <input type="hidden" name="_csrf" value="<%= locals.token %>"/>
                     <div class="modal-body">
                             <div class="callout callout-danger">
                                 <p>

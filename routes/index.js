@@ -54,7 +54,7 @@ Object.prototype.isEmpty = function(obj) {
 // Route functions
 module.exports = function(app) {
 
-    app.get('/', function(req, res) {
+    app.get('/', csrf, function(req, res) {
         res.render('index', {
             siteName: config.siteName,
             siteTagline: config.siteTagline,
@@ -68,7 +68,7 @@ module.exports = function(app) {
 
     /* User routes */
     // Registration
-    app.get('/reg', checkNotLogin, function(req, res) {
+    app.get('/reg', csrf, checkNotLogin, function(req, res) {
         if (!config.allowReg) {
             res.redirect('/');
             return req.flash(res.__("REG_NOT_ALLOWED"));
@@ -85,7 +85,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/reg', checkNotLogin, function(req,res){
+    app.post('/reg', csrf, checkNotLogin, function(req,res){
         if (!config.allowReg) {
             res.redirect('/');
             return req.flash(res.__("REG_NOT_ALLOWED"));
@@ -187,7 +187,7 @@ module.exports = function(app) {
     });
 
     // Login/logout
-    app.get('/login', checkNotLogin, function(req,res){
+    app.get('/login', csrf, checkNotLogin, function(req,res){
         res.render('login',{
             title: res.__('LOGIN') + ' - ' + config.siteName,
             siteName: config.siteName,
@@ -199,7 +199,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/login', checkNotLogin, function(req, res){
+    app.post('/login', csrf, checkNotLogin, function(req, res){
         // Generate password hash
         var hash = crypto.createHash('sha256'),
             password = hash.update(req.body.password).digest('hex');
@@ -253,7 +253,7 @@ module.exports = function(app) {
     });
 
     // Password recovery
-    app.get('/forgot-password', checkNotLogin, function(req, res) {
+    app.get('/forgot-password', csrf, checkNotLogin, function(req, res) {
         res.render('forgot-password',{
             title: res.__('RESET_PASSWORD') + ' - ' + config.siteName,
             siteName: config.siteName,
@@ -265,7 +265,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/forgot-password', checkNotLogin, function(req, res) {
+    app.post('/forgot-password', csrf, checkNotLogin, function(req, res) {
         var mail = req.body.email,
             ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
@@ -323,7 +323,7 @@ module.exports = function(app) {
 
     });
 
-    app.get('/reset-password', checkNotLogin, function(req, res) {
+    app.get('/reset-password', csrf, checkNotLogin, function(req, res) {
         res.render('reset-password',{
             title: res.__('RESET_PASSWORD') + ' - ' + config.siteName,
             siteName: config.siteName,
@@ -335,7 +335,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/reset-password', checkNotLogin, function(req, res) {
+    app.post('/reset-password', csrf, checkNotLogin, function(req, res) {
         var resetkey = req.query.resetkey;
 
         try {
@@ -381,13 +381,13 @@ module.exports = function(app) {
 
     });
 
-    app.post('/logout', checkLogin, function(req, res) {
+    app.post('/logout', csrf, checkLogin, function(req, res) {
         req.session.user = null;
         req.flash('success',res.__('LOGOUT_SUCCESS'));
         res.redirect('/');
     });
 
-    app.get('/account', checkLogin, function(req, res) {
+    app.get('/account', csrf, checkLogin, function(req, res) {
         res.render('account',{
             title: res.__('MY_ACCOUNT') + ' - ' + config.siteName,
             siteName: config.siteName,
@@ -399,7 +399,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/account', checkLogin, function(req, res) {
+    app.post('/account', csrf, checkLogin, function(req, res) {
         var email = req.body.email,
             hash = crypto.createHash('sha256'),
             password = hash.update(req.body.password).digest('hex'),
@@ -463,7 +463,7 @@ module.exports = function(app) {
 
     /* Domain routes */
     // List domains under a user
-    app.get('/domains', checkLogin, function(req, res) {
+    app.get('/domains', csrf, checkLogin, function(req, res) {
        Domain.getList(req.session.user.name, function(err, domains) {
            if(err){
                req.flash('error',err);
@@ -484,7 +484,7 @@ module.exports = function(app) {
     });
 
     // Add domain
-    app.post('/add-domain', checkLogin, function(req, res) {
+    app.post('/add-domain', csrf, checkLogin, function(req, res) {
         // Validate whether user input is root domain name.
         var newDomain = new Domain({
             name: req.body.domain,
@@ -520,7 +520,7 @@ module.exports = function(app) {
     });
 
     // Remove a domain
-    app.post('/domain/:domain/delete', checkLogin, function(req, res) {
+    app.post('/domain/:domain/delete', csrf, checkLogin, function(req, res) {
         var domain = req.params.domain,
             id = parseInt(req.body.domainId),
             user = req.session.user;
@@ -550,7 +550,7 @@ module.exports = function(app) {
 
     });
 
-    app.get('/domain/:domain', checkLogin, function(req, res) {
+    app.get('/domain/:domain', csrf, checkLogin, function(req, res) {
        var domain = req.params.domain,
            user = req.session.user;
        Domain.checkOwner(domain, user.name, function(err, doc) {
@@ -593,7 +593,7 @@ module.exports = function(app) {
     * Record routes
     * */
     // Add a record.
-    app.post('/domain/:domain/add-record', checkLogin, function(req, res) {
+    app.post('/domain/:domain/add-record', csrf, checkLogin, function(req, res) {
         // console.log(req.body);
         var type = req.body.type,
             // name = req.body.name == '@'?req.params.domain:req.body.name + '.' + req.params.domain,
@@ -790,7 +790,7 @@ module.exports = function(app) {
     });
 
     // Remove a record
-    app.post('/domain/:domain/delete-record', checkLogin, function(req, res) {
+    app.post('/domain/:domain/delete-record', csrf, checkLogin, function(req, res) {
         var domain = req.params.domain,
             record = parseInt(req.body.recordId),
             user = req.session.user;
@@ -816,7 +816,7 @@ module.exports = function(app) {
     });
 
     // Edit a record
-    app.post('/domain/:domain/edit-record', checkLogin, function(req, res) {
+    app.post('/domain/:domain/edit-record', csrf, checkLogin, function(req, res) {
         var domain = req.params.domain,
             user = req.session.user;
         Domain.checkOwner(domain, user.name, function(err, doc) {
@@ -925,7 +925,7 @@ module.exports = function(app) {
     })
 
     // Server status
-    app.get('/status', checkLogin, function(req, res) {
+    app.get('/status', csrf, checkLogin, function(req, res) {
         res.render('status', {
             title: res.__('SERVER_STATUS') + ' - ' + config.siteName,
             siteName: config.siteName,
@@ -958,7 +958,7 @@ module.exports = function(app) {
     });
 
     /* About page */
-    app.get('/about', function(req, res) {
+    app.get('/about', csrf, function(req, res) {
         res.render('about', {
             title: res.__('ABOUT') + ' - ' + config.siteName,
             siteName: config.siteName,
@@ -971,7 +971,7 @@ module.exports = function(app) {
     });
 
     /* Help page */
-    app.get('/help', function(req, res) {
+    app.get('/help', csrf, function(req, res) {
         res.render('help', {
             title: res.__('HELP') + ' - ' + config.siteName,
             siteName: config.siteName,
@@ -1056,7 +1056,7 @@ module.exports = function(app) {
     /*
      * APIs
      * */
-    app.post('/getapi', checkLogin, function(req, res) {
+    app.post('/getapi', csrf, checkLogin, function(req, res) {
         User.createApi(req.session.user.name, function(err, apikey) {
             if (err) {
                 req.flash('error', err);
@@ -1067,7 +1067,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/myapi', checkLogin, function(req, res) {
+    app.get('/myapi', csrf, checkLogin, function(req, res) {
         User.getApi(req.session.user.name, function(err, apikey) {
             if (err) {
                 req.flash('error', err);
@@ -1176,7 +1176,7 @@ module.exports = function(app) {
     * */
 
     // Admin dashboard
-    app.get('/admin', checkLogin, function(req, res) {
+    app.get('/admin', csrf, checkLogin, function(req, res) {
         // console.log(req.session.user);
         User.check(req.session.user.name, req.session.user.email, function(err, user) {
             // console.log(user);
@@ -1208,7 +1208,7 @@ module.exports = function(app) {
     });
 
      // Get users list
-    app.get('/admin/userlist', checkLogin, function(req, res) {
+    app.get('/admin/userlist', csrf, checkLogin, function(req, res) {
         var page = req.query.p?parseInt(req.query.p):1,
             limit = req.query.limit?parseInt(req.query.limit):50;
         // Check user has permission to access admin dashbord.
@@ -1245,7 +1245,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/admin/adduser', checkLogin, function(req, res) {
+    app.post('/admin/adduser', csrf, checkLogin, function(req, res) {
         User.check(req.session.user.name, req.session.user.email, function(err, user) {
             if (err) {
                 req.flash('error', err);
@@ -1304,7 +1304,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/admin/deleteuser', checkLogin, function(req, res) {
+    app.post('/admin/deleteuser', csrf, checkLogin, function(req, res) {
         // console.log(req.body.username);
         User.check(req.session.user.name, req.session.user.email, function(err, user) {
             if (err) {
@@ -1351,7 +1351,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/admin/edituser', checkLogin, function(req, res) {
+    app.post('/admin/edituser', csrf, checkLogin, function(req, res) {
         var username = req.body.username,
             email = req.body.email,
             role = req.body.role,
@@ -1399,7 +1399,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/admin/domainlist', checkLogin, function(req, res) {
+    app.get('/admin/domainlist', csrf, checkLogin, function(req, res) {
         var page = req.query.p?parseInt(req.query.p):1,
             limit = req.query.limit?parseInt(req.query.limit):50;
         // Check user has permission to access admin dashbord.
@@ -1435,7 +1435,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/admin/adddomain', checkLogin, function(req, res) {
+    app.post('/admin/adddomain', csrf, checkLogin, function(req, res) {
         console.log(req.body.belongs);
         User.check(req.session.user.name, req.session.user.email, function(err, user) {
             if (err) {
@@ -1485,7 +1485,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/admin/editdomain', checkLogin, function(req, res) {
+    app.post('/admin/editdomain', csrf, checkLogin, function(req, res) {
         // console.log(req.body.domainId);
         // console.log(req.body.belongs);
         User.check(req.session.user.name, req.session.user.email, function(err, user) {
@@ -1517,7 +1517,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/admin/deletedomain', checkLogin, function(req, res) {
+    app.post('/admin/deletedomain', csrf, checkLogin, function(req, res) {
         // console.log(req.body.domainId);
         // console.log(req.body.belongs);
         User.check(req.session.user.name, req.session.user.email, function(err, user) {
@@ -1541,7 +1541,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/admin/send-broadcast', checkLogin, function(req, res) {
+    app.get('/admin/send-broadcast', csrf, checkLogin, function(req, res) {
         User.check(req.session.user.name, req.session.user.email, function(err, user) {
             if (err) {
                 req.flash('error', err);
@@ -1564,7 +1564,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/admin/send-broadcast', checkLogin, function(req, res) {
+    app.post('/admin/send-broadcast', csrf, checkLogin, function(req, res) {
 
         if (!req.body.subject || !req.body.message) {
             req.flash('error', res.__('MISSING_FIELD'));

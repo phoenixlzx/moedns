@@ -36,6 +36,7 @@
                 </li>
                 <li>
                     <form class="navbar-form" action="/logout" method="post">
+                        <input type="hidden" name="_csrf" value="<%= locals.token %>"/>
                         <div class="form-group">
                             <button type="submit" class="btn btn-danger"><%= __('LOGOUT') %></button>
                         </div>
@@ -74,6 +75,7 @@
             <hr />
             <div id="contact-inner">
                 <form class="form-horizontal" role="form" method="post">
+                    <input type="hidden" name="_csrf" value="<%= locals.token %>"/>
                     <div class="form-group">
                         <label for="subject" class="col-lg-2 control-label"><%= __('SUBJECT') %></label>
                         <div class="col-lg-9">

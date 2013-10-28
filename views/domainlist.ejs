@@ -36,6 +36,7 @@
                 </li>
                 <li>
                     <form class="navbar-form" action="/logout" method="post">
+                        <input type="hidden" name="_csrf" value="<%= locals.token %>"/>
                         <div class="form-group">
                             <button type="submit" class="btn btn-danger"><%= __('LOGOUT') %></button>
                         </div>
@@ -122,6 +123,7 @@
                 <h4 class="modal-title"><%= __('ADD_DOMAIN') %></h4>
             </div>
             <form action="/admin/adddomain" class="form form-horizontal" role="form" method="post">
+                <input type="hidden" name="_csrf" value="<%= locals.token %>"/>
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="domain-name" class="col-lg-3 control-label"><%= __('TYPE_DOMAIN_HERE') %></label>
@@ -154,6 +156,7 @@
                 <h4 class="modal-title"><%= __('EDIT_DOMAIN') %></h4>
             </div>
             <form action="/admin/editdomain" class="form form-horizontal" role="form" method="post">
+                <input type="hidden" name="_csrf" value="<%= locals.token %>"/>
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="domain-id" class="col-lg-3 control-label"><%= __('DOMAIN_ID') %></label>
@@ -193,6 +196,7 @@
                 <h4 class="modal-title"><%= __('DELETE_DOMAIN') %></h4>
             </div>
             <form action="/admin/deletedomain" class="form form-horizontal" role="form" method="post">
+                <input type="hidden" name="_csrf" value="<%= locals.token %>"/>
                 <div class="modal-body">
                     <div class="callout callout-danger">
                         <p>

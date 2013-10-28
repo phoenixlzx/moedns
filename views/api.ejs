@@ -36,6 +36,7 @@
                 </li>
                 <li>
                     <form class="navbar-form" action="/logout" method="post">
+                        <input type="hidden" name="_csrf" value="<%= locals.token %>"/>
                         <div class="form-group">
                             <button type="submit" class="btn btn-danger"><%= __('LOGOUT') %></button>
                         </div>
@@ -76,12 +77,14 @@
                 <% if(!apikey) { %>
                 <h3><%= __('NO_API') %></h3>
                 <form action="/getapi" method="post">
+                    <input type="hidden" name="_csrf" value="<%= locals.token %>"/>
                     <button type="submit" class="btn btn-info"><%= __('GENERATE_API') %></button>
                 </form>
                 <% } else { %>
                 <%= __('YOUR_APIKEY') %>
                 <pre><code><%= apikey %></code></pre>
                 <form action="/getapi" method="post">
+                    <input type="hidden" name="_csrf" value="<%= locals.token %>"/>
                     <button type="submit" class="btn btn-info"><%= __('REGEN_API') %></button>
                 </form>
                 <% } %>

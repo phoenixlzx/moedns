@@ -57,6 +57,7 @@
                 </li>
                 <li>
                     <form class="navbar-form" action="/logout" method="post">
+                        <input type="hidden" name="_csrf" value="<%= locals.token %>"/>
                         <div class="form-group">
                             <button type="submit" class="btn btn-danger"><%= __('LOGOUT') %></button>
                         </div>

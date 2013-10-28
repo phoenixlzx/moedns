@@ -40,7 +40,7 @@ app.use(express.session({
         clear_interval: 3600
     })
 }));
-// app.use(express.csrf());
+app.use(express.csrf());
 app.use(i18n.init);
 app.use(flash());
 app.use(app.router);

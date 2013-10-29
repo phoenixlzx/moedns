@@ -113,7 +113,8 @@ module.exports = function(app) {
             name: name,
             password: password,
             email: mail,
-            activekey: hat()
+            activekey: hat(),
+            role: 'inactive'
         });
         // check if username exists.
         User.check(newUser.name, newUser.email, function(err, user){

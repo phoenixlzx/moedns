@@ -20,7 +20,7 @@ User.prototype.save = function(callback) {
         email: this.email,
         password: this.password,
         activekey: this.activekey,
-        role: "inactive"
+        role: this.role
     };
     // open database.
     mongoclient.open(function(err, mongoclient) {

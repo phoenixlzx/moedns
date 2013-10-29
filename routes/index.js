@@ -113,7 +113,6 @@ module.exports = function(app) {
             name: name,
             password: password,
             email: mail,
-            active: false,
             activekey: hat()
         });
         // check if username exists.
@@ -235,14 +234,9 @@ module.exports = function(app) {
                     return res.redirect('/login');
                 });
             } else {
-                // use 'user.active === false' for user registered before this function implemented.
-                if (user.active === false) {
+                if (user.role == 'inactive') {
                     req.flash('error', res.__('USER_NOT_ACTIVATED'));
                     return res.redirect('/login');
-                } else if (user.active === null) {
-                    req.session.user = user;
-                    req.flash('success', res.__('USER_ACTIVATED'));
-                    res.redirect('/');
                 } else {
                     req.session.user = user;
                     req.flash('success', res.__('LOGIN_SUCCESS'));

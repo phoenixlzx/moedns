@@ -6,7 +6,6 @@ function User(user) {
     this.name = user.name;
     this.email = user.email;
     this.password = user.password;
-    this.active = user.active;
     this.activekey = user.activekey;
     this.role = user.role;
 }
@@ -20,9 +19,8 @@ User.prototype.save = function(callback) {
         name: this.name,
         email: this.email,
         password: this.password,
-        active: this.active,
         activekey: this.activekey,
-        role: "user"
+        role: "inactive"
     };
     // open database.
     mongoclient.open(function(err, mongoclient) {
@@ -72,7 +70,7 @@ User.checkActivekey = function(activekey, callback) {
             }
             collection.findOne({
                 "activekey": activekey,
-                "active": false
+                "role": 'inactive'
             }, function(err, doc) {
                 mongoclient.close();
                 // console.log(doc);
@@ -99,7 +97,7 @@ User.activate = function(activekey, callback) {
                 return callback(err);
             }
             collection.update({"activekey":activekey}, {$set : {
-                "active": true,
+                "role": 'user',
                 "activekey": null
             }}, function(err) {
                 if (err) {

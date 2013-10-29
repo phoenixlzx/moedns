@@ -23,6 +23,7 @@ div#user {
     border-radius: 5px;
     margin: auto;
     max-width: 500px;
+    padding: 10px;
 }
 
 .form-signin {

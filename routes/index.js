@@ -1327,7 +1327,7 @@ module.exports = function(app) {
                             return res.redirect('/admin/userlist');
                         }
                         async.eachSeries(domains, function(domain, callback) {
-                            console.log(domain);
+                            // console.log(domain);
                             Domain.remove(domain.id, req.body.username, function(err) {
                                 if (err) {
                                     req.flash('error', err);

@@ -1340,7 +1340,7 @@ module.exports = function(app) {
                                 req.flash('error', err);
                                 return res.redirect('/admin/userlist');
                             }
-                            console.log('executed');
+                            // console.log('executed');
                         });
                         req.flash('success', res.__('DELETE_USER_SUCCESS'));
                         res.redirect('/admin/userlist');

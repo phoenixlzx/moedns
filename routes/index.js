@@ -953,7 +953,7 @@ module.exports = function(app) {
         }).on('timeout', function(e) {
             console.log(server + ' is down: timeout');
             res.send("2");
-        }).connect(5353, server);
+        }).connect(53, server);
     });
 
     /* About page */

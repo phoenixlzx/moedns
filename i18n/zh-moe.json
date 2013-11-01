@@ -152,5 +152,6 @@
     "SEND_BROADCAST": "施放AOE",
     "BROADCAST_HELP": "在这里向所有和萌D娘签订契约的主人施放AOE，可以同时使用 HTML 道具哦。",
     "BROADCAST_MESSAGE": "AOE 咒语",
-    "HELP": "魔法参考"
+    "HELP": "魔法参考",
+    "GEODNS": "地区优化"
 }

@@ -594,7 +594,8 @@ module.exports = function(app) {
             // name = req.body.name == '@'?req.params.domain:req.body.name + '.' + req.params.domain,
             ttl = req.body.ttl || 3600,
             prio = req.body.prio || null,
-            content = req.body.content;
+            content = req.body.content,
+            geo = req.body.geo || null;
 
         var name = null;
         if (req.body.name == '@' || req.body.name == '') {
@@ -745,7 +746,8 @@ module.exports = function(app) {
                     type: type,
                     content: content,
                     ttl: ttl,
-                    prio: prio
+                    prio: prio,
+                    geo: geo
                 });
                 // console.log(newRecord);
 
@@ -831,6 +833,7 @@ module.exports = function(app) {
                     name = req.body.name == '@'?req.params.domain:req.body.name + '.' + req.params.domain,
                     ttl = req.body.ttl,
                     prio = req.body.prio,
+                    geo = req.body.geo,
                     content = req.body.content;
                 // TODO Check user inputs for record validity
                 // Better RegEx required.
@@ -905,7 +908,8 @@ module.exports = function(app) {
                     type: type,
                     content: content,
                     ttl: ttl,
-                    prio: prio
+                    prio: prio,
+                    geo: geo
                 });
                 Record.edit(newRecord, function(err) {
                     if (err) {
@@ -949,7 +953,7 @@ module.exports = function(app) {
         }).on('timeout', function(e) {
             console.log(server + ' is down: timeout');
             res.send("2");
-        }).connect(53, server);
+        }).connect(5353, server);
     });
 
     /* About page */

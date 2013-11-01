@@ -93,6 +93,7 @@
                         <th id="record-content-table"><%= __('RECORD_CONTENT') %></th>
                         <th><%= __('RECORD_PRIORITY') %></th>
                         <th><%= __('TTL') %></th>
+                        <th><%= __('GEODNS') %></th>
                         <th><%= __('ACTION') %></th>
                     </tr>
                     </thead>
@@ -119,6 +120,13 @@
                             <% } %>
                         </td>
                         <td><%= record.ttl %></td>
+                        <td>
+                            <% if (record.geo === null) { %>
+                            -
+                            <% } else { %>
+                            <%= record.geo %>
+                            <% } %>
+                        </td>
                         <td>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -255,6 +263,12 @@
                             <label for="record-content-edit" class="control-label col-lg-2"><%= __('RECORD_CONTENT') %></label>
                             <div class="col-lg-8">
                                 <input type="text" class="form-control" id="record-content-edit" name="content" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="record-geo-edit" class="control-label col-lg-2"><%= __('GEODNS') %></label>
+                            <div class="col-lg-8">
+                                <input type="text" class="form-control" id="record-geo-edit" name="geo" placeholder="US/CN/JP/etc...">
                             </div>
                         </div>
                     </div>

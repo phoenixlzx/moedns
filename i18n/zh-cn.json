@@ -152,5 +152,6 @@
     "SEND_BROADCAST": "发送公告",
     "BROADCAST_HELP": "在这里向所有用户发送公告邮件。支持 HTML 标签。",
     "BROADCAST_MESSAGE": "公告信息",
-    "HELP": "帮助"
+    "HELP": "帮助",
+    "GEODNS": "地区优化"
 }

@@ -833,7 +833,7 @@ module.exports = function(app) {
                     name = req.body.name == '@'?req.params.domain:req.body.name + '.' + req.params.domain,
                     ttl = req.body.ttl,
                     prio = req.body.prio,
-                    geo = req.body.geo,
+                    geo = req.body.geo||null,
                     content = req.body.content;
                 // TODO Check user inputs for record validity
                 // Better RegEx required.

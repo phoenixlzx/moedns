@@ -153,5 +153,6 @@
     "BROADCAST_HELP": "在这里向所有用户发送公告邮件。支持 HTML 标签。",
     "BROADCAST_MESSAGE": "公告信息",
     "HELP": "帮助",
-    "GEODNS": "地区优化"
+    "GEODNS": "地区优化",
+    "GEO_ERROR": "地区代码不正确"
 }

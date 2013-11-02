@@ -606,6 +606,7 @@ module.exports = function(app) {
 
         try {
             check(ttl, 'TTL_ERROR').isDecimal().min(60);
+            check(geo, 'GEO_ERROR').isAlpha().min(2).max(20);
             switch (type) {
                 case "A":
                     check(content, 'NEED_IPV4').isIPv4();
@@ -848,6 +849,7 @@ module.exports = function(app) {
                         "TXT"
                     ]);
                     check(ttl, 'TTL_ERROR').isDecimal().min(60);
+                    check(geo, 'GEO_ERROR').isAlpha().min(2).max(20);
                     switch (type) {
                         case "A":
                             check(content, 'NEED_IPV4').isIPv4();

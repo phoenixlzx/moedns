@@ -607,7 +607,7 @@ module.exports = function(app) {
         try {
             check(ttl, 'TTL_ERROR').isDecimal().min(60);
             if (geo) {
-                check(geo, 'GEO_ERROR').isAlpha().min(2).max(20);
+                check(geo, 'GEO_ERROR').isAlpha().len(2, 20);
             }
             switch (type) {
                 case "A":
@@ -633,6 +633,9 @@ module.exports = function(app) {
                     }
                     break;
                 case "MX":
+                    if (prio == null) {
+                        prio = 10;
+                    }
                     if (tld.isValid(content) && tld.tldExists(content)) {
                         //  Better DNS check module needed.
                         //    dns.resolve(content, function(err, addresses) {
@@ -651,6 +654,15 @@ module.exports = function(app) {
                     break;
                 case "SRV":
                     // _service._proto.name. TTL class SRV priority weight port target.
+                    if (prio == null) {
+                        prio = 5;
+                    }
+                    if (req.body.weight == null) {
+                        req.body.weight = 0;
+                    }
+                    if (req.body.port == null) {
+                        req.body.port = 5222;
+                    }
                     name = "_" + req.body.service + "._" + req.body.protocol + "." + req.params.domain;
                     content = req.body.weight + " " + req.body.port + " " + req.body.content;
                     break;
@@ -852,7 +864,7 @@ module.exports = function(app) {
                     ]);
                     check(ttl, 'TTL_ERROR').isDecimal().min(60);
                     if (geo) {
-                        check(geo, 'GEO_ERROR').isAlpha().min(2).max(20);
+                        check(geo, 'GEO_ERROR').isAlpha().len(2, 20);
                     }
                     switch (type) {
                         case "A":
@@ -878,6 +890,9 @@ module.exports = function(app) {
                             }
                             break;
                         case "MX":
+                            if (prio == null) {
+                                prio = 10;
+                            }
                             if (tld.isValid(content) && tld.tldExists(content)) {
                                 /*  Better DNS check module needed.
                                  dns.resolve(content, function(err, addresses) {

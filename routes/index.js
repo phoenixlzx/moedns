@@ -633,7 +633,7 @@ module.exports = function(app) {
                     }
                     break;
                 case "MX":
-                    if (prio == null) {
+                    if (!prio) {
                         prio = 10;
                     }
                     if (tld.isValid(content) && tld.tldExists(content)) {
@@ -654,7 +654,7 @@ module.exports = function(app) {
                     break;
                 case "SRV":
                     // _service._proto.name. TTL class SRV priority weight port target.
-                    if (prio == null) {
+                    if (!prio) {
                         prio = 5;
                     }
                     if (req.body.weight == null) {
@@ -890,7 +890,7 @@ module.exports = function(app) {
                             }
                             break;
                         case "MX":
-                            if (prio == null) {
+                            if (!prio) {
                                 prio = 10;
                             }
                             if (tld.isValid(content) && tld.tldExists(content)) {

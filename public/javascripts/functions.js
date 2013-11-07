@@ -114,7 +114,7 @@ $(document).ready(function() {
         // Set values for edit modal
         $("#record-id-edit").val(recordArray[0]);
         $("#record-id-static").text(recordArray[0]);
-        alert(recordArray);
+        // alert(recordArray);
         if (trimSpace(recordArray[4]) == '-') {
             $("#record-type-edit").val(recordArray[2]);
             $("#record-prio-edit").prop("disabled", true);

@@ -119,7 +119,7 @@ $(document).ready(function() {
             $("#record-type-edit").val(recordArray[2]);
             $("#record-prio-edit").prop("disabled", true);
         } else {
-            $("#record-prio-edit").prop("disabled", false).val(recordArray[4]);
+            $("#record-prio-edit").prop("disabled", false).val(trimSpace(recordArray[4]));
             $("#record-type-edit").val(recordArray[2]);
         }
         if (recordArray[1] == path) {

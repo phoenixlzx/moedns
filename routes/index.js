@@ -440,13 +440,14 @@ module.exports = function(app) {
             }
             if(err) {
                 req.flash('error', res.__(err));
-                return res.redirect('/reg');
+                return res.redirect('/account');
             }
 
             User.edit(newUser, function(err, user){
+	        console.log(err);
                 if(err) {
                     req.flash('error', res.__(err));
-                    return res.redirect('/me');
+                    return res.redirect('/account');
                 }
                 req.flash('success', res.__('USER_UPDATED'));
                 req.session.user = null;

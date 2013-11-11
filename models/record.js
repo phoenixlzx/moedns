@@ -13,7 +13,8 @@ function Record(record) {
     this.ttl = record.ttl;
     this.prio = record.prio;
     this.changeDate = record.changeDate;
-    this.geo = record.geo
+    this.geoloc = record.geoloc;
+    this.geoisp = record.geoisp;
 }
 
 module.exports = Record;
@@ -28,7 +29,8 @@ Record.prototype.save = function(callback) {
         ttl: this.ttl,
         prio: this.prio,
         changeDate: this.changeDate,
-        geo: this.geo
+        geoloc: this.geoloc,
+        geoisp: this.geoisp
     };
 
     mysql.getConnection(function(err, myConnection) {
@@ -42,7 +44,8 @@ Record.prototype.save = function(callback) {
             "content": record.content,
             "ttl": record.ttl,
             "prio": record.prio,
-            "geo": record.geo
+            "geo": record.geoloc,
+            "geoisp": record.geoisp
         }, function(err, result) {
             if (err) {
                 return (err);
@@ -146,7 +149,8 @@ Record.edit = function(record, callback) {
             "content": record.content,
             "ttl": record.ttl,
             "prio": record.prio,
-            "geo": record.geo
+            "geo": record.geoloc,
+            "geoisp": record.geoisp
         }, record.id, record.domainId ], function(err, result) {
 	    // console.log(result)
             if (err) {

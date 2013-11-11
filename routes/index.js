@@ -605,10 +605,20 @@ module.exports = function(app) {
             name = req.body.name + '.' + req.params.domain;
         }
 
+        var geoloc = null,
+            geoisp = null;
+        if (geo.search('/') != -1) {
+            geoloc = geo.slice(0, geo.indexOf('/'));
+            geoisp = geo.slice(geo.indexOf('/') + 1);
+        } else {
+            geoloc = geo;
+            geoisp = null;
+        }
+
         try {
             check(ttl, 'TTL_ERROR').isDecimal().min(60);
             if (geo) {
-                check(geo, 'GEO_ERROR').isAlpha().len(2, 20);
+                check(geoloc, 'GEO_ERROR').isAlpha().len(2, 20);
             }
             switch (type) {
                 case "A":
@@ -763,7 +773,8 @@ module.exports = function(app) {
                     content: content,
                     ttl: ttl,
                     prio: prio,
-                    geo: geo
+                    geoloc: geoloc,
+                    geoisp: geoisp
                 });
                 // console.log(newRecord);
 
@@ -851,6 +862,16 @@ module.exports = function(app) {
                     prio = req.body.prio,
                     geo = req.body.geo||null,
                     content = req.body.content;
+
+                var geoloc = null,
+                    geoisp = null;
+                if (geo.search('/') != -1) {
+                    geoloc = geo.slice(0, geo.indexOf('/'));
+                    geoisp = geo.slice(geo.indexOf('/') + 1);
+                } else {
+                    geoloc = geo;
+                    geoisp = null;
+                }
                 // TODO Check user inputs for record validity
                 // Better RegEx required.
                 try {
@@ -865,7 +886,7 @@ module.exports = function(app) {
                     ]);
                     check(ttl, 'TTL_ERROR').isDecimal().min(60);
                     if (geo) {
-                        check(geo, 'GEO_ERROR').isAlpha().len(2, 20);
+                        check(geoloc, 'GEO_ERROR').isAlpha().len(2, 20);
                     }
                     switch (type) {
                         case "A":
@@ -931,7 +952,8 @@ module.exports = function(app) {
                     content: content,
                     ttl: ttl,
                     prio: prio,
-                    geo: geo
+                    geoloc: geoloc,
+                    geoisp: geoisp
                 });
                 Record.edit(newRecord, function(err) {
                     if (err) {

@@ -75,8 +75,8 @@ div#user {
 
 div#domain {
     margin: auto;
-    padding: 10px 30px 10px 30px;
-    width: 85%;
+    padding: 15px;
+    width: 90%;
     min-height: 500px;
     background: rgba(255, 255, 255, 0.7);
     border-radius: 5px;

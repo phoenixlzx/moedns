@@ -121,10 +121,10 @@
                         </td>
                         <td><%= record.ttl %></td>
                         <td>
-                            <% if (record.geo === null) { %>
+                            <% if (!record.geo) { %>
                             -
                             <% } else { %>
-                            <%= record.geo %>
+                            <%= record.geo %><% if (record.geoisp) { %>/<%= record.geoisp %><% } %>
                             <% } %>
                         </td>
                         <td>

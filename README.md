@@ -1,9 +1,11 @@
 MoeDNS
 ======
 
-MoeDNS - A DNS Management app using Node.js, MongoDB &amp; PowerDNS with MySQL backend.
+MoeDNS - A DNS Management app using Node.js & MongoDB, working with [MiniMoeDNS](https://github.com/phoenixlzx/minimoedns) or PowerDNS.
 
-Demo: [MoeDNS](http://moedns.phoenixlzx.com)  **ATTENTION** Please do NOT point your domain to this site, as it didnt have a DNS server running.
+Demo: [MoeDNS](http://moedns.phoenixlzx.com)  
+
+**ATTENTION** Please do NOT point your domain to this site, please use `dig` command to test your DNS at port 15353.
 
 ## Feature
 
@@ -17,16 +19,17 @@ Demo: [MoeDNS](http://moedns.phoenixlzx.com)  **ATTENTION** Please do NOT point 
 * Domain Tansfer between users.
 * System stats.
 * Dynamic DNS API.
+* GeoDNS with MiniMoeDNS.
 * Moe theme design!
 * And will be more...
 
 ## Usage & System requirements
 
-* MoeDNS Server: A Linux Server with MongoDB and newer version of Node.js installed.
+* MoeDNS Server: A Linux server with MongoDB, MySQL and newer version of Node.js installed.
 
-* PowerDNS Server: Linux server running PowerDNS with MySQL backend (import pdns schema first).
+* MiniMoeDNS Servers: Linux server running MiniMoeDNS & MySQL. (Now using PowerDNS MySQL Schema with additional `geo` column in `records` table)
 
-* PowerDNS Servers replication with MySQL is recommended.
+* Servers replication with MySQL is recommended.
 
 --
 
@@ -83,12 +86,12 @@ And `test.com` will points to the public IP of your side with TTL set to 600.
 
 ## License
 
-MoeDNS - A DNS Management app using Node.js, MongoDB &amp; PowerDNS with MySQL backend.
+MoeDNS - A DNS Management app using Node.js & MongoDB, working with MiniMoeDNS or PowerDNS.
 
 Copyright (C) 2013  Phoenix Nemo <i@phoenixlzx.com>
 
-This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

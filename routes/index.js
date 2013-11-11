@@ -440,13 +440,14 @@ module.exports = function(app) {
             }
             if(err) {
                 req.flash('error', res.__(err));
-                return res.redirect('/reg');
+                return res.redirect('/account');
             }
 
             User.edit(newUser, function(err, user){
+	        console.log(err);
                 if(err) {
                     req.flash('error', res.__(err));
-                    return res.redirect('/me');
+                    return res.redirect('/account');
                 }
                 req.flash('success', res.__('USER_UPDATED'));
                 req.session.user = null;
@@ -594,7 +595,8 @@ module.exports = function(app) {
             // name = req.body.name == '@'?req.params.domain:req.body.name + '.' + req.params.domain,
             ttl = req.body.ttl || 3600,
             prio = req.body.prio || null,
-            content = req.body.content;
+            content = req.body.content,
+            geo = req.body.geo || null;
 
         var name = null;
         if (req.body.name == '@' || req.body.name == '') {
@@ -605,6 +607,9 @@ module.exports = function(app) {
 
         try {
             check(ttl, 'TTL_ERROR').isDecimal().min(60);
+            if (geo) {
+                check(geo, 'GEO_ERROR').isAlpha().len(2, 20);
+            }
             switch (type) {
                 case "A":
                     check(content, 'NEED_IPV4').isIPv4();
@@ -629,6 +634,9 @@ module.exports = function(app) {
                     }
                     break;
                 case "MX":
+                    if (!prio) {
+                        prio = 10;
+                    }
                     if (tld.isValid(content) && tld.tldExists(content)) {
                         //  Better DNS check module needed.
                         //    dns.resolve(content, function(err, addresses) {
@@ -647,6 +655,15 @@ module.exports = function(app) {
                     break;
                 case "SRV":
                     // _service._proto.name. TTL class SRV priority weight port target.
+                    if (!prio) {
+                        prio = 5;
+                    }
+                    if (req.body.weight == null) {
+                        req.body.weight = 0;
+                    }
+                    if (req.body.port == null) {
+                        req.body.port = 5222;
+                    }
                     name = "_" + req.body.service + "._" + req.body.protocol + "." + req.params.domain;
                     content = req.body.weight + " " + req.body.port + " " + req.body.content;
                     break;
@@ -657,7 +674,7 @@ module.exports = function(app) {
                     throw new Error("TYPE_ERROR");
             }
         } catch (e) {
-            console.log(e);
+            // console.log(e);
             req.flash('error', res.__(e.message));
             return res.redirect('/domain/' + req.params.domain);
         }
@@ -745,7 +762,8 @@ module.exports = function(app) {
                     type: type,
                     content: content,
                     ttl: ttl,
-                    prio: prio
+                    prio: prio,
+                    geo: geo
                 });
                 // console.log(newRecord);
 
@@ -831,6 +849,7 @@ module.exports = function(app) {
                     name = req.body.name == '@'?req.params.domain:req.body.name + '.' + req.params.domain,
                     ttl = req.body.ttl,
                     prio = req.body.prio,
+                    geo = req.body.geo||null,
                     content = req.body.content;
                 // TODO Check user inputs for record validity
                 // Better RegEx required.
@@ -845,6 +864,9 @@ module.exports = function(app) {
                         "TXT"
                     ]);
                     check(ttl, 'TTL_ERROR').isDecimal().min(60);
+                    if (geo) {
+                        check(geo, 'GEO_ERROR').isAlpha().len(2, 20);
+                    }
                     switch (type) {
                         case "A":
                             check(content, 'NEED_IPV4').isIPv4();
@@ -869,6 +891,9 @@ module.exports = function(app) {
                             }
                             break;
                         case "MX":
+                            if (!prio) {
+                                prio = 10;
+                            }
                             if (tld.isValid(content) && tld.tldExists(content)) {
                                 /*  Better DNS check module needed.
                                  dns.resolve(content, function(err, addresses) {
@@ -905,7 +930,8 @@ module.exports = function(app) {
                     type: type,
                     content: content,
                     ttl: ttl,
-                    prio: prio
+                    prio: prio,
+                    geo: geo
                 });
                 Record.edit(newRecord, function(err) {
                     if (err) {

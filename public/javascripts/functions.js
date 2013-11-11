@@ -114,7 +114,7 @@ $(document).ready(function() {
         // Set values for edit modal
         $("#record-id-edit").val(recordArray[0]);
         $("#record-id-static").text(recordArray[0]);
-        // alert(recordArray[4]);
+        // alert(recordArray);
         if (trimSpace(recordArray[4]) == '-') {
             $("#record-type-edit").val(recordArray[2]);
             $("#record-prio-edit").prop("disabled", true);
@@ -130,6 +130,10 @@ $(document).ready(function() {
 
         $("#record-ttl-edit").val(recordArray[5]);
         $("#record-content-edit").val(recordArray[3].slice(0, recordArray[3].lastIndexOf('.')));
+        if (trimSpace(recordArray[6]) != '-') {
+            $("#record-geo-edit").val(trimSpace(recordArray[6]));
+        }
+
     });
 
     // Get data from a single tr when deleting a record

@@ -607,13 +607,16 @@ module.exports = function(app) {
 
         var geoloc = null,
             geoisp = null;
-        if (geo.search('/') != -1) {
-            geoloc = geo.slice(0, geo.indexOf('/'));
-            geoisp = geo.slice(geo.indexOf('/') + 1);
-        } else {
-            geoloc = geo;
-            geoisp = null;
+        if (geo) {
+            if (geo.search('/') != -1) {
+                geoloc = geo.slice(0, geo.indexOf('/'));
+                geoisp = geo.slice(geo.indexOf('/') + 1);
+            } else {
+                geoloc = geo;
+                geoisp = null;
+            }
         }
+
 
         try {
             check(ttl, 'TTL_ERROR').isDecimal().min(60);
@@ -865,13 +868,16 @@ module.exports = function(app) {
 
                 var geoloc = null,
                     geoisp = null;
-                if (geo.search('/') != -1) {
-                    geoloc = geo.slice(0, geo.indexOf('/'));
-                    geoisp = geo.slice(geo.indexOf('/') + 1);
-                } else {
-                    geoloc = geo;
-                    geoisp = null;
+                if (geo) {
+                    if (geo.search('/') != -1) {
+                        geoloc = geo.slice(0, geo.indexOf('/'));
+                        geoisp = geo.slice(geo.indexOf('/') + 1);
+                    } else {
+                        geoloc = geo;
+                        geoisp = null;
+                    }
                 }
+
                 // TODO Check user inputs for record validity
                 // Better RegEx required.
                 try {

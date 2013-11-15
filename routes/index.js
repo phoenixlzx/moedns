@@ -182,7 +182,7 @@ module.exports = function(app) {
                 req.session.user = user;
                 req.flash('success', res.__('USER_ACTIVATED'));
                 res.redirect('/');
-            })
+            });
         });
     });
 

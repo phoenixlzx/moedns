@@ -1,6 +1,6 @@
 <h2>域名</h2>
 
-<h4>添加域名</h4>
+<h4>添加域名&nbsp;<a id="add-domain" href="/help#add-domain"><span class="glyphicon glyphicon-link"></span></a></h4>
 
 <p>在主页点击 <a href="/domains">主人的域名</a> 即可进入域名列表。如果想要把域名交与萌D娘管理，则要首先将该域名喂给萌D娘。</p>
 
@@ -16,7 +16,7 @@
 
 <p><img src="/images/help_img/help_record_list.png" alt="Record list" title="" /></p>
 
-<h4>添加 A 记录</h4>
+<h4>添加 A 记录&nbsp;<a id="add-record-a" href="/help#add-record-a"><span class="glyphicon glyphicon-link"></span></a></h4>
 
 <p>A 记录是解析域名到 IPv4 地址的基本记录。若要添加 A 记录，点击 <strong>添加记录</strong> ，并在 <strong>记录类型</strong> 中选择 <strong>A 记录</strong> 。如要解析根域名(<code>example.com</code>)，则<strong>记录</strong>区域填写 <code>@</code> 或留空</p>
 
@@ -28,38 +28,38 @@
 
 <p><strong>指向</strong> 域名解析得到的结果。A记录对应的应该是一个 IPv4 地址。</p>
 
-<h4>添加 AAAA 记录</h4>
+<h4>添加 AAAA 记录&nbsp;<a id="add-record-aaaa" href="/help#add-record-aaaa"><span class="glyphicon glyphicon-link"></span></a></h4>
 
 <p>AAAA 记录是解析域名到 IPv6 地址的基本记录。若要添加 AAAA 记录，点击 <strong>添加记录</strong> ，并在 <strong>记录类型</strong> 中选择 <strong>AAAA 记录</strong> 。</p>
 
 <p><img src="/images/help_img/help_add_record_aaaa.png" alt="Add AAAA record" title="" /></p>
 
-<h4>添加 CNAME 记录</h4>
+<h4>添加 CNAME 记录&nbsp;<a id="add-record-cname" href="/help#add-record-cname"><span class="glyphicon glyphicon-link"></span></a></h4>
 
 <p>CNAME 即为 Canonical Name，这是一个主机的别名，例如 <code>domain-a.example.com</code> 是 <code>domain-b.example.com</code> 的别名，则访问 <code>domain-a.example.com</code> 即相当于访问 <code>domain-b.example.com</code></p>
 
 <p><img src="/images/help_img/help_add_record_cname.png" alt="Add CNAME record" title="" /></p>
 
-<h4>添加 MX 记录</h4>
+<h4>添加 MX 记录&nbsp;<a id="add-record-mx" href="/help#add-record-mx"><span class="glyphicon glyphicon-link"></span></a></h4>
 
 <p>MX (Mail eXchange), 电邮交互记录，即引导域名到该域名的邮件传输代理列表。如果要使用该域名接收邮件，则必须有一个 MX 记录。MX 记录依赖于一个有效的 A 记录，例如邮件服务器地址为 <code>208.91.199.205</code>，则首先需要一个 A 记录 <code>mail.example.com</code> 解析到该地址，之后才可以将 MX 记录交付 <code>mail.example.com</code> 处理。</p>
 
 <p><img src="/images/help_img/help_add_record_mx.png" alt="Add MX record" title="" /></p>
 
-<h4>添加 SRV 记录</h4>
+<h4>添加 SRV 记录&nbsp;<a id="add-record-srv" href="/help#add-record-srv"><span class="glyphicon glyphicon-link"></span></a></h4>
 
 <p>SRV 记录大多用来定位服务，例如 XMPP 协议使用 SRV 记录。</p>
 
 <p><img src="/images/help_img/help_add_record_srv.png" alt="Add SRV record" title="" /></p>
 
-<h4>添加 TXT 记录</h4>
+<h4>添加 TXT 记录&nbsp;<a id="add-record-txt" href="/help#add-record-txt"><span class="glyphicon glyphicon-link"></span></a></h4>
 
 <p><img src="/images/help_img/help_add_record_txt.png" alt="Add TXT record" title="" /></p>
 
-<h2>动态DNS</h2>
+<h2>动态DNS&nbsp;<a id="ddns" href="/help#ddns"><span class="glyphicon glyphicon-link"></span></a></h2>
 
 <p>文档建设中。该部分参见 <a href="https://github.com/phoenixlzx/moedns#ddns-usage">Github 文档</a></p>
 
-<h2>地区优化</h2>
+<h2>解析优化&nbsp;<a id="dns-optimization" href="/help#dns-optimization"><span class="glyphicon glyphicon-link"></span></a></h2>
 
 <p>萌D娘可以为来自不同地区/ISP的访问者提供优化的<strong>A/AAAA/CNAME</strong>解析记录。在解析优化部分填入国家的大写二位或三位代码(例如 <code>US</code> 或 <code>USA</code>)或大洲的二位代码(例如 <code>NA</code> 即 <code>North America</code>)，萌D娘即可为该地区的来访者提供优化解析记录喵～对于不同 ISP，只需要按格式 <code>CN/China Telecom</code> 即 <code>国家代码/ISP</code> 就好了喵～</p>

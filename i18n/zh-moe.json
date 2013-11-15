@@ -154,5 +154,7 @@
     "BROADCAST_MESSAGE": "AOE 咒语",
     "HELP": "魔法参考",
     "GEODNS": "解析优化",
-    "GEO_ERROR": "地区代码看不懂啊喵..."
+    "GEO_ERROR": "地区代码看不懂啊喵...",
+    "ADD_RECORD_HELP_1": "遇到麻烦了喵？参见",
+    "ADD_RECORD_HELP_2": "魔法参考"
 }

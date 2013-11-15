@@ -20,7 +20,17 @@
     <div class="form-group">
         <label for="record-content" class="control-label col-lg-2"><%= __('GEODNS') %></label>
         <div class="col-lg-8">
-            <input type="text" class="form-control" id="record-geo" name="geo" placeholder="US/CN/JP/etc...">
+            <div class="col-lg-10" style="padding: 0">
+                <input type="text" class="form-control" id="record-geo" name="geo" placeholder="US/CN/JP/etc...">
+            </div>
+            <div class="col-lg-2" style="line-height: 2">
+                <a href="/help#dns-optimization" target="_blank"><span class="glyphicon glyphicon-question-sign"></span></a>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-6">
+            <p class="help-block"><%= __('ADD_RECORD_HELP_1') %><a href="/help#add-record-a" target="_blank"><%= __('ADD_RECORD_HELP_2') %>>></a></p>
         </div>
     </div>
 </div>
@@ -46,7 +56,17 @@
     <div class="form-group">
         <label for="record-content" class="control-label col-lg-2"><%= __('GEODNS') %></label>
         <div class="col-lg-8">
-            <input type="text" class="form-control" id="record-geo" name="geo" placeholder="US/CN/JP/etc...">
+            <div class="col-lg-10" style="padding: 0">
+                <input type="text" class="form-control" id="record-geo" name="geo" placeholder="US/CN/JP/etc...">
+            </div>
+            <div class="col-lg-2" style="line-height: 2">
+                <a href="/help#dns-optimization" target="_blank"><span class="glyphicon glyphicon-question-sign"></span></a>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-6">
+            <p class="help-block"><%= __('ADD_RECORD_HELP_1') %><a href="/help#add-record-aaaa" target="_blank"><%= __('ADD_RECORD_HELP_2') %>>></a></p>
         </div>
     </div>
 </div>
@@ -72,7 +92,17 @@
     <div class="form-group">
         <label for="record-content" class="control-label col-lg-2"><%= __('GEODNS') %></label>
         <div class="col-lg-8">
-            <input type="text" class="form-control" id="record-geo" name="geo" placeholder="US/CN/JP/etc...">
+            <div class="col-lg-10" style="padding: 0">
+                <input type="text" class="form-control" id="record-geo" name="geo" placeholder="US/CN/JP/etc...">
+            </div>
+            <div class="col-lg-2" style="line-height: 2">
+                <a href="/help#dns-optimization" target="_blank"><span class="glyphicon glyphicon-question-sign"></span></a>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-6">
+            <p class="help-block"><%= __('ADD_RECORD_HELP_1') %><a href="/help#add-record-cname" target="_blank"><%= __('ADD_RECORD_HELP_2') %>>></a></p>
         </div>
     </div>
 </div>
@@ -99,6 +129,11 @@
             <input type="text" class="form-control" id="record-content" name="content" placeholder="mail.domain.tld">
         </div>
     </div>
+    <div class="form-group">
+        <div class="col-lg-6">
+            <p class="help-block"><%= __('ADD_RECORD_HELP_1') %><a href="/help#add-record-mx" target="_blank"><%= __('ADD_RECORD_HELP_2') %>>></a></p>
+        </div>
+    </div>
 </div>
 <div id="TXT">
     <div class="form-group">
@@ -117,6 +152,11 @@
         <label for="record-content" class="control-label col-lg-2"><%= __('RECORD_CONTENT') %></label>
         <div class="col-lg-8">
             <input type="text" class="form-control" id="record-content" name="content" placeholder="Some other text...">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-6">
+            <p class="help-block"><%= __('ADD_RECORD_HELP_1') %><a href="/help#add-record-txt" target="_blank"><%= __('ADD_RECORD_HELP_2') %>>></a></p>
         </div>
     </div>
 </div>
@@ -162,6 +202,11 @@
             <input type="text" class="form-control" id="record-content" name="content" placeholder="xmpp-client.domain.tld">
         </div>
     </div>
+    <div class="form-group">
+        <div class="col-lg-6">
+            <p class="help-block"><%= __('ADD_RECORD_HELP_1') %><a href="/help#add-record-srv" target="_blank"><%= __('ADD_RECORD_HELP_2') %>>></a></p>
+        </div>
+    </div>
 </div>
 <div id="NS">
     <div class="form-group">
@@ -180,6 +225,11 @@
         <label for="record-content" class="control-label col-lg-2"><%= __('TARGET') %></label>
         <div class="col-lg-8">
             <input type="text" class="form-control" id="record-content" name="content" placeholder="ns.domain.tld">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-6">
+            <p class="help-block"><%= __('ADD_RECORD_HELP_1') %><a href="/help#add-record-ns" target="_blank"><%= __('ADD_RECORD_HELP_2') %>>></a></p>
         </div>
     </div>
 </div>

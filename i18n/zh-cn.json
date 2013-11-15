@@ -154,5 +154,7 @@
     "BROADCAST_MESSAGE": "公告信息",
     "HELP": "帮助",
     "GEODNS": "解析优化",
-    "GEO_ERROR": "地区代码不正确"
+    "GEO_ERROR": "地区代码不正确",
+    "ADD_RECORD_HELP_1": "有问题？参见",
+    "ADD_RECORD_HELP_2": "帮助文档"
 }

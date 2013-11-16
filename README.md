@@ -5,7 +5,7 @@ MoeDNS - A DNS Management app using Node.js & MongoDB, working with [MiniMoeDNS]
 
 Demo: [MoeDNS](http://moedns.phoenixlzx.com)  
 
-**ATTENTION** Please do NOT point your domain to this site, please use `dig` command to test your DNS at port 15353.
+**ATTENTION** Please do NOT point your domain to this site, please use `dig` command to test your record at port 15353.
 
 ## Feature
 

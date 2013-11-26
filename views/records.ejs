@@ -146,9 +146,9 @@
                                     </li>
                                     <li>
                                         <% if (record.paused) { %>
-                                        <a href="#" onclick="$('#resumeRecord').submit()"><%= __('RESUME') %></a>
+                                        <a href="#" onclick="$('#resumeRecord-<%= record.id %>').submit()"><%= __('RESUME') %></a>
                                         <% } else { %>
-                                        <a href="#" onclick="$('#pauseRecord').submit()"><%= __('PAUSE') %></a>
+                                        <a href="#" onclick="$('#pauseRecord-<%= record.id %>').submit()"><%= __('PAUSE') %></a>
                                         <% } %>
                                     </li>
                                     <li>
@@ -159,11 +159,11 @@
                                 </ul>
                             </div>
                             <!-- Puase/Resume forms -->
-                            <form action="/domain/<%= domain.name %>/pause-record" method="post" id="pauseRecord" class="hidden">
+                            <form action="/domain/<%= domain.name %>/pause-record" method="post" id="pauseRecord-<%= record.id %>" class="hidden">
                                 <input type="hidden" name="recordId" value="<%= record.id %>"/>
                                 <input type="hidden" name="_csrf" value="<%= locals.token %>"/>
                             </form>
-                            <form action="/domain/<%= domain.name %>/resume-record" method="post" id="resumeRecord" class="hidden">
+                            <form action="/domain/<%= domain.name %>/resume-record" method="post" id="resumeRecord-<%= record.id %>" class="hidden">
                                 <input type="hidden" name="recordId" value="<%= record.id %>"/>
                                 <input type="hidden" name="_csrf" value="<%= locals.token %>"/>
                             </form>

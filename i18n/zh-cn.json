@@ -156,5 +156,10 @@
     "GEODNS": "解析优化",
     "GEO_ERROR": "地区代码不正确",
     "ADD_RECORD_HELP_1": "有问题？参见",
-    "ADD_RECORD_HELP_2": "帮助文档"
+    "ADD_RECORD_HELP_2": "帮助文档",
+    "RECORD_PAUSED": "记录已暂停",
+    "RECORD_RESUMED": "记录已恢复",
+    "PAUSED": "已暂停",
+    "PAUSE": "暂停",
+    "RESUME": "恢复"
 }

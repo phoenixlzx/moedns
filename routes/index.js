@@ -971,7 +971,57 @@ module.exports = function(app) {
                 });
             }
         });
-    })
+    });
+
+    app.post('/domain/:domain/pause-record', checkLogin, csrf, function(req, res) {
+        var domain = req.params.domain,
+            record = parseInt(req.body.recordId),
+            user = req.session.user;
+        Domain.checkOwner(domain, user.name, function(err, doc) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/domains');
+            }
+            if (doc == null) {
+                req.flash('error', res.__('DOMAIN_NOT_OWNED'));
+                return res.redirect('/domains');
+            } else {
+                Record.pauseRecord(record, function(err, result) {
+                    if (err) {
+                        req.flash('error', err);
+                        return res.redirect('/domain/' + domain);
+                    }
+                    req.flash('success', res.__('RECORD_PAUSED'));
+                    res.redirect('/domain/' + domain);
+                });
+            }
+        });
+    });
+
+    app.post('/domain/:domain/resume-record', checkLogin, csrf, function(req, res) {
+        var domain = req.params.domain,
+            record = parseInt(req.body.recordId),
+            user = req.session.user;
+        Domain.checkOwner(domain, user.name, function(err, doc) {
+            if (err) {
+                req.flash('error', err);
+                return res.redirect('/domains');
+            }
+            if (doc == null) {
+                req.flash('error', res.__('DOMAIN_NOT_OWNED'));
+                return res.redirect('/domains');
+            } else {
+                Record.resumeRecord(record, function(err, result) {
+                    if (err) {
+                        req.flash('error', err);
+                        return res.redirect('/domain/' + domain);
+                    }
+                    req.flash('success', res.__('RECORD_RESUMED'));
+                    res.redirect('/domain/' + domain);
+                });
+            }
+        });
+    });
 
     // Server status
     app.get('/status', csrf, checkLogin, function(req, res) {

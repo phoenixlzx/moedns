@@ -15,6 +15,7 @@ function Record(record) {
     this.changeDate = record.changeDate;
     this.geoloc = record.geoloc;
     this.geoisp = record.geoisp;
+    this.paused = record.paused;
 }
 
 module.exports = Record;
@@ -30,7 +31,8 @@ Record.prototype.save = function(callback) {
         prio: this.prio,
         changeDate: this.changeDate,
         geoloc: this.geoloc,
-        geoisp: this.geoisp
+        geoisp: this.geoisp,
+        paused: this.paused
     };
 
     mysql.getConnection(function(err, myConnection) {
@@ -45,7 +47,8 @@ Record.prototype.save = function(callback) {
             "ttl": record.ttl,
             "prio": record.prio,
             "geo": record.geoloc,
-            "geoisp": record.geoisp
+            "geoisp": record.geoisp,
+            "paused": false
         }, function(err, result) {
             if (err) {
                 return (err);
@@ -178,6 +181,47 @@ Record.edit = function(record, callback) {
                 myConnection.release();
             });
             // console.log(result.message);
+            callback(null, result);
+        });
+    });
+}
+
+Record.pauseRecord = function(recordId, callback) {
+    mysql.getConnection(function(err, myConnection) {
+        if (err) {
+            myConnection.release();
+            return (err);
+        }
+
+        myConnection.query("UPDATE `records` SET ? WHERE `id` = ?", [{
+            "paused": true
+        }, parseInt(recordId)], function(err, result) {
+            if (err) {
+                myConnection.release();
+                return callback(err, null);
+            }
+            // console.log(result);
+            myConnection.release();
+            callback(null, result);
+        });
+    });
+}
+
+Record.resumeRecord = function(recordId, callback) {
+    mysql.getConnection(function(err, myConnection) {
+        if (err) {
+            myConnection.release();
+            return (err);
+        }
+
+        myConnection.query("UPDATE `records` SET ? WHERE `id` = ?", [{
+            "paused": false
+        }, parseInt(recordId)], function(err, result) {
+            if (err) {
+                myConnection.release();
+                return callback(err, null);
+            }
+            myConnection.release();
             callback(null, result);
         });
     });

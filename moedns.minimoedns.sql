@@ -22,6 +22,7 @@ CREATE TABLE records (
   change_date     INT DEFAULT NULL,
   geo		  VARCHAR(255) DEFAULT NULL,
   geoisp          VARCHAR(255) DEFAULT NULL,
+  paused	  BOOL,
   primary key(id)
 ) Engine=InnoDB;
 

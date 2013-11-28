@@ -92,7 +92,7 @@
     "ADD_DOMAIN_HERE": "戳这里给萌D娘喂域名",
     "CONTENT": "传入中枢的信息",
     "RECORD_ID": "记录ID",
-    "DNS_SERVERS": "萌D娘列表",
+    "DNS_SERVERS": "萌D使列表",
     "LOGIN_HELP": "如果您在使用公共/他人的设备召唤萌D娘，请在完成操作后召回。",
     "DOMAINS_LIST": "域名列表",
     "ADD_DOMAIN_SUCCESS": "萌D娘已经记住了这个域名 =w=",

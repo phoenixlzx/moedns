@@ -16,6 +16,9 @@ module.exports={
     // `powerservers` is an array of your NS servers. Must be present.
     powerservers: ['ns1.example.com', 'ns2.example.com', 'ns3.example.com', 'ns4.example.com'],
     powerttl: 3600,
+    // status servers - if you have multiple servers per NS records write these servers in unique names here.
+    // Otherwise leave it blank.
+    statusservers: ['node-1.ns1.example.com', 'node-2.ns1.example.com', 'node-1.ns2.example.com', 'node-2.ns2.example.com'],
 
     // Site configuration.
     url: 'example.com',

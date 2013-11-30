@@ -1025,13 +1025,17 @@ module.exports = function(app) {
 
     // Server status
     app.get('/status', csrf, checkLogin, function(req, res) {
+        var statusservers = config.powerservers;
+        if (config.statusservers[0]) {
+            statusservers = config.statusservers;
+        }
         res.render('status', {
             title: res.__('SERVER_STATUS') + ' - ' + config.siteName,
             siteName: config.siteName,
             siteTagline: config.siteTagline,
             allowReg: config.allowReg,
             user: req.session.user,
-            powerservers: config.powerservers,
+            powerservers: statusservers,
             success: req.flash('success').toString(),
             error: req.flash('error').toString()
         });

@@ -279,7 +279,7 @@ module.exports = function(app) {
             }
             if (!user) {
                 req.flash('error', res.__('USER_NOT_FOUND'));
-                return res.redirect('/reset-password');
+                return res.redirect('/forgot-password');
             }
 
             // Get user info, generate key then send to user.
@@ -319,14 +319,24 @@ module.exports = function(app) {
     });
 
     app.get('/reset-password', csrf, checkNotLogin, function(req, res) {
-        res.render('reset-password',{
-            title: res.__('RESET_PASSWORD') + ' - ' + config.siteName,
-            siteName: config.siteName,
-            siteTagline: config.siteTagline,
-            allowReg: config.allowReg,
-            user: req.session.user,
-            success: req.flash('success').toString(),
-            error: req.flash('error').toString()
+        User.checkResetkey(req.query.resetkey, function(err, doc) {
+            if (err) {
+                console.log(err);
+            }
+            if (!doc) {
+                req.flash(res.__('USER_NOT_FOUND'));
+                res.redirect('/');
+            } else {
+                res.render('reset-password',{
+                    title: res.__('RESET_PASSWORD') + ' - ' + config.siteName,
+                    siteName: config.siteName,
+                    siteTagline: config.siteTagline,
+                    allowReg: config.allowReg,
+                    user: req.session.user,
+                    success: req.flash('success').toString(),
+                    error: req.flash('error').toString()
+                });
+            }
         });
     });
 

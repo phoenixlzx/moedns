@@ -1036,7 +1036,7 @@ module.exports = function(app) {
     // Server status
     app.get('/status', csrf, checkLogin, function(req, res) {
         var statusservers = config.powerservers;
-        if (config.statusservers[0]) {
+        if (config.statusservers) {
             statusservers = config.statusservers;
         }
         res.render('status', {

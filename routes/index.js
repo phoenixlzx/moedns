@@ -609,10 +609,16 @@ module.exports = function(app) {
             geo = req.body.geo || null;
 
         var name = null;
+
+        // parse for root domain and the last '.'
         if (req.body.name == '@' || req.body.name == '') {
             name = req.params.domain;
         } else {
             name = req.body.name + '.' + req.params.domain;
+        }
+
+        if (content.indexOf('.', content.length - 1) != -1) {
+            content = content.substr(0, content.length - 1);
         }
 
         var geoloc = null,

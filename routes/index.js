@@ -627,6 +627,9 @@ module.exports = function(app) {
             if (geo.search('/') != -1) {
                 geoloc = geo.slice(0, geo.indexOf('/'));
                 geoisp = geo.slice(geo.indexOf('/') + 1);
+            } else if (geo.search('IP:') != -1) {
+                var geoip = geo.slice(geo.lastIndexOf(':') + 1);
+                geoisp = geoip.slice(0, geoip.lastIndexOf('.')) + '.0';
             } else {
                 geoloc = geo;
                 geoisp = null;

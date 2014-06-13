@@ -629,6 +629,7 @@ module.exports = function(app) {
                 geoisp = geo.slice(geo.indexOf('/') + 1);
             } else if (geo.search('IP:') != -1) {
                 var geoip = geo.slice(geo.lastIndexOf(':') + 1);
+                geoloc = 'IP';
                 geoisp = geoip.slice(0, geoip.lastIndexOf('.')) + '.0';
             } else {
                 geoloc = geo;
@@ -893,6 +894,7 @@ module.exports = function(app) {
                         geoisp = geo.slice(geo.indexOf('/') + 1);
                     } else if (geo.search('IP:') != -1) {
                         var geoip = geo.slice(geo.lastIndexOf(':') + 1);
+                        geoloc = 'IP';
                         geoisp = geoip.slice(0, geoip.lastIndexOf('.')) + '.0';
                     } else {
                         geoloc = geo;

@@ -639,9 +639,9 @@ module.exports = function(app) {
 
         try {
             check(ttl, 'TTL_ERROR').isDecimal().min(60);
-            if (geo) {
-                check(geoloc, 'GEO_ERROR').isAlpha().len(2, 20);
-            }
+            // if (geo) {
+            //    check(geoloc, 'GEO_ERROR').isAlpha().len(2, 20);
+            // }
             switch (type) {
                 case "A":
                     check(content, 'NEED_IPV4').isIPv4();
@@ -891,6 +891,9 @@ module.exports = function(app) {
                     if (geo.search('/') != -1) {
                         geoloc = geo.slice(0, geo.indexOf('/'));
                         geoisp = geo.slice(geo.indexOf('/') + 1);
+                    } else if (geo.search('IP:') != -1) {
+                        var geoip = geo.slice(geo.lastIndexOf(':') + 1);
+                        geoisp = geoip.slice(0, geoip.lastIndexOf('.')) + '.0';
                     } else {
                         geoloc = geo;
                         geoisp = null;
@@ -910,9 +913,9 @@ module.exports = function(app) {
                         "TXT"
                     ]);
                     check(ttl, 'TTL_ERROR').isDecimal().min(60);
-                    if (geo) {
-                        check(geoloc, 'GEO_ERROR').isAlpha().len(2, 20);
-                    }
+                    // if (geo) {
+                    //    check(geoloc, 'GEO_ERROR').isAlpha().len(2, 20);
+                    // }
                     switch (type) {
                         case "A":
                             check(content, 'NEED_IPV4').isIPv4();

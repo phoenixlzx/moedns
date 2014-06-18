@@ -4,6 +4,7 @@
  */
 
 var express = require('express')
+    , lessMiddleware = require('less-middleware')
     , routes = require('./routes')
     , http = require('http')
     , path = require('path')

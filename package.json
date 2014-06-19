@@ -13,7 +13,7 @@
         "mongodb": "*",
         "mysql": "*",
         "connect-flash": "*",
-        "validator": "*",
+        "validator": "1.5.1",
         "i18n": "*",
         "tldjs": "~1.2.0",
         "nodemailer": "*",

@@ -13,6 +13,7 @@
         "mongodb": "*",
         "mysql": "*",
         "connect-flash": "*",
+        "connect-mongo": "0.4.0",
         "validator": "1.5.1",
         "i18n": "*",
         "tldjs": "~1.2.0",

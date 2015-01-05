@@ -1220,9 +1220,9 @@ module.exports = function(app) {
             recordId = req.query.id,
             type = req.query.type.toUpperCase(),
             ip = req.query.ip,
-            ttl = req.query.ttl || 60,
+            ttl = parseInt(req.query.ttl) || 60,
             nat = req.query.nat,
-            apikey = req.query.key;
+            apikey = req.query.key + '';
         if (nat) {
             ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         } else {

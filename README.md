@@ -5,7 +5,7 @@ MoeDNS - A DNS Management app using Node.js & MongoDB, working with [MiniMoeDNS]
 
 # ATTENTION
 
-This project is planned to be completely re-designed based on new architecture and technologies. For online production users it is recommended to switch to another provider during this time, as the new project will NOT be compatitable with MoeDNS.
+This project is planned to be completely re-designed based on new architecture and technologies. For online production users it is recommended to switch to another provider during this time, as the new project will NOT be compatible with MoeDNS.
 
 ## Feature
 

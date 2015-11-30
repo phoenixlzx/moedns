@@ -3,9 +3,9 @@ MoeDNS
 
 MoeDNS - A DNS Management app using Node.js & MongoDB, working with [MiniMoeDNS](https://github.com/phoenixlzx/minimoedns) or PowerDNS.
 
-Demo: [MoeDNS](http://moedns.phoenixlzx.com)  
+# ATTENTION
 
-**ATTENTION** Please do NOT point your domain to this site, please use `dig` command to test your record at port 15353.
+This project is planned to be completely re-designed based on new architecture and technologies. For online production users it is recommended to switch to another provider during this time, as the new project will NOT be compatitable with MoeDNS.
 
 ## Feature
 
